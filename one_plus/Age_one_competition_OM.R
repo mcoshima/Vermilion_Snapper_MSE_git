@@ -11,13 +11,12 @@ library(ggplot2)
 library(stringr)
 set.seed(50)
 
-report. <- SS_output(dir = here("Environ_index_runs", "Age_sel_tests", "one_plus"), forefile = "Forecast-report.sso", covar = F)
+report. <- SS_output(dir = here("one_plus"), forefile = "Forecast-report.sso", covar = F)
 
-rep. <- SS_output(dir = here("Vermilion_2014"), forefile = "Forecast-report.sso", covar = F)
-mc.out <- SS_output(dir = here("Environ_index_runs", "Age_sel_tests", "one_plus"),dir.mcmc="mcmc", forecast = F)
+rep. <- SS_output(dir = here("Vermilion_Snapper_2014"), forefile = "Forecast-report.sso", covar = F)
+mc.out <- SS_output(dir = here("one_plus"),dir.mcmc="mcmc", forecast = F)
 
-mcmc.out(directory = here("Environ_index_runs", "Age_sel_tests"), run = "one_plus")
-source("functions.R")
+source("./R Scripts/functions.R")
 
 #Data and parameter setup
 Nyrs <- 100 #Double the number of projection years
@@ -88,14 +87,14 @@ catch.se <- c(report.$catch_error[1:3],.01)
 f.list <- list()
 
 #projected competition index
-proj.index <- read.csv(here("Environ_index_runs", "Age_sel_tests", "one_plus", "Projected_index_rs_2032.csv"))
+proj.index <- read.csv(here("one_plus", "Projected_index_rs_2032.csv"))
 comp.I <- proj.index$RS_relative
 future.comp.ind <- proj.index$RS_relative[which(proj.index$Year > 2014)]
 future.rs.bio <- proj.index %>% filter(Year > 2014) %>% select(Biomass)
 
 
 #Competition variables
-bio.df <- read.csv(here("Environ_index_runs", "Age_sel_tests", "one_plus", "Comp.index.csv"))
+bio.df <- read.csv(here("one_plus", "Comp.index.csv"))
 mod.obj <- nls(Comp.VS.Biomass ~ r*Comp.VS.Biomass*((K -Comp.VS.Biomass - beta*RS.biomass)/K), data = bio.df, start = list(r = 1.5, beta = -.1))
 r <- mod.obj$m$getPars()[1]
 beta <- mod.obj$m$getPars()[2]
@@ -185,7 +184,7 @@ b.list <- list()
 hist.catch.list <- list()
 
 
-dir. <- here("Environ_index_runs", "Age_sel_tests", "one_plus")
+dir. <- here("one_plus")
 
 ## Reference points
 rp.list <- list()
