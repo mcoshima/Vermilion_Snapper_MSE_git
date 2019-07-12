@@ -6,11 +6,11 @@
 0.65718 # SPR target (e.g. 0.40)
 0.3 # Biomass target (e.g. 0.40)
 #_Bmark_years: beg_bio, end_bio, beg_selex, end_selex, beg_relF, end_relF (enter actual year, or values of 0 or -integer to be rel. endyr)
- 1980 2010 2008 2010 2008 2010
-#  1980 2010 2008 2010 2008 2010 # after processing 
+ -1 -1 -1 -1 2012 2014
+#  2013 2013 2013 2013 2012 2014 # after processing 
 1 #Bmark_relF_Basis: 1 = use year range; 2 = set relF same as forecast below
 #
-2 # Forecast: 0=none; 1=F(SPR); 2=F(MSY) 3=F(Btgt); 4=Ave F (uses first-last relF yrs); 5=input annual F scalar
+1 # Forecast: 0=none; 1=F(SPR); 2=F(MSY) 3=F(Btgt); 4=Ave F (uses first-last relF yrs); 5=input annual F scalar
 60 # N forecast years 
 0.2 # F scalar (only used for Do_Forecast==5)
 #_Fcast_years:  beg_selex, end_selex, beg_relF, end_relF  (enter actual year, or values of 0 or -integer to be rel. endyr)

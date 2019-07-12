@@ -1,5 +1,5 @@
 SS-V3.24AC-safe;_04/13/2017;_Stock_Synthesis_by_Richard_Methot_(NOAA)_using_ADMB_11.2x64
-Fri Jul 12 14:20:10 2019
+Fri Jul 12 16:11:27 2019
 
 vermilion.dat  datfilename
 vermilion.ctl  ctlfilename
@@ -607,14 +607,14 @@ TG area year seas tindex gender age N_released
 0 Do_Morphcomp(0/1) 
  data read successful
 
-1 Do_Benchmark 
+0 Do_Benchmark 
 2 Do_MSY 
 0.65718 SPR_target 
 0.3 BTGT_target 
- 1980 2010 2008 2010 2008 2010 Benchmark years as read:  beg-end bio; beg-end selex; beg-end relF
- 1980 2010 2008 2010 2008 2010 Benchmark years as processed:  beg-end bio; beg-end selex; beg-end relF
+ -1 -1 -1 -1 2012 2014 Benchmark years as read:  beg-end bio; beg-end selex; beg-end relF
+ 2013 2013 2013 2013 2012 2014 Benchmark years as processed:  beg-end bio; beg-end selex; beg-end relF
 1  1=use range of years for relF; 2 = set same as forecast relF below
-2 Do_Forecast 
+1 Do_Forecast 
 Forecast selected; next 20 input values will be read as a block then parsed and procesed 
 60 N_Fcast_Yrs 
 0.2 Fmult value used only if Do_Forecast==5
