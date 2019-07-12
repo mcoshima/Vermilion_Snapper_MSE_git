@@ -1,0 +1,85 @@
+---
+title: "OM Description"
+author: "Meg Oshima"
+date: ""
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+The operating model consists of the population dynamics component and fishery dynamics. 
+The starting numbers-at-age are taken from the stock assessment output for Vermilion Snapper as parameterized in SEDAR 45. The starting year is 2014, the last year of data in the SEDAR assessment. 
+
+### Step 1. Population size and age-length structure of intial population   
+Take N-at-age for year 2014.0 and N-at-length for year 2014.0  
+
+
+### Step 2. Determine how many fish are caught by each fleet  
+
+For the commercial fisheries, catch is in terms of biomass so used the Baranov catch equation: 
+$$c_{f,y,a} = \sum_{a=0}^{a=14} \frac{F_{f,a}}{Z_{a}}(1-e^{-Z_{a}})N_{y.0,a}w_{a} e^{(\sigma_f^2)}$$  
+
+$$c_{a,y} = \sum_{f=1}^{f=4} c_{f,y}$$    
+
+Recreational catch is in terms of numbers so used the equations above without the $w_a$.
+
+Shrimp bycatch is assumed constant catch (0.001) so I divided it into 0,1, and 2 year olds the 3+ = zero catch.
+
+### Step 3. Determine age comps of the catches for fleets 1 -3 and length comps for fishery-independent surveys  
+Age comps are calculated for commercial and recreational fleets in years fishing occurs. A random number is generated between 0 and the total number of fish caught by the fishery that year if it is less than 100, otherwise 100 to give the number of age comp samples. Then the number of fish from each age bin is randomly generated. Length comps are generated in a similar way for fleets 10 and 11. The main difference is that all length comps all add to 1. 
+
+### Step 4. Remove catch from population
+
+$$N_{a,y.5} = (N_{a,y.0}-c_{a,y.0})e^{\frac{-M_{y,a}}{2}}$$  
+
+### Step 5. Convert numbers-at-age to numbers-at-length to get biomass-at-age and -length  
+There are 12 length bins and 15 age bins so use the age-length key ($\phi_{l,a}$) to determine what proportion of each age are in each length bin.  
+$$N_{l,y.5} = \sum_{a=0}^{a=14} N_{y.5,a}*\phi_{l,a}$$    
+
+### Step 6. Simulate CPUE for each fleet  
+For fishery-dependent surveys (Commercial E/W, Rec) use:  
+$$B_{l,y.5,f} = \sum_{f=1}^{f=4}C_{f,a}$$  No need to multiply by weight because the catch units are already in biomass or numbers.    
+For fishery-independent (video and groundfish) use:  
+$$B_{l,y.5,f} = \sum_{f=5}^{f=6}S_{l,f}*N_{y.5,l}*w_l$$       
+Shrimp bycatch vulnerable biomass is set to the apical F, so use the mean and sd from the previous 10 years to simulate new values each year.  
+
+Indices of abundance are calculated for each fleet by:  
+$$IOA_{y.5,f} = q_f*\sum_{l,a=1}^{l=12,a=14} B_{l,a,y.5,f}*e^{SE_f}$$    
+where $SE_f$ is the mean standard error for each fleet from 1993 to 2014. They are assumed to be lognormal. 
+
+For fishery-dependent indices, selectivity is age-specific. For fishery-indepenedent surveys selectivity is length-specific. SS output provides the proportion-at-length/age that will be caught in each fleet.  
+
+
+### Step 7. Calculate SSB (in second half of year)  
+$$SSB_{y.5} = N_{y.5,a}*w_a*m_a$$    
+where $m_a$ is the maturity at age and $w_a$ is mean weight at age (kg).  
+
+
+### Step 8. Calculate recruitment for the next year  
+Recruitment for the next year is determined from the geometric mean recruitment ($\bar{r}$) with log-normal deviants ($\delta$).  
+$$R_y = \bar{r}*e^{\delta}$$  
+
+
+### Step 9. Determine next year population 
+If a = 0 $$N_{0,y.0} = R_y$$    
+If 0 < a < 14 $$N_{a,y.0} = N_{a-1,y-.5}*e^{-Z/2}$$    
+If a = 14 $$N_{a,y.0} = N_{a,y-.5}*e^{\frac{-Z_{a-1,y-.5}}{2}}+N_{a,y-.5}*e^{\frac{-Z_{a,y-.5}}{2}} $$   
+
+where $$Z_{a,y} = F_y + M_{a,y}$$.  
+
+## Next steps:  
+1. Write function to pull data out of OM every 5 years for assessment model
+2. Include discard rate  
+3. Include Red Snapper as environmental covariate on recruitment and growth
+
+#### Data needs for Assessment Model  
+* Total catch by fleet (biomass in mtons), year, season  
+* Survey IOA (Year, seas, fleet, index, obs error)  
+* Discard observations  
+* Age comps for fleets 1-3  
+* Length comps for fleets 10 and 11  
+
+

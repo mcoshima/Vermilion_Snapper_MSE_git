@@ -1,0 +1,7 @@
+SS-V3.24AC-safe;_04/13/2017;_Stock_Synthesis_by_Richard_Methot_(NOAA)_using_ADMB_11.2x64
+Fri Jul 12 14:20:10 2019
+
+ Lognormal error selected for effort deviations for fleet 4; normal error recommended
+ N warnings: 1
+time-vary selparms not bound checked
+Number_of_active_parameters_on_or_near_bounds: 0

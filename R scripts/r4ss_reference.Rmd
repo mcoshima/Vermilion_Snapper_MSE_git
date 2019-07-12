@@ -1,0 +1,259 @@
+---
+title: "Stock Synthesis and r4ss Reference"
+author: "Meg Oshima"
+date: "June 18, 2019"
+output:
+  html_document:
+    theme: sandstone
+    toc: yes
+    toc_float: yes
+  pdf_document:
+    toc: yes
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(r4ss)
+library(kableExtra)
+library(wesanderson)
+col. <- c(wes_palette("GrandBudapest1"), wes_palette("GrandBudapest2"))
+```
+
+
+
+This is a reference for setting up Stock Synthesis 3 and some of the most useful functions in the r4ss package. For more detailed information see the user manual, found [here](ftp://pcouncil.org/pub/Groundfish%20Assessment%20Methodology%20Review/References/G_SS_Features/SS330_User_Manual.pdf).  
+
+## Set up and Quick Run Through Terminal
+Before doing anything, copy all of the folders and files into a directory on your computer (do **NOT** work from the dropbox folder).
+The first thing we need to do is set up the .bat file to run SS. (I am not positive but I think this also tells the default of where to send the output files, so if you run it from another folder, the output will go to your wd, not the folder you ran it from). 
+
+1. Put the executable file (ss3.exe) and the SS3.bat (Windows Batch File) in a known and convenient location (i.e. your working directory).  
+
+2. Edit the first line of the SS3.bat file to the directory of the executable file. This allows you to have one copy of the executable and use it from many different working directories. To edit the .bat file, right click it and select Edit. It should look something like:  
+"C:/Users/w986430/Desktop/Code/Stock Synthesis Model/Executables - current/ss3.exe"  %1 %2 %3 %4  
+del ss3.r0*  
+del ss3.p0*  
+del ss3.b0*  
+
+3. Next open the SS shortcut to open the Command window.  
+
+4. Type ss3 at the command prompt.This starts executing the SS3 file and will run.
+
+5. After the SS run is finished, it will produce many .sso files. They can be read with the SS-output-X.xlsm output processor, text editor, or in R with the r4ss package.  
+
+## Adding it to your path  
+You can also add the .exe file to your path so that you can run the file from any location on your computer. These steps are for windows.  
+
+1. In the start menu search for "edit environmental variables for system" and click on it.  
+2. Click environmental variables button.  
+3. In system variables (2nd box), find PATH and click edit.  
+4. At the end of the current path add the directory to the .exe file (do NOT erase current path).  
+5. Click Ok and open a new command prompt.  
+
+I put ss3.exe in a folder on my desktop and can open a command prompt in any folder with the needed files (.dat, .ctl, forecast, and starter) and type in ss3 and it will run. This eliminates the need to copy the .exe file into every folder you want to run it in.  
+
+## Running SS3 through RStudio  
+In order to run the executable file through RStudio, you need to have all of the following in your working directory:  
+
+* starter file  
+* data file  
+* control file  
+* forecast file  
+* .exe file*
+
+If you do not add the .exe file to your path you **cannot** run the model if the .exe isn't in the directory.  
+In the starter file, check and make sure the data and control file names match the data and control files you want to use to run the model. Once you have everything you can use the function `system2()` or `shell(paste("cd/d", dir., "&& ss3", sep = " "))` to run the executable. System works if you want to run SS3 in your working directory but if you have directories for different runs, you can't specify the path so you need to use shell. 
+
+When the run is successfully completed, you will see the message "!! Run has completed !! No warnings" (or the number of warnings that were produced which can be found in the warnings file).
+
+## Getting started
+To run SS, in the directory you need a Starter.ss file, a control file (must match name in the Starter.ss), a data file (must match name in Starter.ss), and a Forecast.ss file and any other files you may need, such as weights (wtatage.ss).   
+
+## File Types  
+See SS3 user manual for details on how to parameterize each file.  
+
+### Starter.ss File  
+
+### Forecast.ss File  
+
+### Data File (.dat)
+Included in the data file is:  
+
+1. Dimensions (years, ages, N fleets, N surveys, etc.)  
+2. Fleet and survey names, timing, etc.   
+3. Catch biomass(metric tons)  
+4. Discard  
+5. Mean body weight (kg)    
+6. Length composition set-up (cm, weight-at-length params must correspond to units of body length and weight)    
+7. Length composition  
+8. Age composition set-up  
+9. Ageing imprecision definitions  
+10. Age compositions  
+11. Mean length or bodyweight-at-age  
+12. Generalized size composition (weight frequency)  
+13. Tag-recapture  
+14. Environmental data 
+15. Stock composition  
+ 
+### Control File (.ctl)  
+The main purpose of the control file is to define the parameters used by the model. Parameter lines are used in 3 sections of the control file, 1. natural mortality and growth, 2. spawner-recruitment, inital F, and catchability, and 3. selectivity. The first 7 elements of a parameter line are used in every section. The first 7 elements are:
+
+1. LO - Min value for the parameter  
+2. HI - Max value for the parameter  
+3. INIT - Initial value for the parameter  
+4. Prior Value - Expected value for the parameter, ignored if prior type is -1 or 1  
+5. Prior Type - -1 = none, 0 = normal, 1 = symmetric beta, 2 = full beta, 3 = lognormal, 4 = lognormal w/ bias adjustment, 5 = gamma  
+6. Prior stddev - Standard deviation for the prior, used to calculate likelihood of the current parameter value  
+7. PHASE - Phase when the parameter begins to be estimated  
+
+The following 7 elements are used for the Mortality-Growth and Selectivity sections:  
+
+8. ENV - Create a linkage to an input environmental time series  
+9. USE_Dev - Invokes use of the dev vector  
+10. DEV min yr - Beginning year for the dev vector  
+11. DEV max yr - Ending year for the dev vector  
+12. DEV std.dev - Standard deviation for elements in the dev vector  
+13. USE-BLOCK - Setup blocks or parameter trends  
+14. BLOCK-TYPE - Functional form for the block offset  
+
+
+
+## Output Files  
+The standard ADMB output files of .PAR (final parameter values), .STD (parameter values and their standard deviations), .REP (report), and .COR (correlations) are reported at the end of an SS run. The main output file from SS is the report.sso file. The sections of the report file are as follows:  
+
+1. SS version number w/ date compiled. Time and date of run.  
+2. Comments - input file lines starting with #C are echoed here  
+3. Keywords - a list of keywords used in searching for output sections  
+4. FleetNames - list of fishing fleet and survey names  
+5. Likelihood - final values of the nll are presented  
+6. Input_variance_adjustment - matrix of input variance adjustments  
+7. PARAMETERS - for estimated parameters it gives, Num (# of params), Label (internally generated by SS), Value, Active_Cnt (3 of params in the same order they appear in the ss3.cor), Phase, Min, Max, Init, Prior, Prior_type, Prior_SD, Prior_Like, Parm_Std (SD of param calcualted from the inverse Hessian), Status (e.g. near bound), Pr_atMin (value of prior penalty if it was near bound), and Pr_atMax  
+8. Derived_Quantities  
+    +  Starts with the options selected from the starter and forecast input files for SPR_ratio_basis, F_report_basis, and B_ratio_denominator(e.g. 40%*Vrigin Biomass)  
+    +Time series of output w/ sd of estimates for spawning biomass, recruitment, SPRratio, F ratio, B ratio, management quantities, forecast catch, forecast catch as a limit level (OFL), Selex_std, Grow_std, NatAge_std  
+    + MGparm_by_year_after_adjustments - the time series of MGparms (biological) by year after adjustment by environmental links, blocks and deviations  
+    + SELparm_by_year_after_ajdustment - size or age selectivity params after adjustment for each year when there was a change  
+    + Recruitment_dist - distribution of recruitment across growth patterns, genders, birthseasons, and areas in the endyr of model  
+    + Morph_Indexing - internal index values for various quantities, bio_pattern refers to a collection of cohorts with the same defined growth and M params, gender and birthseas are the next index factors  
+    + Sizefreq_translation - if generalized size frequency is used, this shows the translation probabilities between population length bins and units of defined size freq  
+    + Movement - shows movement rate between areas in multi-area models  
+    + Exploitation - time series of selected F_std unit and F multiplier for each fleet in terms of harvest rate or fully selected F  
+    + TIME_SERIES - time series of abundance, recruitment, and catch for each area  
+    + SPR_series - YPR and biomass per recruit calculations for the current year's life history, fishery selectivity, and fishing intensity  
+    + Spawn_Recruit - spawner output and recruitment  
+    + Index_1 -  the options used for processing the abundance index data  
+    + Index_2 - Observed and expected values for each index  
+    + Index_3 - parameter number assigned to each parameter used in this section  
+    + Discard - the list of observed and expected values for the amount discard  
+    + Mean_body_wt - observed and expected values for the mean body weight  
+    + Fit_len_comps - list of the goodness of fit to the length comps  
+    + Fit_age_comps  
+    + Fit_size_comps  
+    + Len_selex - length selectivity and other length specific quantities for each fishery  
+    + Age_selex  
+    + Environmental_data - input values of environmental data  
+    + Numbers_at_age - output (thousands of fish) for each cohort tracked in the model  
+    + Numbers_at_length  
+    + Catch_at_age  
+    + Biology - first section is length-specific quantities, second is natural moratlity  
+    + Growth_Params  
+    + Biology_at_age  
+    + Mean_body_wt - time series of mean body weight for each morph for the beginning of each season of each year  
+    + Mean_size_timeseries - time series of mean length-at-age for each morph, at the bottom is the weighted average across all morphs for each gender  
+    + Age_length_key - midpoint of each season in the ending year  
+    + Age_age_key - calculated distribution of observed ages for each true age for each of the defined ageing keys  
+    + Selectivity_database - selectivities organized as a database  
+    + Spawning_biomass_report_2 - annual total spawning biomass, then numbers-at-age, then Z-at-age, then time series of all F values set to 0  
+    + Composition_database - a separate file (compreport.sso), contains the lenght comp, age comp, and mean size-at-age observed and expected values  
+
+
+## Running in MCMC mode  
+First run SS3 in the directory you want without any mcmc arguments. After the run has completed successfully, run ss3 -mcmc XXXXX -mcsave YYY where XXXXX and YYY are the number of iterations and thin that you want. Try 55000 and 50 respectively. Then to save the posterior distribution run ss3 -mceval. Check in the starter.ss file what your MC thin and burnin values are set to. If they are too big then you will end up with nothing in the posterior because everything will be gotten rid of. Try setting it to 100 for the burnin and 1 for thinning (thinning must be greater than 0). Once that has completed you should have 1000 values (more or less depending on what you used for burn in and thining) for each parameter in the posterior.sso file. To evaluate the MCMC chains, use r4ss. First, move the posterior.sso and derived_posterior.sso files into a subfolder in your directory. Then use the function SS_output and specify the dir and dir.mcmc (which can be relative to the main dir). This will create a list with everything from the report file and an $mcmc dataframe with the posterior values. You can then use SSsummarize to create a summary of mcmc elements across models to compare. See example workflow code below:  
+```{r eval = F}
+
+# The mcmc directory is a subfolder in the one_plus folder
+mod1 <- SS_output(dir=here("Environ_index_runs", "Age_sel_tests", "one_plus"),
+                    dir.mcmc="mcmc", forecast = F)
+model.sum <- SSsummarize(list(mod1))
+```
+
+
+
+#### _Troubleshooting_ 
+
+If you are having trouble running the .exe file, there are a few things you can check for debugging the issue. First, if it starts to run but then stops and gives you the message "check warnings", go to your directory and look for the file "warning". In this text document, it will give you sections to check and the error/warning messages are a little more detailed and clear. If that doesn't help or you can't get it to go far enough to produce the warning file, then you can check the "echoinput" file. This file prints out each line of what SS3 has read in. When you can't tell what is the problem, check where it stopped reading in data. Because the .dat and .ctl files are just lines of information and the program doesn't read the labels and descriptions of what those values actually are (anything after a # is commented out), the order of the data matters. If you are missing lines, it doesn't know that and will just continue to read through the files but eventually it will get to a line where it is expecting a specific input format and the line it is reading won't match that. That will give you an error and it will stop running. You can use the echoinput file and look at the last line it read in and make sure the description of that line in the echoinput file matches with the description in the .dat or .ctl file. If it is off, work backwards through the files to see which line is off. If you don't have certain data, you can only leave it out if those lines are conditional (COND) on something. Another place to help with debugging and checking your code is in the user manual for SS, at the end there are samples of each file type. You can go line by line and make sure you have the correct information in the correct order. 
+
+## Using r4ss to evaluate a model
+
+A package that was built to run SS through R is r4ss. The full cran vingette can be found [here](https://cran.r-project.org/web/packages/r4ss/r4ss.pdf). This section includes a table of the most useful functions grouped by purpose and an example of how to use them to run SS. The Cran version of r4ss is outdated so its best to install directly from github.  
+
+```{r eval = F}
+install.packages("devtools")
+devtools::install_github("r4ss/r4ss")
+#if you want the newest development version use this 
+devtools::install_github("r4ss/r4ss", ref="development")
+
+```
+
+
+### Functions 
+
+```{r echo = FALSE}
+
+fun.df <- data.frame(
+          Function = c("SS_output", "SS_plots", "SSplotBiology", "SSplotCatch", "SSplotCohorts", "SSplotComps", "SSplotData", "SSplotDiscard", "SSplotIndices", "SSplotMnwt", "SSplotMovementMap", "SSplotMovementRates", "SSplotNumbers", "SSplotRecdevs", "SSplotRecdist", "SSplotSelex", "SSplotSpawnrecruit", "SSplotSPR", "SSplotTags", "SSplotTimeseries", "SSplotYield", "SS_html", "SS_fitbiasramp", "SSgetoutput", "SSsumamarize", "SSplotComparisons", "SStableComparisons", "addSSsummarize", "SSplotpars", "SSplotProfile", "mcmc.nuisnace", "mcmc.out", "SSgetMCMC", "SSplotMCMC_ExtraSelex", "movepars", "selfit", "selfit_spline", "sel.line", "SS_readctl", "SS_readdat", "SS_readforecast", "SS_readstarter", "SS_writectl", "SS_writedat", "SS_writeforecast", "SS_writestarter", "SS_makedatlist", "SS_parlines", "SS_changepars", "SSmakeMmatrix", "SS_profile", "SS_recdevs", "SS_splitdat", "bubble3", "make_multifig", "plotCI", "rich.colors.short", "mountains"), 
+          Description = c("A function to create a list object for the output from SS", "Plot many quantities related to output from Stock Synthesis", "Plot biology related quantities", "Plot catch related quantities", "Plot cumulative catch by cohort", "Plot composition data and fits", "Timeline of presence/absence of data by type, year, and fleet", "Plot fit to discard fraction", "Plot indices of abundance and associated quantities", "Plot mean weight data and fits", "Show movement rates on a map", "Show movement rates on a map", "Plot numbers-at-age related data and fits", "Plot recruitment deviations", "Plot of recruitment distribution among areas and seasons", "Plot selectivity", "Plot spawner-recruit curve", "Plot SPR quantities", "Plot tagging data and fits", "Plot timeseries data", "Plot yield and surplus production", "Create HTML files to view figures in browser", "Estimate bias adjustment for recruitment deviates", "Get output from multiple Stock Synthesis models", "Summarize the output from multiple Stock Synthesis models", "Plot model comparisons", "Make table comparing quantities across models", "Add a model to the list of models to compare", "Plot distributions of priors, posteriors, and estimates", "Plot likelihood profile results", "Summarize nuisance MCMC output", "Summarize, analyze and plot key MCMC output", "Read MCMC output", "Plot uncertainty around chosen selectivity ogive from MCMC", "Explore movement parameterizations", "A function to visual parameterization of double normal and double logistic selectivity in Stock Synthesis", "Visualize parameterization of cubic spline selectivity in SS", "A function for drawing selecitivity curves", "Read control file (incomplete)", "Read data file", "Read forecast file", "Read starter file", "Write control file (incomplete)", "Write data file", "Write forecast file", "Write starter file", "Make a list for SS data", "Get parameter lines from SS control file", "Change parameters in control file", "Create inputs for entering a matrix of M by age and year", "Run a likelihood profile in Stock Synthesis (incomplete)", "Insert a vector of recruitment deviations into the control file", "Split apart bootstrap data to make input file", "Create a bubble plot", "Create multi-figure plots", "Plot points with confidence intervals", "Make a vector of colors", "Make shaded polygons with a mountain-like appearance"))
+
+fun.df %>% kable() %>% column_spec(1, width = "20em") %>% group_rows("Core Functions", 1,2) %>%
+  group_rows("Plot functions called by SS_plots", 3,23) %>% 
+  group_rows("Model Comparisons", 24, 28) %>% 
+  group_rows("Addtional tools for plotting model output", 29, 30) %>% 
+  group_rows("MCMC Diagonstics", 31, 34) %>% 
+  group_rows("Interactive tools for exploring functional forms", 35,38) %>% 
+  group_rows("File manipulation for inputs", 39,51) %>% 
+  group_rows("File manipulation for outputs", 52,53) %>% 
+  group_rows("Minor plotting functions", 54, 58)
+   
+```
+
+
+
+```{r eval=FALSE}
+
+library(r4ss)
+
+#if you want to/need to read in one of the files to make changes to it 
+###not necessary if you just want to run the model
+ctl. <- SS_readctl("C:/Users/w986430/Desktop/Code/MSE/ss3_trial/simple.ctl")
+dat. <- SS_readdat("C:/Users/w986430/Desktop/Code/MSE/ss3_trial/simple.dat")
+# 
+# #Runs ss3.exe
+system2("ss3")
+#or
+shell(paste("cd/d", dir., "&& ss3", sep = " "))
+#where dir. is the path you want to put the output in
+
+```
+
+
+
+### Output
+
+After you run the executable file, you will see a bunch of new files in your wd. To look at the Report.ss file, use the function `SS_output()` to read in the information for further analysis and `SS_plots()` to visualize the biological quantities, time series, and fits to data. SS_plots by default exports all of the plots to png files in your directory which you can control with the argument png = F.  
+
+```{r warning = FALSE, eval = FALSE}
+report. <- SS_output(dir = "C:/Users/w986430/Desktop/Code/MSE/ss3_trial/", model = "simple", warn = FALSE, printstats = FALSE, hidewarn = TRUE)
+#warn = FALSE, printstats = False, and hidewarn = TRUE just to reduce output (the default is T, T, F)
+
+SS_plots(report., png = F)
+```
+
+To get the log recruitment deviates, look under SPAWN_RECRUIT in the report text file. 
+```{r eval = FALSE}
+recruit <- report.$recruit
+colnames(recruit) <- c("Year", "spawn_bio", "exp_recr", "with_env", "adjusted", "pred_recr", "dev", "biasedaj", "era")
+
+```
+
+
+

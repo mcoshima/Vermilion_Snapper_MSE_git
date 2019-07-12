@@ -1,0 +1,397 @@
+---
+title: "Reproducing SS Outputs"
+author: "Meg"
+date: "5/8/2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+library(r4ss)
+library(here)
+library(dplyr)
+library(purrr)
+library(reshape2)
+knitr::opts_chunk$set(echo = TRUE)
+Nfleet <- 6
+report. <- SS_output(dir = here("Vermilion_2014"), model = "ss3", covar = F, forecast = F)
+catch.by.fleet <- read.csv("catch.by.fleet.csv")
+catch.by.year <- read.csv("catch.by.year.csv")
+Index <- read.csv("I.csv")
+N <- read.csv("N.csv")
+load("hist.catch.Rdat")
+hist.catch.list <- compact(hist.catch.list)
+natlen <- read.csv("natlen.csv")
+load("b.list.Rdat")
+```
+
+To show that my operating model can reproduce the SS3.24 output, I ran the OM loop using the numbers-at-age from 2010 as the initial population and ran it to 2014. I used the F values from SS to ensure the same fishing patterns. Overall, my results match well with the ss output and I have confidence moving forward using this model for projections.
+
+# Catch   
+I use the equation below to calculate catch:  
+$$C_{f,y,a} = \sum_{a=0}^{a=14} \frac{F_{f}}{Z_{y,a}}(1-e^{-Z_{a}})S_{f,y,a}N_{y.0,a} e^{(\sigma_f^2)}$$  
+I use the function catch.in.number to calculate the number removed from the population by fishing and then convert those numbers to biomass later for commercial fleets for the .dat file. 
+
+```{r }
+# fsel is a matrix with the age-specific selectivity, N is the numbers-at-age matrix, and year is the iterator that indicates what year in the loop I'm in
+catch.in.number <- function(fsel,N,year){
+  for(fleet in 1:4){
+      for(age in 1:15){
+        
+         catch[fleet, age] <- ((f.by.fleet[fleet]) / z[,age]) * (1 - exp(- z[,age])) * sel[fleet, age] * N[year-1, age+1]
+        
+      }
+    }
+  catch
+  }
+
+```
+
+
+Because I am ignoring the error term in catch initally, my catch-at-age estimates are pretty much the same as ss (plot is total catch-at-age for each fishery for the years 2010 through 2013):  
+```{r echo = F}
+#SS catch-at-age:
+rep.cage.sub <- report.$catage[,-c(4,5,9)] 
+rep.cage.sub <- rep.cage.sub %>% 
+  filter(Yr > 2009 ) %>% 
+  filter(Yr < 2014 ) %>% 
+  group_by(Fleet) %>% 
+  select(-c(1,3:7)) %>% 
+  summarise_each(list(sum)) %>% 
+  as.data.frame() 
+
+comm_e <- hist.catch.list[[1]][1,] + hist.catch.list[[2]][1,] + hist.catch.list[[3]][1,] + hist.catch.list[[4]][1,] 
+
+comm_w <- hist.catch.list[[1]][2,] + hist.catch.list[[2]][2,] + hist.catch.list[[3]][2,] + hist.catch.list[[4]][2,]
+
+rec <- hist.catch.list[[1]][3,] + hist.catch.list[[2]][3,] + hist.catch.list[[3]][3,] + hist.catch.list[[4]][3,] 
+
+shrimp_byc <- hist.catch.list[[1]][4,] + hist.catch.list[[2]][4,] + hist.catch.list[[3]][4,] + hist.catch.list[[4]][4,] 
+
+par(mfrow = c(2,2))
+plot(seq(0,14), y = rep.cage.sub[1,-1], type = "l", xlab = "Age", ylab = "N-at-age", lwd = 2, main = "Comm_E", col = "orange")
+lines(seq(0,14), y = comm_e, lty = 2, lwd = 1)
+
+plot(seq(0,14), y = rep.cage.sub[2,-1], col = "orange", lwd = 2, xlab = "Age", ylab = "N-at-age", main = "Comm_W", type = "l",)
+lines(seq(0,14), y = comm_w, lty = 2, lwd = 1)
+
+plot(seq(0,14), y = rep.cage.sub[3,-1], col = "orange", lwd = 2, xlab = "Age", ylab = "N-at-age", main = "Rec", type = "l",)
+lines(seq(0,14), y = rec, lty = 2, lwd = 1)
+
+plot(seq(0,14), y = rep.cage.sub[4,-1], col = "orange", lwd = 2, xlab = "Age", ylab = "N-at-age", main = "Shrimp_ByC", type = "l",)
+lines(seq(0,14), y = shrimp_byc, lty = 2,  lwd = 1)
+
+```
+
+When I compare catch-at-age by fishery for years 2010 to 2014 the catches start off identical to ss but then in the later years the shrimp bycatch varies some because of the stochasticity I have in the population abundance function:  
+
+```{r echo=F}
+##SS fishery specific catch-at-age:
+rep.catch10 <- report.$catage[,-c(4,5,9)] %>% filter(Yr == 2010)
+
+##My catch-at-age by fleet 
+#hist.catch.list[[1]] 
+
+plot(seq(0,14), y = rep.catch10[1, - c(1:7)], type = "l", lwd = 2, ylim = c(0,max(rep.catch10[,c(8:22)])), xlab = "Age", ylab = "Catch by Fishery", main = 2010)
+lines(seq(0,14), y = rep.catch10[2, - c(1:7)], col = "pink", lwd = 2)
+lines(seq(0,14), y = rep.catch10[3, - c(1:7)], col = "purple", lwd = 2)
+lines(seq(0,14), y = rep.catch10[4, - c(1:7)], col = "orange", lwd = 2)
+lines(seq(0,14), y = hist.catch.list[[1]][1,], col = "black", lwd = 2, lty = 2)
+lines(seq(0,14), y = hist.catch.list[[1]][2,], col = "pink", lwd = 2, lty = 2)
+lines(seq(0,14), y = hist.catch.list[[1]][3,], col = "purple", lwd = 2, lty = 2)
+lines(seq(0,14), y = hist.catch.list[[1]][4,], col = "orange", lwd = 2, lty = 2)
+legend("top", bty = "n", lty = c(1,2), legend = c("SS output", "my output"))
+legend("topright", pch = rep(16,4), legend = c("Com_E", "Com_W", "Rec", "Shrimp_ByC"), col = c("black", "pink", "purple", "orange"), bty = "n")
+```
+
+
+```{r echo=F}
+##SS fishery specific catch-at-age:
+rep.catch11 <- report.$catage[,-c(4,5,9)] %>% filter(Yr == 2011)
+
+##My catch-at-age by fleet 
+#hist.catch.list[[2]] 
+
+plot(seq(0,14), y = rep.catch11[1, - c(1:7)], type = "l", lwd = 2, ylim = c(0,max(rep.catch11[,c(8:22)])), xlab = "Age", ylab = "Catch by Fishery", main = 2011)
+lines(seq(0,14), y = rep.catch11[2, - c(1:7)], col = "pink", lwd = 2)
+lines(seq(0,14), y = rep.catch11[3, - c(1:7)], col = "purple", lwd = 2)
+lines(seq(0,14), y = rep.catch11[4, - c(1:7)], col = "orange", lwd = 2)
+lines(seq(0,14), y = hist.catch.list[[2]][1,], col = "black", lwd = 2, lty = 2)
+lines(seq(0,14), y = hist.catch.list[[2]][2,], col = "pink", lwd = 2, lty = 2)
+lines(seq(0,14), y = hist.catch.list[[2]][3,], col = "purple", lwd = 2, lty = 2)
+lines(seq(0,14), y = hist.catch.list[[2]][4,], col = "orange", lwd = 2, lty = 2)
+legend("top", bty = "n", lty = c(1,2), legend = c("SS output", "my output"))
+legend("topright", pch = rep(16,4), legend = c("Com_E", "Com_W", "Rec", "Shrimp_ByC"), col = c("black", "pink", "purple", "orange"), bty = "n")
+
+``` 
+
+  
+```{r echo=F}
+##SS fishery specific catch-at-age:
+rep.catch12 <- report.$catage[,-c(4,5,9)] %>% filter(Yr == 2012)
+
+##My catch-at-age by fleet 
+#hist.catch.list[[3]]
+
+plot(seq(0,14), y = rep.catch12[1, - c(1:7)], type = "l", lwd = 2, ylim = c(0,max(rep.catch12[,c(8:22)])), xlab = "Age", ylab = "Catch by Fishery", main = 2012)
+lines(seq(0,14), y = rep.catch12[2, - c(1:7)], col = "pink", lwd = 2)
+lines(seq(0,14), y = rep.catch12[3, - c(1:7)], col = "purple", lwd = 2)
+lines(seq(0,14), y = rep.catch12[4, - c(1:7)], col = "orange", lwd = 2)
+lines(seq(0,14), y = hist.catch.list[[3]][1,], col = "black", lwd = 2, lty = 2)
+lines(seq(0,14), y = hist.catch.list[[3]][2,], col = "pink", lwd = 2, lty = 2)
+lines(seq(0,14), y = hist.catch.list[[3]][3,], col = "purple", lwd = 2, lty = 2)
+lines(seq(0,14), y = hist.catch.list[[3]][4,], col = "orange", lwd = 2, lty = 2)
+legend("top", bty = "n", lty = c(1,2), legend = c("SS output", "my output"))
+legend("topright", pch = rep(16,4), legend = c("Com_E", "Com_W", "Rec", "Shrimp_ByC"), col = c("black", "pink", "purple", "orange"), bty = "n")
+
+
+```
+
+```{r echo=F}
+##SS fishery specific catch-at-age:
+rep.catch13 <- report.$catage[,-c(4,5,9)] %>% filter(Yr == 2013)
+
+##My catch-at-age by fleet 
+#hist.catch.list[[3]]
+
+plot(seq(0,14), y = rep.catch13[1, - c(1:7)], type = "l", lwd = 2, ylim = c(0,max(rep.catch13[,c(8:22)])), xlab = "Age", ylab = "Catch by Fishery", main = 2013)
+lines(seq(0,14), y = rep.catch13[2, - c(1:7)], col = "pink", lwd = 2)
+lines(seq(0,14), y = rep.catch13[3, - c(1:7)], col = "purple", lwd = 2)
+lines(seq(0,14), y = rep.catch13[4, - c(1:7)], col = "orange", lwd = 2)
+lines(seq(0,14), y = hist.catch.list[[4]][1,], col = "black", lwd = 2, lty = 2)
+lines(seq(0,14), y = hist.catch.list[[4]][2,], col = "pink", lwd = 2, lty = 2)
+lines(seq(0,14), y = hist.catch.list[[4]][3,], col = "purple", lwd = 2, lty = 2)
+lines(seq(0,14), y = hist.catch.list[[4]][4,], col = "orange", lwd = 2, lty = 2)
+legend("top", bty = "n", lty = c(1,2), legend = c("SS output", "my output"))
+legend("topright", pch = rep(16,4), legend = c("Com_E", "Com_W", "Rec", "Shrimp_ByC"), col = c("black", "pink", "purple", "orange"), bty = "n")
+
+
+```
+
+
+```{r echo=F, eval = F}
+##SS fishery specific catch-at-age:
+rep.catch14 <- report.$catage[,-c(4,5,9)] %>% filter(Yr == 2014)
+
+##My catch-at-age by fleet 
+#hist.catch.list[[3]]
+
+plot(seq(0,14), y = rep.catch14[1, - c(1:7)], type = "l", lwd = 2, ylim = c(0,max(rep.catch14[,c(8:22)])), xlab = "Age", ylab = "Catch by Fishery", main = 2014)
+lines(seq(0,14), y = rep.catch14[2, - c(1:7)], col = "pink", lwd = 2)
+lines(seq(0,14), y = rep.catch14[3, - c(1:7)], col = "purple", lwd = 2)
+lines(seq(0,14), y = rep.catch14[4, - c(1:7)], col = "orange", lwd = 2)
+lines(seq(0,14), y = hist.catch.list[[5]][1,], col = "black", lwd = 2, lty = 2)
+lines(seq(0,14), y = hist.catch.list[[5]][2,], col = "pink", lwd = 2, lty = 2)
+lines(seq(0,14), y = hist.catch.list[[5]][3,], col = "purple", lwd = 2, lty = 2)
+lines(seq(0,14), y = hist.catch.list[[5]][4,], col = "orange", lwd = 2, lty = 2)
+legend("top", bty = "n", lty = c(1,2), legend = c("SS output", "my output"))
+legend("topright", pch = rep(16,4), legend = c("Com_E", "Com_W", "Rec", "Shrimp_ByC"), col = c("black", "pink", "purple", "orange"), bty = "n")
+
+
+```
+
+
+## N-at-length
+
+
+```{r echo = F}
+
+nlen.sub <- tail(report.$natlen, n=10)
+par(mfrow = c(2,2))
+plot(seq(1,12), y = nlen.sub[2,-c(1:11)], type = "l", ylim = c(0,15000), ylab = "Numbers at length", xlab = "Length bin", lwd = 2, main = "2010")
+lines(seq(1,12), y = natlen[2,-1], lty =2, lwd = 2)
+plot(seq(1,12), y = nlen.sub[4,-c(1:11)],  lwd = 2, type = "l", main = "2011", ylab = "Numbers at length", xlab = "Length bin",)
+lines(seq(1,12), y = natlen[4,-1], lty =2,  lwd = 2)
+plot(seq(1,12), y = nlen.sub[6,-c(1:11)],  lwd = 2, type = "l", main = "2012", ylab = "Numbers at length", xlab = "Length bin",)
+lines(seq(1,12), y = natlen[6,-1], lty =2,  lwd = 2)
+plot(seq(1,12), y = nlen.sub[8,-c(1:11)],  lwd = 2, type = "l", main = "2013", ylab = "Numbers at length", xlab = "Length bin",)
+lines(seq(1,12), y = natlen[8,-1], lty =2,  lwd = 2)
+# plot(seq(1,12), y = nlen.sub[10,-c(1:11)], lwd = 2, type = "l", main = "2014", ylab = "Numbers at length", xlab = "Length bin",)
+# lines(seq(1,12), y = natlen[5,-1], lty =2, lwd = 2)
+
+```
+
+N-at-length is calculated by taking the number from the numbers-at-age for each year and age ($n_{y,a}$), and then using the 1st age-length key from the report file to convert numbers-at-age to length. For the mid-year numbers at length, the smaller fish grow into the next length bin with different probabilities. It varies annually but I mulitplied the 1st bin by .011 to get the number that don't move to the 2nd bin, the 2nd bin numbers are multiplied by 4 to get the number that don't move to the third, and the 3rd bin numbers get multiplied by 2 to get the numbers that don't move to the fourth bin. 
+The function is:  
+```{r eval = F}
+#function to convert numbers at age to numbers at length
+for(i in 1:nrow(ALK)){
+  
+  natlen[i,] <- N[year-1,i+1]*ALK[,i]
+  
+}
+
+Nlen[year-1,] <- colSums(natlen)
+
+new.num <- Nlen[year-1,c(1,2,3)]*trans.prob
+Nlen[year,] <- c(new.num, Nlen[year-1,-c(1:3)])
+
+```
+
+
+## Indices of Abundance  
+```{r echo = F}
+##SS Indices 
+rep.cpue <- report.$cpue %>% 
+  filter(Yr > 2009) %>% 
+  filter(Yr < 2014) %>% 
+  select("Fleet", "Yr", "Obs", "Exp") %>% 
+  filter(Fleet == 3| Fleet ==4 | Fleet ==7 | Fleet == 8 | Fleet == 10 |Fleet == 11) %>% 
+  rename(ss.Fleet = "Fleet", ss.Yr = "Yr", ss.Obs = "Obs", ss.EXP = "Exp")
+
+
+##My indices for 2011 to 2014
+# colnames(Index) <- c("7", "8", "3", "4", "10", "11")
+# Index <- Index %>% melt() %>% mutate(Yr = rep(seq(2010,2013),6)) 
+# levels(Index$variable) <- c(3,4,7,8,10,11)
+
+
+IOA <- bind_cols(rep.cpue, Index)
+IOA <- IOA %>% select("ss.Fleet", "ss.Yr", "ss.Obs", "ind.") %>% mutate(difference = ss.Obs - ind.) %>% rename(my.Obs = "ind.")
+
+
+plot(seq(2010,2013), IOA[c(9:12), 3],  pch = 16, lwd = 2, ylim = c(.6, max(IOA[c(9:12),3])), ylab = "Index of Abundance", xlab = "Years", main = "Comm_E")
+points(seq(2010, 2013), IOA[c(9:12),4])
+
+plot(seq(2010, 2013), IOA[c(13:16),3], lwd = 2, ylab = "Index of Abundance", xlab = "Years", main = "Comm_W",  pch = 16, ylim = c(.5, 1.5))
+points(seq(2010, 2013), IOA[c(13:16),4])
+
+plot(seq(2010, 2013), IOA[c(1:4),3], lwd = 2, ylab = "Index of Abundance", xlab = "Years", main = "Rec",  pch = 16, ylim = c(0.3,1.4))
+points(seq(2010, 2013), IOA[c(1:4),4])
+
+plot(seq(2010, 2013), IOA[c(5:8),3], lwd = 2, ylab = "Index of Effort", xlab = "Years", main = "Shrimp_ByC", pch = 16, ylim = c(0, .5))
+points(seq(2010, 2013), IOA[c(5:8),4])
+
+plot(seq(2010, 2013), IOA[c(17:20),3], lwd = 2, ylab = "Index of Abundance", xlab = "Years", main = "Video",  pch = 16, ylim = c(.2, 1.8))
+points(seq(2010, 2013), IOA[c(17:20),4])
+
+plot(seq(2010, 2013), IOA[c(21:24),3], lwd = 2, ylab = "Index of Abundance", xlab = "Years", main = "SEAMAP",  pch = 16, ylim = c(0.5,1.75))
+points(seq(2010, 2013), IOA[c(21:24),4])
+
+```
+
+These are my functions for calculating vulnerable biomass. Using the N from SS, it outputs the same biomass values. Mine are different now because my population numbers are slightly different from ss. I am not using this for the shrimp bycatch because the vulnerable biomass is just the F value for that year (an index of effort).:  
+```{r eval = F}
+
+
+simBatage <- function(N, Flt, asel, year){
+  #Flt is the max = 3
+  #asel is the age selectivity matrix
+  
+  for(fleet in 1:Flt){ 
+    for(age in 1:Nages){#for fishery dependent surveys
+      if(fleet < 3){
+        
+        b.age[fleet,age] <- N[year,age+1] *wtatage[fleet,age+1] * asel[fleet,age]
+      
+        }else{
+       
+        b.age[fleet,age] <- N[year,age+1] * asel[fleet,age] 
+        
+      }
+    }
+  } 
+  
+  b.age
+}
+
+simBatlen <- function(Nlen, Flt, lsel, year){
+  #Flt is the number of fishery-independent surveys
+  for(fleet in 1:Flt){ 
+    for(len in 1:ncol(Nlen)){
+      
+      b.len[fleet,len] <- Nlen[year,len]*lsel[fleet,len]
+      
+    }
+  }
+  b.len
+}
+
+```
+
+
+I can simulate the observed IOA values from SS fairly well using my function:  
+```{r}
+CPUE.dev <- report.$cpue %>% filter(Yr == 2010) %>% select(Dev)
+CPUE.dev <- CPUE.dev[c(5,6,1,2,8,9),]
+q <- as.numeric(report.$index_variance_tuning_check[c(7,8,3,4,10,11),2])
+b. <- c(7.01370e+03 , 4.42210e+03, 1.32031e+04, 8.70357e-02, 1.93886e+04, 2.56601e+04)
+
+#function to generate IOA values
+I. <- matrix(data = NA, nrow = 3, ncol = Nfleet)
+
+simIndex <- function(q,b,dev,year){
+  for(fleet in 1:Nfleet){
+    
+    I.[year, fleet] <- (q[fleet]*b[fleet])*exp(dev[fleet])
+
+  }
+  I.[year,]
+}
+simI <- simIndex(q,b.,CPUE.dev,1)
+simI <- melt(simI) %>% select(value) %>% pull()
+index.df <- data.frame(Flt = c(7,8,3,4,10,11), Name = c("Comm_E", "Comm_W", "Rec", "Shrimp_ByC", "Video", "SEAMAP"), myIOA = simI,ssObs = c(0.91060, 0.99950, 0.44790, 0.35230, 1.39669, 0.73923), ssIOA = c(0.992127, 0.998104, 0.694606, 0.366706, 0.888349, 0.874270))
+
+```
+
+|Flt|Name|myIOA|ssObs|ssIOA|  
+|:--:|:--:|:--:|:--:|:--:|  
+|7|Comm_E|0.9106019|0.91060|0.992127|
+|8|Comm_W|0.9994986| 0.99950 |0.998104|  
+|3 |Rec| 0.4479011| 0.44790| 0.694606|  
+|4 |Shrimp_ByC| 0.3522976| 0.35230| 0.366706|  
+|10|Video| 1.3966884| 1.39669 |0.888349|  
+|11|SEAMAP|0.7392312 |0.73923 |0.874270|  
+
+To get the expected values, just need to leave out the $e^{dev}$ part of the equation but this takes out observation error.  
+
+## Spawning biomass  
+I calculate the spawning biomass using the $\Sigma(N_{a,y}* fecund_a)$ where $fecund_a$ is the reproductive output by ages taken from report.ss. This is calculated at the beginning of every year.   
+
+```{r echo = F}
+rep.spb <- report.$derived_quants %>% filter(grepl('SPB_201', LABEL))
+rep.spb <- rep.spb[-5,]
+ssb <- c(186026030236, 191496212833, 178825980487, 183628867333)
+
+plot(seq(2010,2013), rep.spb[,2], pch = 16, ylim =c(min(ssb)-1.e10,2.1e11), ylab = "SSB", xlab = "Year")
+lines(seq(2010,2013), ssb)
+arrows(x0 = 2010, y0 = rep.spb[1,2], x1 = 2010, y1 = rep.spb[1,2]-rep.spb[1,3], angle = 90)
+arrows(x0 = 2010, y0 = rep.spb[1,2], x1 = 2010, y1 = rep.spb[1,2]+rep.spb[1,3], angle = 90)
+arrows(x0 = 2011, y0 = rep.spb[2,2], x1 = 2011, y1 = rep.spb[2,2]-rep.spb[2,3], angle = 90)
+arrows(x0 = 2011, y0 = rep.spb[2,2], x1 = 2011, y1 = rep.spb[2,2]+rep.spb[2,3], angle = 90)
+arrows(x0 = 2012, y0 = rep.spb[3,2], x1 = 2012, y1 = rep.spb[3,2]-rep.spb[3,3], angle = 90)
+arrows(x0 = 2012, y0 = rep.spb[3,2], x1 = 2012, y1 = rep.spb[3,2]+rep.spb[3,3], angle = 90)
+arrows(x0 = 2013, y0 = rep.spb[4,2], x1 = 2013, y1 = rep.spb[4,2]-rep.spb[4,3], angle = 90)
+arrows(x0 = 2013, y0 = rep.spb[4,2], x1 = 2013, y1 = rep.spb[4,2]+rep.spb[4,3], angle = 90)
+# arrows(x0 = 2014, y0 = rep.spb[5,2], x1 = 2014, y1 = rep.spb[5,2]-rep.spb[5,3], angle = 90)
+# arrows(x0 = 2014, y0 = rep.spb[5,2], x1 = 2014, y1 = rep.spb[5,2]+rep.spb[5,3], angle = 90)
+
+```
+
+
+## Population biomass  
+My estimated population biomass (dashed line) starts off the same as ss output and then is smaller than the ss outputs because of the stochasticity but it follows the same trend and my biomass is still very close to the ss output.
+```{r echo = F}
+wtatage <- tail(report.$wtatage[,-c(1:5)], 4)
+byears <- c()
+for(i in 1:8){
+  byears[i] <- sum(N[i,-1]*wtatage[1,-1])
+  
+}
+
+natage.sub <- report.$natage %>% filter(Yr > 2009) %>% filter(Yr < 2014) %>% select(-c(1:11))
+
+ss.byears <- c()
+for(i in 1:nrow(natage.sub)){
+  ss.byears[i] <- sum(natage.sub[i,]*wtatage[1,-1])
+  
+}
+
+# myb.ts <- compact(b.list) %>% unlist()
+# myb.ts <- na.omit(myb.ts)
+# plot(bio.ts$Yr, bio.ts$Bio_all, type ="l",ylim = c(9300, 10500), xlab = "Year", ylab = "Biomass")
+plot(seq(1,8), ss.byears, type ="l", xlab = "Year", ylab = "Biomass")
+lines(seq(1,8), byears, lty = 2)
+```
+
+###### The code for calculating the values shown here is found in reproduceSS_2010_2014.R.  
+
