@@ -1,9 +1,9 @@
 #V3.24AC
 SS-V3.24AC-safe;_04/13/2017;_Stock_Synthesis_by_Richard_Methot_(NOAA)_using_ADMB_11.2x64
 
-StartTime: Thu Jun 27 10:11:51 2019
-EndTime: Thu Jun 27 10:13:28 2019
-This run took: 0 hours, 1 minutes, 37 seconds.
+StartTime: Mon Jul 15 10:28:36 2019
+EndTime: Mon Jul 15 10:30:15 2019
+This run took: 0 hours, 1 minutes, 39 seconds.
 Data_File: VS.dat
 Control_File: VS.ctl
 
@@ -881,9 +881,9 @@ B_ratio_denominator:  100%*Virgin_Biomass
  SPR_Btgt 0.45169 0.0214341
  Fstd_Btgt 0.116085 0.00913006
  TotYield_Btgt 2119.93 187.614
- SSB_SPRtgt 9.15058e+010 2.64475e+010
- Fstd_SPRtgt 0.197597 0.00652948
- TotYield_SPRtgt 1290.96 362.514
+ SSB_SPRtgt 1.46431e+011 2.47107e+010
+ Fstd_SPRtgt 0.164513 0.00521096
+ TotYield_SPRtgt 1719.4 267.699
  SSB_MSY 3.11559e+011 4.38281e+010
  SPR_MSY 0.500319 0.0273286
  Fstd_MSY 0.0985349 0.00950742
@@ -1558,7 +1558,7 @@ RECRUITMENT_DIST_BENCHMARK_from_years: 1980 2010
 G_pattern Gender Seas Area Value Used?
 1 1 1 1 1 1
 
-RECRUITMENT_DIST_FORECAST_from_years: 1180631050 1667592815
+RECRUITMENT_DIST_FORECAST_from_years: 1180631052 1667592815
 G_pattern Gender Seas Area Value Used?
 1 1 1 1 0 1
 
@@ -2621,7 +2621,7 @@ Discard_errtype_options
 DISCARD_OUTPUT 
 Fleet Name Yr Seas Yr.S Obs Exp Std_in Std_use Dev Like Like+log(s) SuprPer Use Obs_cat Exp_cat F_rate
 4 SMP_BYC 1972 1 1972.5 3367.5 3587.63  0.1 0.1 -0.0633203 0.200473 -2.10211 beg_suprper 1 0.001 0 0.186785
-4 SMP_BYC 1973 1 1973.5 13620 3587.63  0.5 1.72407e-317  _  _  _   in_suprper -1 0.001 0 0.189043
+4 SMP_BYC 1973 1 1973.5 13620 3587.63  0.5 1.75643e-317  _  _  _   in_suprper -1 0.001 0 0.189043
 4 SMP_BYC 1974 1 1974.5 3817 3587.63  0.5 0  _  _  _   in_suprper -1 0.001 0 0.18819
 4 SMP_BYC 1975 1 1975.5 3482 3587.63  0.5 0  _  _  _   in_suprper -1 0.001 0 0.189349
 4 SMP_BYC 1976 1 1976.5 1268 3587.63  0.5 0  _  _  _   in_suprper -1 0.001 0 0.196359

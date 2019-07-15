@@ -4,7 +4,7 @@
 0 # Benchmarks: 0=skip; 1=calc F_spr,F_btgt,F_msy
 #it calculates targets at MSY, SPR, and biomass targets all independently during model run
 2 # MSY: 1= set to F(SPR); 2=calc F(MSY); 3=set to F(Btgt); 4=set to F(endyr)
-0.6571804 # SPR target (e.g. 0.40)
+0.3 # SPR target (e.g. 0.40)
 0.3 # Biomass target (e.g. 0.40)  
 -1 -1 -1 -1 2012 2014 #_Bmark_years: beg_bio, end_bio, beg_selex, end_selex, beg_relF, end_relF (enter actual year, or values of 0 or -integer to be rel. endyr) - use range of year where there was not change in any time varying processies, i.e. time varying change in selectivity, chagne in R0, etc.
 1 #Bmark_relF_Basis: 1 = use year range; 2 = set relF same as forecast below

@@ -13,7 +13,7 @@ set.seed(50)
 
 report. <- SS_output(dir = here("one_plus"), forefile = "Forecast-report.sso", covar = F)
 
-rep. <- SS_output(dir = here("Vermilion_Snapper_2014"), forefile = "Forecast-report.sso", covar = F)
+rep. <- SS_output(dir = here("Vermilion_Snapper_14"), forefile = "Forecast-report.sso", covar = F)
 mc.out <- SS_output(dir = here("one_plus"),dir.mcmc="mcmc", forecast = F)
 
 source("./R Scripts/functions.R")

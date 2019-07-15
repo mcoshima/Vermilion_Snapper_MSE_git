@@ -1,5 +1,5 @@
 SS-V3.24AC-safe;_04/13/2017;_Stock_Synthesis_by_Richard_Methot_(NOAA)_using_ADMB_11.2x64
-Thu Jun 27 10:11:51 2019
+Mon Jul 15 10:28:36 2019
 
 VS.dat  datfilename
 VS.ctl  ctlfilename
@@ -680,7 +680,7 @@ TG area year seas tindex gender age N_released
 
 1 Do_Benchmark 
 2 Do_MSY 
-0.3 SPR_target 
+0.35 SPR_target 
 0.3 BTGT_target 
  1980 2010 2008 2010 2008 2010 Benchmark years as read:  beg-end bio; beg-end selex; beg-end relF
  1980 2010 2008 2010 2008 2010 Benchmark years as processed:  beg-end bio; beg-end selex; beg-end relF

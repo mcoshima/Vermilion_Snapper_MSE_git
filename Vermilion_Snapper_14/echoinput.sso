@@ -1,5 +1,5 @@
 SS-V3.24AC-safe;_04/13/2017;_Stock_Synthesis_by_Richard_Methot_(NOAA)_using_ADMB_11.2x64
-Fri Jul 12 16:11:27 2019
+Mon Jul 15 13:43:15 2019
 
 vermilion.dat  datfilename
 vermilion.ctl  ctlfilename
@@ -609,7 +609,7 @@ TG area year seas tindex gender age N_released
 
 0 Do_Benchmark 
 2 Do_MSY 
-0.65718 SPR_target 
+0.3 SPR_target 
 0.3 BTGT_target 
  -1 -1 -1 -1 2012 2014 Benchmark years as read:  beg-end bio; beg-end selex; beg-end relF
  2013 2013 2013 2013 2012 2014 Benchmark years as processed:  beg-end bio; beg-end selex; beg-end relF
