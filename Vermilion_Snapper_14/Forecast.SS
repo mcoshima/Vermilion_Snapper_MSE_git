@@ -1,22 +1,22 @@
 #C generic forecast file
 #V3.20b
 # for all year entries except rebuilder; enter either: actual year, -999 for styr, 0 for endyr, neg number for rel.endyr
-0 # Benchmarks: 0=skip; 1=calc F_spr,F_btgt,F_msy
+1 # Benchmarks: 0=skip; 1=calc F_spr,F_btgt,F_msy
 #it calculates targets at MSY, SPR, and biomass targets all independently during model run
 2 # MSY: 1= set to F(SPR); 2=calc F(MSY); 3=set to F(Btgt); 4=set to F(endyr)
 0.3 # SPR target (e.g. 0.40)
 0.3 # Biomass target (e.g. 0.40)  
 -1 -1 -1 -1 2012 2014 #_Bmark_years: beg_bio, end_bio, beg_selex, end_selex, beg_relF, end_relF (enter actual year, or values of 0 or -integer to be rel. endyr) - use range of year where there was not change in any time varying processies, i.e. time varying change in selectivity, chagne in R0, etc.
 1 #Bmark_relF_Basis: 1 = use year range; 2 = set relF same as forecast below
-1 # Forecast: 0=none; 1=F(SPR); 2=F(MSY) 3=F(Btgt); 4=Ave F (uses first-last relF yrs); 5=input annual F scalar
-60 # N forecast years
+2 # Forecast: 0=none; 1=F(SPR); 2=F(MSY) 3=F(Btgt); 4=Ave F (uses first-last relF yrs); 5=input annual F scalar
+100 # N forecast years
 0.2 # F scalar (only used for Do_Forecast==5)
 2008 2010 2008 2010 #_Fcast_years: beg_selex, end_selex, beg_relF, end_relF (enter actual year, or values of 0 or -integer to be rel.endyr) # the last years to use F - typically use the last three years! 
 2 # Control rule method (1=catch=f(SSB) west coast; 2=F=f(SSB) )   # leave alone 
 0.01 # Control rule Biomass level for constant F (as frac of Bzero, e.g. 0.40) - leave this alone, this is west coast thing
 0.001 # Control rule Biomass level for no F (as frac of Bzero, e.g. 0.10)   - leave this alone, this is west coast thing
 1.0 # Control rule target as fraction of Flimit (e.g. 0.75)   # this is to do the F at OY - i.e. the 75 percent of Fmsy
-3 #_N forecast loops (1-3) (fixed at 3 for now)   # leave alone 
+2 #_N forecast loops (1-3) (fixed at 3 for now)   # leave alone 
 3 #_First forecast loop with stochastic recruitment        # leave alone 
 0 #_Forecast loop control #3 (reserved for future bells&whistles)     # leave alone 
 0 #_Forecast loop control #4 (reserved for future bells&whistles)     # leave alone 
