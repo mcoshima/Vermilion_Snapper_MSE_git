@@ -1,8 +1,7 @@
 SS-V3.24AC-safe;_04/13/2017;_Stock_Synthesis_by_Richard_Methot_(NOAA)_using_ADMB_11.2x64
-Mon Jul 15 13:43:15 2019
+Wed Jul 17 08:46:28 2019
 
- Turn Benchmark on because Forecast needs it
  Lognormal error selected for effort deviations for fleet 4; normal error recommended
- N warnings: 2
+ N warnings: 1
 time-vary selparms not bound checked
 Number_of_active_parameters_on_or_near_bounds: 0
