@@ -1,5 +1,5 @@
 SS-V3.24AC-safe;_04/13/2017;_Stock_Synthesis_by_Richard_Methot_(NOAA)_using_ADMB_11.2x64
-Mon Jul 15 10:28:36 2019
+Fri Jul 19 16:09:09 2019
 
 VS.dat  datfilename
 VS.ctl  ctlfilename
@@ -680,14 +680,106 @@ TG area year seas tindex gender age N_released
 
 1 Do_Benchmark 
 2 Do_MSY 
-0.35 SPR_target 
+0.37 SPR_target 
 0.3 BTGT_target 
- 1980 2010 2008 2010 2008 2010 Benchmark years as read:  beg-end bio; beg-end selex; beg-end relF
- 1980 2010 2008 2010 2008 2010 Benchmark years as processed:  beg-end bio; beg-end selex; beg-end relF
+ -1 -1 -1 -1 2012 2014 Benchmark years as read:  beg-end bio; beg-end selex; beg-end relF
+ 2013 2013 2013 2013 2012 2014 Benchmark years as processed:  beg-end bio; beg-end selex; beg-end relF
 1  1=use range of years for relF; 2 = set same as forecast relF below
-0 Do_Forecast 
-No forecast selected, so rest of forecast file will not be read and can be omitted
+1 Do_Forecast 
+Forecast selected; next 20 input values will be read as a block then parsed and procesed 
+60 N_Fcast_Yrs 
+0.2 Fmult value used only if Do_Forecast==5
+ -1 -1 2012 2014 Begin-end yrs for average selex; begin-end yrs for allocation
+ 2013 2013 2012 2014  After Transformation:  begin-end yrs for average selex; begin-end yrs for rel F
+2  HarvestPolicy 
+0.01  H4010_top 
+0.001  H4010_bot 
+1  H4010_scale 
+3 N forecast loops (1-3) (recommend 3)
+3 First forecast loop with stochastic recruitment (recommend 3)
+0 Forecast loop control #3 (reserved for future use) 
+0 Forecast loop control #4 (reserved for future use) 
+0 Forecast loop control #5 (reserved for future use) 
+2014  Fcast_Cap_FirstYear for caps and allocations (should be after any fixed inputs) 
+0  Impl_Error_Std 
+0  Do_Rebuilder 
+2011  Rebuild_Ydecl 
+2010  Rebuild_Yinit 
+1 fleet relative F (1=use_year_range/2=read_seas_x_fleet) 
+2  Fcast_Catch_Basis for caps and allocations 
+2=dead catch bio, 3=retained catch bio, 5= dead catch numbers 6=retained catch numbers;   Same for all fleets
  do not include relative F by season and fleet, uses endyr instead 
+Now read cap for each fleet, then cap for each area (even if only 1 area), then allocation assignment for each fleet
+ Max totalcatch by fleet 
+ -1 -1 -1 -1 -1
+ Max totalcatch by area 
+ -1
+ Assign fleets to allocation groups (0 means not in a group) 
+ 0 0 0 0 0
+ calculated number of allocation groups 0
+ Allocation among groups (columns are allocation groups, rows are N forecast years) 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+0 N_Fcast_input_catches 
+-1 # basis for input Fcast catch:  2=dead catch; 3=retained catch; 99=input Hrate(F); -1=read fleet/time specific (bio/num units are from fleetunits; note new codes in SSV3.20)
  done reading forecast 
 
 
@@ -893,13 +985,13 @@ After processing
 999  If you see 999, we got to the end of the control file successfully! 
 
 ***********************************
-N parameters: 412
-Parameters plus derived quant: 756
+N parameters: 532
+Parameters plus derived quant: 1356
 Adjust the phases 
-Active parameters: 377
+Active parameters: 437
 Turn_off_phase 10
- max_phase 3
-Active parameters plus derived quantities:  722
+ max_phase 5
+Active parameters plus derived quantities:  1262
 here2
  Do recruitment_autocorr: 0
 end of parameter section
@@ -1014,8 +1106,281 @@ Adjusted size at maxage: 34.1953
  0.234 0.342 0.287 0.257 0.239 0.228 0.22 0.215 0.212 0.209 0.207 0.206 0.205 0.204 0.204
  did wtlen and maturity
  made the age_age' key 
-bias_adjustment vector:  0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.685794 0.777601 0.8538 0.8538 0.8538 0.8538 0.8538 0.8538 0.8538 0.8538 0.8538 0.8538 0.8538 0.8538 0.8538 0.8538 0.8538 0.784706 0.537943 0.29118 0.0444173
+bias_adjustment vector:  0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.685794 0.777601 0.8538 0.8538 0.8538 0.8538 0.8538 0.8538 0.8538 0.8538 0.8538 0.8538 0.8538 0.8538 0.8538 0.8538 0.8538 0.784706 0.537943 0.29118 0.0444173 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
 start initial conditions 
+1950
+1950
+1950
+1950
+1950
+1950
+1950
+1950
+1950
+1950
+1950
+1950
+1950
+1950
+1950
+1950
+1950
+1950
+1950
+1950
+1950
+1950
+1950
+1950
+1950
+1950
+1950
+1950
+1950
+1950
+1950
+1950
+1950
+1950
+1950
+1950
+1950
+1950
+1950
+1950
+1950
+1950
+1950
+1950
+1950
+1950
+1950
+1950
+1950
+1950
+1950
+1950
+1950
+1950
+1950
+1950
+1950
+1950
+1950
+1950
+1950
+1950
+1950
+1950
+1950
+1950
+1950
+1950
+1950
+1950
+1950
+1950
+1950
+1950
+1950
+1950
+1950
+1950
+1950
+1950
+1950
+1950
+1950
+1950
+1950
+1950
+1950
+1950
+1950
+1950
+1950
+1950
+1950
+1950
+1950
+1950
+1950
+1950
+1950
+1950
+1950
+1950
+1950
+1950
+1950
+1950
+1950
+1950
+1950
+1950
+1950
+1950
+1950
+1950
+1950
+1950
+1950
+1950
+1950
+1950
+1950
+1950
+1950
+1950
+1950
+1950
+1950
+1950
+1950
+1950
+1950
+1950
+1950
+1950
+1950
+1950
+1950
+1950
+1950
+1950
+1950
+1950
+1950
+1950
+1950
+1950
+1950
+1950
+1950
+1950
+1950
+1950
+1950
+1950
+1950
+1950
+1950
+1950
+1950
+1950
+1950
+1950
+1950
+1950
+1950
+1950
+1950
+1950
+1950
+1950
+1950
+1950
+1950
+1950
+1950
+1950
+1950
+1950
+1950
+1950
+1950
+1950
+1950
+1950
+1950
+1950
+1950
+1950
+1950
+1950
+1950
+1950
+1950
+1950
+1950
+1950
+1950
+1950
+1950
+1950
+1950
+1950
+1950
+1950
+1950
+1950
+1950
+1950
+1950
+1950
+1950
+1950
+1950
+1950
+1950
+1950
+1950
+1950
+1950
+1950
+1950
+1950
+1950
+1950
+1950
+1950
+1950
+1950
+1950
+1950
+1950
+1950
+1950
+1950
+1950
+1950
+1950
+1950
+1950
+1950
+1950
+1950
+1950
+1950
+1950
+1950
+1950
+1950
+1950
+1950
+1950
+1950
+1950
+1950
+1950
+1950
+1950
+1950
+1950
+1950
+1950
+1950
+1950
+1950
+1950
+1950
+1950
+1950
+1950
+1950
+1950
+1950
+1950
 1950
 1950
 1950
