@@ -1,6 +1,6 @@
 #V3.24AC
 #_SS-V3.24AC-safe;_04/13/2017;_Stock_Synthesis_by_Richard_Methot_(NOAA)_using_ADMB_11.2x64
-#_Start_time: Fri Jul 19 16:13:03 2019
+#_Start_time: Thu Jul 25 14:15:05 2019
 #_Number_of_datafiles: 1
 #C data file created using the SS_writedat function in the R package r4ss
 #C should work with SS version: 
@@ -91,7 +91,7 @@ CM_E%CM_W%REC%SMP_BYC%COMP%HB_E%HB_W%CM_E_IFQ%CM_W_IFQ%LARVAL%VIDEO%SEAMAP
  346.69 271.67 1108.33 0.001 0.001 2014 1
 
 #
-303 #_N_cpue_and_surveyabundance_observations
+302 #_N_cpue_and_surveyabundance_observations
 #_Units:  0=numbers; 1=biomass; 2=F
 #_Errtype:  -1=normal; 0=lognormal; >0=T
 #_Fleet Units Errtype
@@ -352,7 +352,6 @@ CM_E%CM_W%REC%SMP_BYC%COMP%HB_E%HB_W%CM_E_IFQ%CM_W_IFQ%LARVAL%VIDEO%SEAMAP
  1995 1 5 0.0915778 0.01 # COMP
  1996 1 5 0.0957242 0.01 # COMP
  1997 1 5 0.100787 0.01 # COMP
- 1998 1 5 0.0984075 0.01 # COMP
  1999 1 5 0.104661 0.01 # COMP
  2000 1 5 0.109585 0.01 # COMP
  2001 1 5 0.111017 0.01 # COMP

@@ -1,8 +1,8 @@
 #V3.24AC
 SS-V3.24AC-safe;_04/13/2017;_Stock_Synthesis_by_Richard_Methot_(NOAA)_using_ADMB_11.2x64
 
-StartTime: Fri Jul 19 11:35:10 2019
-EndTime: Fri Jul 19 11:37:42 2019
+StartTime: Wed Jul 24 10:26:42 2019
+EndTime: Wed Jul 24 10:29:14 2019
 This run took: 0 hours, 2 minutes, 32 seconds.
 Data_File: vermilion.dat
 Control_File: vermilion.ctl
@@ -3254,7 +3254,7 @@ Discard_errtype_options
 DISCARD_OUTPUT 
 Fleet Name Yr Seas Yr.S Obs Exp Std_in Std_use Dev Like Like+log(s) SuprPer Use Obs_cat Exp_cat F_rate
 4 SMP_BYC 1972 1 1972.5 3367.5 3640.37  0.1 0.1 -0.0779151 0.303538 -1.99905 beg_suprper 1 0.001 0 0.220337
-4 SMP_BYC 1973 1 1973.5 13620 3640.37  0.5 1.82732e-317  _  _  _   in_suprper -1 0.001 0 0.223794
+4 SMP_BYC 1973 1 1973.5 13620 3640.37  0.5 6.29289e-318  _  _  _   in_suprper -1 0.001 0 0.223794
 4 SMP_BYC 1974 1 1974.5 3817 3640.37  0.5 0  _  _  _   in_suprper -1 0.001 0 0.223047
 4 SMP_BYC 1975 1 1975.5 3482 3640.37  0.5 0  _  _  _   in_suprper -1 0.001 0 0.224679
 4 SMP_BYC 1976 1 1976.5 1268 3640.37  0.5 0  _  _  _   in_suprper -1 0.001 0 0.233277

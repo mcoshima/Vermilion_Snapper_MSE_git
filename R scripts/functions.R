@@ -293,7 +293,12 @@ dat.update <- function(year, dat., agecomp.list, I, .datcatch, comp.I, dir., wri
   
  #Add CPUE 
 
- comp.index <- data.frame("obs" = as.numeric(na.omit(comp.I[rows])))
+ comp.index <- comp.I %>% 
+   filter(Year > yr - 5 & Year <= yr) %>% 
+   select(-Year) %>% 
+   rename("obs" = RS_relative) %>% 
+   as.data.frame()
+ 
  
   new.index <-  I %>% 
     as.data.frame() %>%  
@@ -366,7 +371,7 @@ dat.update <- function(year, dat., agecomp.list, I, .datcatch, comp.I, dir., wri
   dat.$endyr <- yr
   
   if(write == T){
-  SS_writedat(dat., outfile = paste0(dir.,"/VS.dat"), version = "3.24", overwrite = F)
+  SS_writedat(dat., outfile = paste0(dir.,"/VS.dat"), version = "3.24", overwrite = T)
     
   ct. <- readLines(paste0(dir.,"/VS.ctl"),-1)
   ct.[83] <- paste(yr, "# last year of main recr_devs; forecast devs start in following year", sep = " ")

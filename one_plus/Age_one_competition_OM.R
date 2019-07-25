@@ -9,11 +9,13 @@ library(psych) #for geometric mean
 library(gtools)
 library(ggplot2)
 library(stringr)
+library(RPushbullet)
+
 set.seed(50)
 
-report. <- SS_output(dir = here("one_plus"), forefile = "Forecast-report.sso", covar = F)
+rep. <- SS_output(dir = here("one_plus"), forefile = "Forecast-report.sso", covar = F)
 
-rep. <- SS_output(dir = here("Vermilion_Snapper_14"), forefile = "Forecast-report.sso", covar = F)
+report. <- SS_output(dir = here("Vermilion_Snapper_14"), forefile = "Forecast-report.sso", covar = F)
 mc.out <- SS_output(dir = here("one_plus"),dir.mcmc="mcmc", forecast = F)
 
 source("./R Scripts/functions.R")
@@ -88,7 +90,7 @@ f.list <- list()
 
 #projected competition index
 proj.index <- read.csv(here("one_plus", "Projected_index_rs_2032.csv"))
-comp.I <- proj.index$RS_relative
+comp.I <- proj.index[,c(1,7)]
 future.comp.ind <- proj.index$RS_relative[which(proj.index$Year > 2014)]
 future.rs.bio <- proj.index %>% filter(Year > 2014) %>% select(Biomass)
 
@@ -146,6 +148,7 @@ ALK <- as.data.frame(report.$ALK)
 ALK <- ALK[,c(1:15)]
 ALK <- apply(ALK, 2, rev)
 trans.prob <- c(.011, 4, 2)
+ageerror <- rep.$age_error_sd[-1,2]
 
 ##Numbers at length matrix
 cvdist <- rnorm(1000, 0, .2535) #create a sample of error for each length with mean = CV of growth .2535 and sd .1
@@ -164,7 +167,7 @@ b.age <- matrix(data = NA, nrow = 3, ncol = Nages)
 b.len <- matrix(data = NA, nrow = 2, ncol = 12)
 Index.list <- list()
 I <- matrix(data = NA, nrow = Nyrs, ncol = 6)
-q <- as.numeric(report.$index_variance_tuning_check$Q[c(7,8,3,4,11,12)])
+q <- as.numeric(report.$index_variance_tuning_check$Q[c(8,9,3,4,11,12)])
 dat.$CPUE %>% group_by(index) %>% summarise(mean = mean(se_log))
 SE <- c(0.369, 0.138, 0.200, 0.2, 0.200, 0.200)
 se_log <- matrix(data = NA, nrow = Nyrs, ncol = Nfleet)
@@ -188,10 +191,10 @@ dir. <- here("one_plus")
 
 ## Reference points
 rp.list <- list()
-rp.list$f_spr <- report.$derived_quants %>% filter(str_detect(Label, "Fstd_SPRtgt")) %>% select(Value) %>% pull()
-rp.list$f_msy <- report.$derived_quants %>% filter(str_detect(Label, "Fstd_MSY")) %>% select(Value) %>% pull()
+rp.list$f_spr <- rep.$derived_quants %>% filter(str_detect(Label, "Fstd_SPRtgt")) %>% select(Value) %>% pull()
+rp.list$f_msy <- rep.$derived_quants %>% filter(str_detect(Label, "Fstd_MSY")) %>% select(Value) %>% pull()
 rp.list$f_oy <- .75*rp.list$f_msy
-
+ref.points <- list()
 
 #### Start the loop ###############################################
 
@@ -211,10 +214,10 @@ system.time(for(year in Year.vec[1:5]){
     f.by.fleet[1] <- rlnorm(1, F_1_mu, 0.01)
     f.by.fleet[2] <- rlnorm(1, F_2_mu, 0.01)
     f.by.fleet[3] <- rlnorm(1, F_3_mu, 0.01)
-    f.by.fleet[4] <- sample(e,1)/q[4]
+    f.by.fleet[4] <- rnorm(1, 0.07356127, .05)
   }
   # if(F.scenario == 3){
-  #   
+  #   sample(e,1)/q[4]
   # }
   
   f.list[[year]] <- f.by.fleet
@@ -236,7 +239,7 @@ system.time(for(year in Year.vec[1:5]){
   
   ### simulate age comps for fleets 1 - 3
    if(sum(catch.fleet.year[year,c(1:3)]) > 0.001){
-     agecomp.list[[year]] <- simAgecomp(catch.by.fleet, year)
+     agecomp.list[[year]] <- simAgecomp(catch.by.fleet, year, ageerror)
    }
   
   ## Numbers in mid-year
@@ -284,24 +287,64 @@ system.time(for(year in Year.vec[1:5]){
   }
   
   #### Add data into .dat file and run assessment ####
-  # if(year %% 10 == 0){
+   if(year %% 10 == 0){
 
      dat. <- SS_readdat(paste0(dir.,"/VS.dat"))
    
      dat.update(year, dat., agecomp.list, I, .datcatch, comp.I, dir., write = T)
+    
+     shell(paste("cd/d", dir., "&& ss3", sep = " "))
+    
+     rep.file <- SS_output(dir.)
      
-    shell(paste("cd/d", dir., "&& ss3", sep = " "))
-    #     
-    # 
-    # ## Harvest control rules
-    report. <- SS_output(dir = dir., forecast = F)
-        
-    # #management level is SPR = 30% to define MSST and MFMT
-    spr.[year] <- report.$last_years_SPR
+     SSB0 <- rep.file$timeseries %>% 
+       slice(1) %>% 
+       select(SpawnBio) %>% 
+       pull()
+     
+     SSB_equ <- rep.file$derived_quants %>%
+       filter(str_detect(Label, "SSB")) %>%
+       slice(tail(row_number(), 10)) %>%
+       summarise(mean(Value)) %>% 
+       pull()
+     
+     spr <- round(SSB_equ/SSB0, 2)
+     
+     if(spr >=.299 & spr <=.31){
+       opt = "A"
+     }else{
+       opt = "B"
+     }
+    print(opt)
     
-    #create    
+     if(opt == "A"){
+       #TAC()
+     }else{
+       
+       find_spr(dir.)
+       
+       rep.file <- SS_output(dir = dir.)
+       
+       ref.points[[year]] <- getRP(rep.file)
+       
+       #check stock status compared to ref points.
+       f_status <- ref.points[[year]]$F_ratio
+       
+       bio_status <- ref.points[[year]]$status_cur
+       
+       OFL <- rep.file$derived_quants %>% 
+         filter(str_detect(Label, "OFLCatch_")) %>% 
+         slice(tail(row_number(), 10)) %>%
+         summarise(mean(Value)) %>% 
+         pull()
+       
+       OY <- OFL*.75
+       
+       
+     } 
+      
     
- #} 
+ } 
   
   #end of OM loop 
 } 
