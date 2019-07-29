@@ -86,8 +86,9 @@ find_spr <- function(dir.) {
 
 
 #Get reference point values after assessment run
-getRP <- function(rep.){
+getRP <- function(rep., dat.list, year){
   
+  year.seq <- dat.list$year_seq
   rp.df <- as.data.frame(matrix(data = NA, nrow = 1, ncol = 10))
   colnames(rp.df) <- c("SSB0", 
                       "F_cur", 

@@ -19,7 +19,7 @@
 2 # Control rule method (1=catch=f(SSB) west coast; 2=F=f(SSB) ) 
 0.01 # Control rule Biomass level for constant F (as frac of Bzero, e.g. 0.40); (Must be > the no F level below) 
 0.001 # Control rule Biomass level for no F (as frac of Bzero, e.g. 0.10) 
-1 # Control rule target as fraction of Flimit (e.g. 0.75) 
+0.75 # Control rule target as fraction of Flimit (e.g. 0.75) 
 2 #_N forecast loops (1=OFL only; 2=ABC; 3=get F from forecast ABC catch with allocations applied)
 3 #_First forecast loop with stochastic recruitment
 0 #_Forecast loop control #3 (reserved for future bells&whistles) 

@@ -49,17 +49,24 @@ rand_vect_cont <- function(N, M, sd = 1) {
   vec / sum(vec) * M
 }
 
+#Deprecated
+# age.to.length <- function(N,age,year,cvdist){
+#   
+#   age <- dat.list$Nages
+#   
+#   len.vec <- c()
+#   for(n in 1:round(N[year,age+2],0)){ 
+#     len.vec[n] <- linf*(1-exp(-k*(age-t0)))*exp(sample(cvdist, 1))
+#   }
+#   return(len.vec)
+# }
 
-age.to.length <- function(N,age,year,cvdist){
-  len.vec <- c()
-  for(n in 1:round(N[year,age+2],0)){ 
-    len.vec[n] <- linf*(1-exp(-k*(age-t0)))*exp(sample(cvdist, 1))
-  }
-  return(len.vec)
-}
 
-
-zatage <- function(M,sel,f.by.fleet){
+zatage <- function(dat.list,year,f.by.fleet){
+  
+  M <- dat.list$M
+  asel <- dat.list$age_selectivity
+  Nages <- dat.list$Nages
   f <- matrix(NA, nrow = length(f.by.fleet), ncol = Nages)
     for(fleet in 1:4){
   
@@ -70,7 +77,11 @@ zatage <- function(M,sel,f.by.fleet){
   Z
 }
 
-catch.in.biomass <- function(sel,N,year,z,f.by.fleet){
+catch.in.biomass <- function(dat.list,N,year,z,f.by.fleet){
+  
+  sel <- dat.list$age_selectivity
+  wtatage <- dat.list$wtatage
+  catch <- matrix(data = NA, nrow = 4, ncol = 15)
   for(fleet in 1:2){
     for(age in 1:15){
       
@@ -81,7 +92,11 @@ catch.in.biomass <- function(sel,N,year,z,f.by.fleet){
   catch
 }
 
-catch.in.number <- function(fsel,N,year,z,f.by.fleet,se){
+catch.in.number <- function(dat.list,N,year,z,f.by.fleet){
+  
+  sel <- dat.list$age_selectivity
+  se <- dat.list$catch_se
+  catch <- matrix(data = NA, nrow = 4, ncol = 15)
   for(fleet in 1:4){
       for(age in 1:15){
      
@@ -93,12 +108,13 @@ catch.in.number <- function(fsel,N,year,z,f.by.fleet,se){
   catch
   }
  
-num_to_bio <- function(df, wtatage, Natage = T, age0 = F){
+num_to_bio <- function(df, dat.list, Natage = T, age0 = F){
   #converts numbers-at-age to biomass-at-age or vice versa.
   #inputs need to be a dataframe, not a matrix
   #if Natage= T, means that you are giving it the N-at-age df to convert to biomass
   #if Natage = F, means that you are giving it the B-at-age df to convert to numbers
   #age0 = F means you don't want to include age0 in calculations, if T you do 
+  wtatage <- dat.list$wtatage
   
   if(Natage == T){
     Batage <- matrix(NA, nrow= nrow(df), ncol = ncol(df))
@@ -142,10 +158,15 @@ num_to_bio <- function(df, wtatage, Natage = T, age0 = F){
 
 
 
-simBatage <- function(N, Flt, asel, year){
+simBatage <- function(N, dat.list, year){
   #Flt is the max = 3
   #asel is the age selectivity matrix
-  
+
+  wtatage <- dat.list$wtatage
+  asel <- dat.list$age_selectivity
+  Nages <- dat.list$Nages
+  Flt <- dat.list$N_fishfleet
+  b.age <- matrix(data = NA, nrow = 3, ncol = 15)
   for(fleet in 1:Flt){ 
     for(age in 1:Nages){#for fishery dependent surveys
       if(fleet < 3){
@@ -163,8 +184,12 @@ simBatage <- function(N, Flt, asel, year){
   b.age
 }
 
-simBatlen <- function(Nlen, Flt, lsel, year){
+simBatlen <- function(Nlen, dat.list, year){
   #Flt is the number of fishery-independent surveys
+  
+  Flt <- dat.list$N_survey
+  lsel <- dat.list$length_selectivity
+  b.len <- matrix(NA, nrow = 2, ncol =12)
   for(fleet in 1:Flt){ 
     for(len in 1:ncol(Nlen)){
     if(fleet == 1){
@@ -179,7 +204,9 @@ simBatlen <- function(Nlen, Flt, lsel, year){
 
 
 
-simAgecomp <-  function(catch.by.fleet, year, ageerror){
+simAgecomp <-  function(catch.by.fleet, year, dat.list){
+  year.seq <- dat.list$year_seq
+  ageerror <- dat.list$ageerror
   agecompinfo.list<- list(
     Yr = rep(floor(year.seq[year]),3),
     Seas = rep(1,3),
@@ -208,18 +235,20 @@ simAgecomp <-  function(catch.by.fleet, year, ageerror){
 
 
 
-simIndex <- function(q,b,se,year){
+simIndex <- function(dat.list,b,year){
   
+  q <- dat.list$q
+  se <- dat.list$CPUE_se
   for(fleet in 1:6){
     
-    I[year, fleet] <- rlnorm(1,log(q[fleet]*b[fleet]),as.numeric(CPUE.se[fleet,2]^2))
+    I[year, fleet] <- rlnorm(1,log(q[fleet]*b[fleet]),as.numeric(se[fleet,2]^2))
 
   }
  return(I[year,])
 }
 
 
-simCompetition <- function(r, beta, N, sigma, K, Nj){
+simCompetition <- function(r, beta, N, sigma, K, Nj, year){
   
   Ni <- sum(N[year,-1])
   exp.N <- r*Ni*(1-(K - Ni - beta*Nj)/K)
@@ -337,21 +366,6 @@ dat.update <- function(year, dat., agecomp.list, I, .datcatch, comp.I, dir., wri
     as.data.frame()
   
   dat.$N_cpue <- nrow(dat.$CPUE)
-  
-  ##Input RS biomass/K as another effort index
-  
-  #Add length comps
-  
-  # sub.lcomps <- compact(len.comps.list[rows])
-  # new.lencomp <- do.call(rbind, sub.lcomps)
-  # lencomp <- split.recombine(dat.$lencomp, new.lencomp, 3, 2)
-  # 
-  # dat.$lencomp <- lencomp %>% 
-  #   group_by(FltSvy) %>% 
-  #   distinct(Yr, .keep_all = T) %>% 
-  #   as.data.frame()
-  # 
-  # dat.$N_lencomp <- nrow(dat.$lencomp)
   
   #Add age comps
   if(!is_empty(agecomp.list)){

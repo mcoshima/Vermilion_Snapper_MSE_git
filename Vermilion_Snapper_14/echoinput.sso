@@ -1,5 +1,5 @@
 SS-V3.24AC-safe;_04/13/2017;_Stock_Synthesis_by_Richard_Methot_(NOAA)_using_ADMB_11.2x64
-Wed Jul 24 10:26:42 2019
+Fri Jul 26 10:44:11 2019
 
 vermilion.dat  datfilename
 vermilion.ctl  ctlfilename
@@ -623,7 +623,7 @@ Forecast selected; next 20 input values will be read as a block then parsed and 
 2  HarvestPolicy 
 0.01  H4010_top 
 0.001  H4010_bot 
-1  H4010_scale 
+0.75  H4010_scale 
 2 N forecast loops (1-3) (recommend 3)
 3 First forecast loop with stochastic recruitment (recommend 3)
 0 Forecast loop control #3 (reserved for future use) 

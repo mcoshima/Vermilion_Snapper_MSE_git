@@ -16,6 +16,7 @@ set.seed(50)
 rep. <- SS_output(dir = here("one_plus"), forefile = "Forecast-report.sso", covar = F)
 
 report. <- SS_output(dir = here("Vermilion_Snapper_14"), forefile = "Forecast-report.sso", covar = F)
+report.oy <- SS_output(dir = here("Vermilion_Snapper_14"), forefile = "Forecast-report.sso", covar = F)
 mc.out <- SS_output(dir = here("one_plus"),dir.mcmc="mcmc", forecast = F)
 
 source("./R Scripts/functions.R")
@@ -187,6 +188,19 @@ b.list <- list()
 hist.catch.list <- list()
 
 
+dat.list <- list(Nages = Nages,
+                 age_selectivity = asel,
+                 length_selectivity = lsel,
+                 M = M,
+                 CPUE_se = CPUE.se,
+                 catch_se = catch.se,
+                 wtatage = wtatage,
+                 N_fishfleet = 3, 
+                 N_survey = 2,
+                 ageerror = ageerror,
+                 q = q,
+                 year_seq = seq(2014, 2064, by = 0.5))
+
 dir. <- here("one_plus")
 
 ## Reference points
@@ -222,14 +236,14 @@ system.time(for(year in Year.vec[1:5]){
   
   f.list[[year]] <- f.by.fleet
   
-  z <- zatage(M,asel,f.by.fleet)
+  z <- zatage(dat.list,f.by.fleet)
   
   
   #Catches
   ##Catch removed from year.0
-  catch.by.fleet[,] <- catch.in.number(sel,N, year,z,f.by.fleet,catch.se)
+  catch.by.fleet[,] <- catch.in.number(dat.list,N, year,z,f.by.fleet)
   
-  .datcatch[year, c(1:2)] <- apply(catch.in.biomass(sel,N, year,z,f.by.fleet)[c(1:2),], 1, sum)
+  .datcatch[year, c(1:2)] <- apply(catch.in.biomass(dat.list,N, year,z,f.by.fleet)[c(1:2),], 1, sum)
   .datcatch[year, c(3:4)] <- apply(catch.by.fleet[c(3:4),], 1, sum)
   
   catch.by.year[year, ] <- apply(catch.by.fleet, 2, sum)  #catch from 2014.0 N
@@ -239,7 +253,7 @@ system.time(for(year in Year.vec[1:5]){
   
   ### simulate age comps for fleets 1 - 3
    if(sum(catch.fleet.year[year,c(1:3)]) > 0.001){
-     agecomp.list[[year]] <- simAgecomp(catch.by.fleet, year, ageerror)
+     agecomp.list[[year]] <- simAgecomp(catch.by.fleet, year, dat.list)
    }
   
   ## Numbers in mid-year
@@ -263,13 +277,13 @@ system.time(for(year in Year.vec[1:5]){
   
   ## Calculate biomass avaiable for surveys
   
-  b.age <- simBatage(N,3,asel,year)
-  b.len <- simBatlen(Nlen,2,lsel,year)
+  b.age <- simBatage(N,dat.list,year)
+  b.len <- simBatlen(Nlen,dat.list,year)
   byc.bio <- f.by.fleet[4]
   
   b <- c(apply(b.age, 1, sum), byc.bio, apply(b.len, 1, sum))
   b.list[[year]] <- sum(N[year,-1]*wtatage[1,])
-  I[year,] <- simIndex(q,b,CPUE.se,year) 
+  I[year,] <- simIndex(dat.list,b,year) 
   
   
   # N-at-age for the next year     
@@ -325,7 +339,7 @@ system.time(for(year in Year.vec[1:5]){
        
        rep.file <- SS_output(dir = dir.)
        
-       ref.points[[year]] <- getRP(rep.file)
+       ref.points[[year]] <- getRP(rep.file, dat.list, year)
        
        #check stock status compared to ref points.
        f_status <- ref.points[[year]]$F_ratio

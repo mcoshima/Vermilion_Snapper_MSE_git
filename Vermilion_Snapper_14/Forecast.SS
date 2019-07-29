@@ -15,7 +15,7 @@
 2 # Control rule method (1=catch=f(SSB) west coast; 2=F=f(SSB) )   # leave alone 
 0.01 # Control rule Biomass level for constant F (as frac of Bzero, e.g. 0.40) - leave this alone, this is west coast thing
 0.001 # Control rule Biomass level for no F (as frac of Bzero, e.g. 0.10)   - leave this alone, this is west coast thing
-1.0 # Control rule target as fraction of Flimit (e.g. 0.75)   # this is to do the F at OY - i.e. the 75 percent of Fmsy
+.75 # Control rule target as fraction of Flimit (e.g. 0.75)   # this is to do the F at OY - i.e. the 75 percent of Fmsy
 2 #_N forecast loops (1-3) (fixed at 3 for now)   # leave alone 
 3 #_First forecast loop with stochastic recruitment        # leave alone 
 0 #_Forecast loop control #3 (reserved for future bells&whistles)     # leave alone 
