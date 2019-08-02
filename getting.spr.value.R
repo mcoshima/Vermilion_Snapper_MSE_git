@@ -101,9 +101,9 @@ getRP <- function(rep., dat.list, year){
                       "bratio",
                       'status_cur')
   
-  rp.df$SSB0 <- rep.$timeseries %>% 
-    slice(1) %>% 
-    select(SpawnBio) %>% 
+  rp.df$SSB0 <- rep.$derived_quants %>% 
+    filter(str_detect(Label, "SSB_Virgin")) %>%
+    select(Value) %>% 
     pull()
   
   #End year F
@@ -129,13 +129,12 @@ getRP <- function(rep., dat.list, year){
   rp.df$F_ratio <- rp.df$F_cur/rp.df$Fspr30
   
   rp.df$SSB_equ <- rep.$derived_quants %>%
-    filter(str_detect(Label, "SSB")) %>%
-    slice(tail(row_number(), 10)) %>%
-    summarise(mean(Value)) %>% 
+    filter(str_detect(Label, "SSB_Btgt")) %>%
+    select(Value) %>%
     pull()
   
   rp.df$SSB_cur <-  rep.$derived_quants %>%
-    filter(str_detect(Label, "SSB_2018")) %>% 
+    filter(str_detect(Label, paste0("SSB_", floor(year.seq[year])))) %>% 
     pull(Value)
   
   MSST <- (1-.25)*rp.df$SSB_equ

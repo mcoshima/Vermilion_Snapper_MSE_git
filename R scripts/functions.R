@@ -258,9 +258,9 @@ simCompetition <- function(r, beta, N, sigma, K, Nj, year){
 
 
 
-dat.update <- function(year, dat., agecomp.list, I, .datcatch, comp.I, dir., write = T){
+dat.update <- function(year, dat.list, dat., agecomp.list, I, .datcatch, comp.I, dir., write = T){
   
-  
+  year.seq <- dat.list$year_seq
   yr <- floor(year.seq[year])
   rows <- seq(year-9,year) #rows from the past 4 years
   
