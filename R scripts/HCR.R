@@ -43,3 +43,18 @@ HCR_catch <- function(rp = ref.points, HCR_strategy = "HCR_strategy", wtatage = 
 
 
 HCR_catch(ref.points, "40_10", wtatage, N, year, z)
+
+
+#Empirical rule
+##average ratio of current IOAs to previous years times the OFL from SS forecast
+newOFL <- mean(I[year,]/I[year-2,])*OFL
+
+com_catch <- newOFL/2
+
+
+dat.$catch
+
+ggplot() + 
+  geom_line(data = dat.$catch, aes(x = year, y = CM_E), color = "#F8766D", size = 1.5) +
+  geom_line(data = dat.$catch, aes(x = year, y = CM_W), color = "#00BFC4", size = 1.5) 
+

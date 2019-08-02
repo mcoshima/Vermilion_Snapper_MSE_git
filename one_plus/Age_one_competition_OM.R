@@ -1,15 +1,16 @@
 ##This code is the framework for the MSE with VS competition index
 
+library(moMSE)
 library(r4ss)
 library(dplyr)
-library(purrr)
-library(reshape2)
+# library(purrr)
+# library(reshape2)
 library(here)
+# library(gtools)
+# library(ggplot2)
+# library(stringr)
+# library(RPushbullet)
 library(psych) #for geometric mean
-library(gtools)
-library(ggplot2)
-library(stringr)
-library(RPushbullet)
 
 set.seed(50)
 
@@ -230,9 +231,7 @@ system.time(for(year in Year.vec[1:5]){
     f.by.fleet[3] <- rlnorm(1, F_3_mu, 0.01)
     f.by.fleet[4] <- rnorm(1, 0.07356127, .05)
   }
-  # if(F.scenario == 3){
-  #   sample(e,1)/q[4]
-  # }
+ 
   
   f.list[[year]] <- f.by.fleet
   
