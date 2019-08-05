@@ -3,14 +3,14 @@
 library(moMSE)
 library(r4ss)
 library(dplyr)
+library(here)
+library(ggplot2)
+library(stringr)
+library(RPushbullet)
+library(psych) #for geometric mean
 # library(purrr)
 # library(reshape2)
-library(here)
 # library(gtools)
-# library(ggplot2)
-# library(stringr)
-# library(RPushbullet)
-library(psych) #for geometric mean
 
 set.seed(50)
 
@@ -20,7 +20,7 @@ report. <- SS_output(dir = here("Vermilion_Snapper_14"), forefile = "Forecast-re
 report.oy <- SS_output(dir = here("Vermilion_Snapper_14"), forefile = "Forecast-report.sso", covar = F)
 mc.out <- SS_output(dir = here("one_plus"),dir.mcmc="mcmc", forecast = F)
 
-source("./R Scripts/functions.R")
+#source("./R Scripts/functions.R")
 
 #Data and parameter setup
 Nyrs <- 100 #Double the number of projection years
@@ -150,7 +150,7 @@ ALK <- as.data.frame(report.$ALK)
 ALK <- ALK[,c(1:15)]
 ALK <- apply(ALK, 2, rev)
 trans.prob <- c(.011, 4, 2)
-ageerror <- rep.$age_error_sd[-1,2]
+ageerror <- report.$age_error_sd[-1,2]
 
 ##Numbers at length matrix
 cvdist <- rnorm(1000, 0, .2535) #create a sample of error for each length with mean = CV of growth .2535 and sd .1
@@ -213,25 +213,27 @@ ref.points <- list()
 
 #### Start the loop ###############################################
 
+## Initial F
 F.scenario = 2
+
+if(F.scenario == 1) {
+  f.by.fleet[1:3] <- 0
+  f.by.fleet[4] <- rlnorm(1, mean = F_4_med, sd = F_4_sd)
+}
+
+if(F.scenario == 2){
+  f.by.fleet[1] <- rlnorm(1, F_1_mu, 0.01)
+  f.by.fleet[2] <- rlnorm(1, F_2_mu, 0.01)
+  f.by.fleet[3] <- rlnorm(1, F_3_mu, 0.01)
+  f.by.fleet[4] <- rnorm(1, 0.07356127, .05)
+}
 
 system.time(for(year in Year.vec[1:5]){
   
   ##SSB caluclated at beginning of each year
   ssb_tot[year-1] <- sum(N[year-1,-1]*fecund)
   
-  if(F.scenario == 1) {
-    f.by.fleet[1:3] <- 0
-    f.by.fleet[4] <- rlnorm(1, mean = F_4_med, sd = F_4_sd)
-  }
-  
-  if(F.scenario == 2){
-    f.by.fleet[1] <- rlnorm(1, F_1_mu, 0.01)
-    f.by.fleet[2] <- rlnorm(1, F_2_mu, 0.01)
-    f.by.fleet[3] <- rlnorm(1, F_3_mu, 0.01)
-    f.by.fleet[4] <- rnorm(1, 0.07356127, .05)
-  }
- 
+
   
   f.list[[year]] <- f.by.fleet
   
@@ -345,7 +347,7 @@ system.time(for(year in Year.vec[1:5]){
        
        bio_status <- ref.points[[year]]$status_cur
        
-       OFL <- rep.file$derived_quants %>% 
+       OFL <- report.$derived_quants %>% 
          filter(str_detect(Label, "OFLCatch_")) %>% 
          slice(tail(row_number(), 10)) %>%
          summarise(mean(Value)) %>% 

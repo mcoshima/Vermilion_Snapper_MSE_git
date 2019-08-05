@@ -8,11 +8,11 @@ library(r4ss)
 
 year.seq <- seq(2014, 2014+50, by = .5)
 
-split.recombine <- function(df1, df2, ind, N){
+splt.recombine <- function(df1, df2, ind, N){
   
-  split.dat <- df1 %>% split(.[,ind]) 
+  split.dat <- df1 %>% group_by(ind) %>% group_split() 
   
-  split.new <- df2 %>% split(.[,ind])
+  split.new <- df2 %>% group_by(ind) %>% group_split() 
   
   for(i in 1:N){
     
@@ -356,7 +356,7 @@ dat.update <- function(year, dat.list, dat., agecomp.list, I, .datcatch, comp.I,
     rename(index = variable,
            obs = value)
   
-  new.cpue <- split.recombine(dat.$CPUE, new.index, 3, N = length(unique(new.index$index)))
+  new.cpue <- splt.recombine(dat.$CPUE, new.index, index, N = length(unique(new.index$index)))
   
   dat.$CPUE <- new.cpue[which(new.cpue$obs > 0),]
   
@@ -372,7 +372,7 @@ dat.update <- function(year, dat.list, dat., agecomp.list, I, .datcatch, comp.I,
   
     sub.acomps <- compact(agecomp.list[rows])
     new.acomp <- do.call(rbind, sub.acomps)
-    agecomp <- split.recombine(dat.$agecomp, new.acomp, 3, N=3)
+    agecomp <- splt.recombine(dat.$agecomp, new.acomp, 3, N=3)
     
     dat.$agecomp <- agecomp %>% 
       group_by(FltSvy) %>% 
