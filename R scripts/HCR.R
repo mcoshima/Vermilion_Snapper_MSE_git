@@ -54,7 +54,3 @@ com_catch <- newOFL/2
 
 dat.$catch
 
-ggplot() + 
-  geom_line(data = dat.$catch, aes(x = year, y = CM_E), color = "#F8766D", size = 1.5) +
-  geom_line(data = dat.$catch, aes(x = year, y = CM_W), color = "#00BFC4", size = 1.5) +theme_pub()
-

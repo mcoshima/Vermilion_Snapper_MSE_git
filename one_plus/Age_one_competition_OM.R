@@ -1,5 +1,7 @@
 ##This code is the framework for the MSE with VS competition index
 
+# library(devtools)
+# devtools::install_github("mcoshima/moMSE")
 library(moMSE)
 library(r4ss)
 library(dplyr)
@@ -95,6 +97,9 @@ proj.index <- read.csv(here("one_plus", "Projected_index_rs_2032.csv"))
 comp.I <- proj.index[,c(1,7)]
 future.comp.ind <- proj.index$RS_relative[which(proj.index$Year > 2014)]
 future.rs.bio <- proj.index %>% filter(Year > 2014) %>% select(Biomass)
+
+mod.lm <- lm(future.comp.ind[-c(1:2),7] ~ future.comp.ind[-c(1:2),1])
+lm_pred_index <- yrs*mod.lm$coefficients[[2]] + mod.lm$coefficients[[1]]
 
 
 #Competition variables

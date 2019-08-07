@@ -8,6 +8,11 @@ library(r4ss)
 
 year.seq <- seq(2014, 2014+50, by = .5)
 
+nord_cols <- c("#4C566A", "#8FBCBB", "#88C0D0", "#B48EAD", "#A3BE8C", "#EBCB8B", "#D08770", "#BF616A")
+
+
+
+
 splt.recombine <- function(df1, df2, ind, N){
   
   split.dat <- df1 %>% group_by(ind) %>% group_split() 
