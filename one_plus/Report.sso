@@ -1,9 +1,9 @@
 #V3.24AC
 SS-V3.24AC-safe;_04/13/2017;_Stock_Synthesis_by_Richard_Methot_(NOAA)_using_ADMB_11.2x64
 
-StartTime: Fri Aug 02 16:59:01 2019
-EndTime: Fri Aug 02 17:03:15 2019
-This run took: 0 hours, 4 minutes, 14 seconds.
+StartTime: Tue Aug 20 14:16:46 2019
+EndTime: Tue Aug 20 14:21:02 2019
+This run took: 0 hours, 4 minutes, 16 seconds.
 Data_File: VS.dat
 Control_File: VS.ctl
 
@@ -645,7 +645,7 @@ Num Label Value Active_Cnt  Phase Min Max Init  Status  Parm_StDev PR_type Prior
 520 AgeSel_4P_4_SMP_BYC 2.4096 _ -4 0.5 1e+007 2.4096 NA _  No_prior 
 521 AgeSel_4P_5_SMP_BYC 0 _ -4 -1 1 0 NA _  No_prior 
 522 AgeSel_4P_6_SMP_BYC 0 _ -4 -1 1 0 NA _  No_prior 
-523 AgeSel_5P_1_COMP 0.1 _ -1 0.1 14 0.1 NA _  Normal  0.1 99 0  0.1 0.1 0.1 0.239 1.49 2.88 4.27 5.66 7.05 8.44 9.83 11.22 12.61 13.861  0 0 0 9.85665e-007 9.85665e-005 0.000394266 0.000887098 0.00157706 0.00246416 0.00354839 0.00482976 0.00630825 0.00798388 0.0096605
+523 AgeSel_5P_1_COMP 0.1 _ -1 1 14 0.1 NA _  Normal  0.1 99 0  0.1 1 0.1 1.13 2.3 3.6 4.9 6.2 7.5 8.8 10.1 11.4 12.7 13.87  0 4.13223e-005 0 5.4122e-005 0.000246914 0.000624936 0.00117539 0.00189828 0.00279359 0.00386134 0.00510152 0.00651413 0.00809917 0.00967314
 524 AgeSel_5P_2_COMP 14 _ -1 14 14 14 NA _  Normal  14 99 0  14 14 14 14 14 14 14 14 14 14 14 14 14 14  0 0 0 0 0 0 0 0 0 0 0 0 0 0
 525 AgeSel_11P_1_VIDEO 0.1 _ -1 0 15 0.1 NA _  No_prior 
 526 AgeSel_11P_2_VIDEO 14 _ -1 0 15 14 NA _  No_prior 
@@ -3520,7 +3520,7 @@ Discard_errtype_options
 DISCARD_OUTPUT 
 Fleet Name Yr Seas Yr.S Obs Exp Std_in Std_use Dev Like Like+log(s) SuprPer Use Obs_cat Exp_cat F_rate
 4 SMP_BYC 1972 1 1972.5 3367.5 3391.12  0.1 0.1 -0.00698917 0.00244243 -2.30014 beg_suprper 1 0.001 0 0.13311
-4 SMP_BYC 1973 1 1973.5 13620 3391.12  0.5 1.10885e-317  _  _  _   in_suprper -1 0.001 0 0.134066
+4 SMP_BYC 1973 1 1973.5 13620 3391.12  0.5 1.52975e-317  _  _  _   in_suprper -1 0.001 0 0.134066
 4 SMP_BYC 1974 1 1974.5 3817 3391.12  0.5 0  _  _  _   in_suprper -1 0.001 0 0.133424
 4 SMP_BYC 1975 1 1975.5 3482 3391.12  0.5 0  _  _  _   in_suprper -1 0.001 0 0.134211
 4 SMP_BYC 1976 1 1976.5 1268 3391.12  0.5 0  _  _  _   in_suprper -1 0.001 0 0.13915

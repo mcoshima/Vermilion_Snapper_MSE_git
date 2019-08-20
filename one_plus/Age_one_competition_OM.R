@@ -16,9 +16,9 @@ library(psych) #for geometric mean
 
 set.seed(50)
 
-rep. <- SS_output(dir = here("one_plus"), forefile = "Forecast-report.sso", covar = F)
+report. <- SS_output(dir = here("one_plus", "initial_pop"))
 
-report. <- SS_output(dir = here("Vermilion_Snapper_14"), forefile = "Forecast-report.sso", covar = F)
+rep. <- SS_output(dir = here("Vermilion_Snapper_14"), forefile = "Forecast-report.sso", covar = F)
 report.oy <- SS_output(dir = here("Vermilion_Snapper_14"), forefile = "Forecast-report.sso", covar = F)
 mc.out <- SS_output(dir = here("one_plus"),dir.mcmc="mcmc", forecast = F)
 
@@ -78,9 +78,9 @@ F_2_sd <- sd(log(F_2))
 F_3 <- hist.F %>% select("F:_3") %>% pull() 
 F_3_mu <- mean(log(F_3))
 F_3_sd <- sd(log(F_3))
-# E_4 <- dat.$CPUE %>% filter(index == 4) %>% select(obs) %>% pull() 
-# E_4_mu <- mean(log(E_4))
-# E_4_sd <- .2
+F_4 <- report.$catch %>% filter(Yr > 2009 & Yr < 2015) %>% filter(Fleet == 4) %>% select(F)
+F_4_mu <- mean(log(F_4[,1]))
+F_4_sd <- .1
 # e.samp <- rlnorm(200, E_4_mu, E_4_sd)
 e <- runif(100, 0.1946, 1.9399)
 
@@ -88,18 +88,16 @@ e <- runif(100, 0.1946, 1.9399)
   
 harvest.rate <- c()
 
-catch.se <- c(report.$catch_error[1:3],.01)
+catch.se <- c(report.$catch_error[1:3],.2)
 
 f.list <- list()
 
 #projected competition index
-proj.index <- read.csv(here("one_plus", "Projected_index_rs_2032.csv"))
-comp.I <- proj.index[,c(1,7)]
-future.comp.ind <- proj.index$RS_relative[which(proj.index$Year > 2014)]
-future.rs.bio <- proj.index %>% filter(Year > 2014) %>% select(Biomass)
-
-mod.lm <- lm(future.comp.ind[-c(1:2),7] ~ future.comp.ind[-c(1:2),1])
-lm_pred_index <- yrs*mod.lm$coefficients[[2]] + mod.lm$coefficients[[1]]
+proj.index.early <- read.csv(here("one_plus", "TidyData", "Projected_index_rs_2032.csv"))
+proj.index.late <- read.csv(here("one_plus", "TidyData", "time_series_RS_index.csv"))
+proj.index.early <- proj.index.early %>% select(Year, RS_relative) %>% filter(Year > 2013)
+proj.index.late <- proj.index.late %>% select(Year, All_years_model) %>% rename(RS_relative = All_years_model)
+proj.index <- bind_rows(proj.index.early, proj.index.late)
 
 
 #Competition variables
@@ -181,7 +179,7 @@ se_log <- matrix(data = NA, nrow = Nyrs, ncol = Nfleet)
 CPUE.se <- report.$cpue %>%
   group_by(Fleet) %>% 
   select(Fleet,SE) %>% 
-  filter(Fleet == 7 | Fleet == 8 | Fleet == 3 | Fleet == 4 | Fleet == 10|Fleet == 11) %>% 
+  filter(Fleet == 8 | Fleet == 9 | Fleet == 3 | Fleet == 4 | Fleet == 11|Fleet == 12) %>% 
   summarise_all(mean)
 CPUE.se <- CPUE.se[c(3,4,1,2,5,6),]
 
@@ -211,8 +209,8 @@ dir. <- here("one_plus")
 
 ## Reference points
 rp.list <- list()
-rp.list$f_spr <- rep.$derived_quants %>% filter(str_detect(Label, "Fstd_SPRtgt")) %>% select(Value) %>% pull()
-rp.list$f_msy <- rep.$derived_quants %>% filter(str_detect(Label, "Fstd_MSY")) %>% select(Value) %>% pull()
+rp.list$f_spr <- report.$derived_quants %>% filter(str_detect(Label, "Fstd_SPRtgt")) %>% select(Value) %>% pull()
+rp.list$f_msy <- report.$derived_quants %>% filter(str_detect(Label, "Fstd_MSY")) %>% select(Value) %>% pull()
 rp.list$f_oy <- .75*rp.list$f_msy
 ref.points <- list()
 
@@ -230,10 +228,17 @@ if(F.scenario == 2){
   f.by.fleet[1] <- rlnorm(1, F_1_mu, 0.01)
   f.by.fleet[2] <- rlnorm(1, F_2_mu, 0.01)
   f.by.fleet[3] <- rlnorm(1, F_3_mu, 0.01)
-  f.by.fleet[4] <- rnorm(1, 0.07356127, .05)
+  f.by.fleet[4] <- rlnorm(1, F_4_mu, 0.01)
 }
 
-system.time(for(year in Year.vec[1:5]){
+system.time(for(year in Year.vec[1:4]){
+  
+  if(F.scenario == 2){
+    f.by.fleet[1] <- rlnorm(1, F_1_mu, 0.01)
+    f.by.fleet[2] <- rlnorm(1, F_2_mu, 0.01)
+    f.by.fleet[3] <- rlnorm(1, F_3_mu, 0.01)
+    f.by.fleet[4] <- rlnorm(1, F_4_mu, 0.01)
+  }
   
   ##SSB caluclated at beginning of each year
   ssb_tot[year-1] <- sum(N[year-1,-1]*fecund)
@@ -242,7 +247,7 @@ system.time(for(year in Year.vec[1:5]){
   
   f.list[[year]] <- f.by.fleet
   
-  z <- zatage(dat.list,f.by.fleet)
+  z <- zatage(dat.list,year,f.by.fleet)
   
   
   #Catches
@@ -289,7 +294,7 @@ system.time(for(year in Year.vec[1:5]){
   
   b <- c(apply(b.age, 1, sum), byc.bio, apply(b.len, 1, sum))
   b.list[[year]] <- sum(N[year,-1]*wtatage[1,])
-  I[year,] <- simIndex(dat.list,b,year) 
+  I[year,] <- simIndex(dat.list,b) 
   
   
   # N-at-age for the next year     

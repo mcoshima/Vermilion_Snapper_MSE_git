@@ -1,5 +1,5 @@
 SS-V3.24AC-safe;_04/13/2017;_Stock_Synthesis_by_Richard_Methot_(NOAA)_using_ADMB_11.2x64
-Fri Aug 02 16:59:01 2019
+Tue Aug 20 14:16:46 2019
 
 VS.dat  datfilename
 VS.ctl  ctlfilename
@@ -951,7 +951,7 @@ Note that Q parameters are in units of ln(q)
 26 ##  0.5 1e+007 2.4096 2.4096 -1 0 -4 0 0 0 0 0 0 0 ## AgeSel_4P_4_SMP_BYC
 27 ##  -1 1 0 0 -1 0 -4 0 0 0 0 0 0 0 ## AgeSel_4P_5_SMP_BYC
 28 ##  -1 1 0 0 -1 0 -4 0 0 0 0 0 0 0 ## AgeSel_4P_6_SMP_BYC
-29 ##  0.1 14 0.1 0.1 0 99 -1 0 0 0 0 0 0 0 ## AgeSel_5P_1_COMP
+29 ##  1 14 0.1 0.1 0 99 -1 0 0 0 0 0 0 0 ## AgeSel_5P_1_COMP
 30 ##  14 14 14 14 0 99 -1 0 0 0 0 0 0 0 ## AgeSel_5P_2_COMP
 31 ##  0 15 0.1 2.66 -1 0 -1 0 0 0 0 0 0 0 ## AgeSel_11P_1_VIDEO
 32 ##  0 15 14 7.2774 -1 0 -1 0 0 0 0 0 0 0 ## AgeSel_11P_2_VIDEO

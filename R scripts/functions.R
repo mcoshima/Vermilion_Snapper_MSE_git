@@ -240,16 +240,17 @@ simAgecomp <-  function(catch.by.fleet, year, dat.list){
 
 
 
-simIndex <- function(dat.list,b,year){
+simIndex <- function(dat.list,b){
   
   q <- dat.list$q
   se <- dat.list$CPUE_se
+  I <- matrix(data = NA, nrow =1, ncol = 6)
   for(fleet in 1:6){
     
-    I[year, fleet] <- rlnorm(1,log(q[fleet]*b[fleet]),as.numeric(se[fleet,2]^2))
+    I[, fleet] <- rlnorm(1,log(q[fleet]*b[fleet]),as.numeric(se[fleet,2]^2))
 
   }
- return(I[year,])
+ return(I)
 }
 
 
