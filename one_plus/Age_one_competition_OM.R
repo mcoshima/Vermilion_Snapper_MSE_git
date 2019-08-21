@@ -1,7 +1,7 @@
 ##This code is the framework for the MSE with VS competition index
 
 # library(devtools)
-# devtools::install_github("mcoshima/moMSE")
+ devtools::install_github("mcoshima/moMSE")
 library(moMSE)
 library(r4ss)
 library(dplyr)
@@ -88,7 +88,7 @@ e <- runif(100, 0.1946, 1.9399)
   
 harvest.rate <- c()
 
-catch.se <- c(report.$catch_error[1:3],.2)
+catch.se <- c(report.$catch_error[1:3],.1)
 
 f.list <- list()
 
@@ -112,7 +112,7 @@ M <- report.$M_at_age %>%
   slice(n()) %>%
   select(-c(Bio_Pattern, Gender, Year))
 M <- apply(M, 2, rep, 101)
-M[,15] <- .204
+M[,15] <- M[,14]
 ###Total mortality
 #z <- report.$Z_at_age %>% filter(Year == 2013) %>% select(-c(1:3))  
 #z[15] <- z[14]
@@ -316,7 +316,7 @@ system.time(for(year in Year.vec[1:4]){
 
      dat. <- SS_readdat(paste0(dir.,"/VS.dat"))
    
-     dat.update(year, dat., agecomp.list, I, .datcatch, comp.I, dir., write = T)
+     dat.update(year, dat., agecomp.list, I, .datcatch, proj.index, dir., write = T)
     
      shell(paste("cd/d", dir., "&& ss3", sep = " "))
     

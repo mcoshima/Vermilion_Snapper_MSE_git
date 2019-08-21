@@ -266,8 +266,8 @@ simCompetition <- function(r, beta, N, sigma, K, Nj, year){
 
 dat.update <- function(year, dat.list, dat., agecomp.list, I, .datcatch, comp.I, dir., write = T){
   
-  year.seq <- dat.list$year_seq
-  yr <- floor(year.seq[year])
+  year.seq <- as.numeric(dat.list$year_seq)
+  yr <- floor(year.seq[year]);yr
   rows <- seq(year-9,year) #rows from the past 4 years
   
   #Add catch for past 5 years 
@@ -278,7 +278,7 @@ dat.update <- function(year, dat.list, dat., agecomp.list, I, .datcatch, comp.I,
     slice(rows)  %>% 
     na.omit() %>% 
     mutate(
-      COMP = rep(0.001,5),
+      COMP = rep(0.001,1),
       year = seq(yr-4,yr), 
       seas = rep(1,5)) %>% 
     rename(CM_E = V1, 
