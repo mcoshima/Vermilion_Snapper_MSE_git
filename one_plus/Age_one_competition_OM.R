@@ -316,7 +316,7 @@ system.time(for(year in Year.vec[1:4]){
 
      dat. <- SS_readdat(paste0(dir.,"/VS.dat"))
    
-     dat.update(year, dat., agecomp.list, I, .datcatch, proj.index, dir., write = T)
+     dat.update(year, dat.list, dat., agecomp.list, I, .datcatch, proj.index, dir., write = T)
     
      shell(paste("cd/d", dir., "&& ss3", sep = " "))
     
@@ -348,7 +348,7 @@ system.time(for(year in Year.vec[1:4]){
        
        find_spr(dir.)
        
-       rep.file <- SS_output(dir = dir.)
+       rep.file <- SS_output(dir = dir., verbose = F, printstats = F)
        
        ref.points[[year]] <- getRP(rep.file, dat.list, year)
        
@@ -357,7 +357,7 @@ system.time(for(year in Year.vec[1:4]){
        
        bio_status <- ref.points[[year]]$status_cur
        
-       OFL <- report.$derived_quants %>% 
+       OFL <- rep.file$derived_quants %>% 
          filter(str_detect(Label, "OFLCatch_")) %>% 
          slice(tail(row_number(), 10)) %>%
          summarise(mean(Value)) %>% 

@@ -70,9 +70,9 @@
 #_Spawner-Recruitment
 3 #_SR_function: 2=Ricker; 3=std_B-H; 4=SCAA; 5=Hockey; 6=B-H_flattop; 7=survival_3Parm; 8=Shepard_3Parm
 #_LO HI INIT PRIOR PR_type SD PHASE
- 0 13.82 10.5899 6.91 -1 0 1 # SR_LN(R0)
- 0.22 0.96 0.711471 0.6 -3 0.74 2 # SR_BH_steep
- 0 2 0.210606 0.2 -1 0 3 # SR_sigmaR
+ 0 13.82 10.3577 6.91 -1 0 1 # SR_LN(R0)
+ 0.22 0.96 0.572081 0.6 -3 0.74 2 # SR_BH_steep
+ 0 2 0.2461 0.2 -1 0 3 # SR_sigmaR
  -5 5 0 0 -1 0 -3 # SR_envlink
  -5 5 0 0 -1 0 -3 # SR_R1_offset
  0 0.5 0 0 -1 0 -2 # SR_autocorr
@@ -80,7 +80,7 @@
 0 #_SR_env_target_0=none;1=devs;_2=R0;_3=steepness
 1 #do_recdev:  0=none; 1=devvector; 2=simple deviations
 1994 # first year of main recr_devs; early devs can preceed this era
-2014 # last year of main recr_devs; forecast devs start in following year
+2018 # last year of main recr_devs; forecast devs start in following year
 3 #_recdev phase 
 1 # (0/1) to read 13 advanced options
  0 #_recdev_early_start (0=none; neg value makes relative to recdev_start)
@@ -103,31 +103,31 @@
 #_Yr Input_value
 #
 # all recruitment deviations
-#DisplayOnly -0.237289 # Main_RecrDev_1994
-#DisplayOnly -0.056043 # Main_RecrDev_1995
-#DisplayOnly -0.118697 # Main_RecrDev_1996
-#DisplayOnly 0.034628 # Main_RecrDev_1997
-#DisplayOnly -0.146796 # Main_RecrDev_1998
-#DisplayOnly 0.227669 # Main_RecrDev_1999
-#DisplayOnly 0.0716053 # Main_RecrDev_2000
-#DisplayOnly -0.00181934 # Main_RecrDev_2001
-#DisplayOnly -0.0131666 # Main_RecrDev_2002
-#DisplayOnly -0.0780833 # Main_RecrDev_2003
-#DisplayOnly -0.339132 # Main_RecrDev_2004
-#DisplayOnly -0.135419 # Main_RecrDev_2005
-#DisplayOnly 0.225863 # Main_RecrDev_2006
-#DisplayOnly -0.137843 # Main_RecrDev_2007
-#DisplayOnly -0.158246 # Main_RecrDev_2008
-#DisplayOnly -0.17763 # Main_RecrDev_2009
-#DisplayOnly 0.239799 # Main_RecrDev_2010
-#DisplayOnly 0.372307 # Main_RecrDev_2011
-#DisplayOnly 0.12713 # Main_RecrDev_2012
-#DisplayOnly 0.118043 # Main_RecrDev_2013
-#DisplayOnly 0.18312 # Main_RecrDev_2014
-#DisplayOnly 0 # ForeRecr_2015
-#DisplayOnly 0 # ForeRecr_2016
-#DisplayOnly 0 # ForeRecr_2017
-#DisplayOnly 0 # ForeRecr_2018
+#DisplayOnly -0.294274 # Main_RecrDev_1994
+#DisplayOnly -0.172644 # Main_RecrDev_1995
+#DisplayOnly -0.247246 # Main_RecrDev_1996
+#DisplayOnly -0.0462955 # Main_RecrDev_1997
+#DisplayOnly -0.297433 # Main_RecrDev_1998
+#DisplayOnly 0.336232 # Main_RecrDev_1999
+#DisplayOnly 0.181506 # Main_RecrDev_2000
+#DisplayOnly 0.0734134 # Main_RecrDev_2001
+#DisplayOnly 0.0598742 # Main_RecrDev_2002
+#DisplayOnly -0.00713046 # Main_RecrDev_2003
+#DisplayOnly -0.300785 # Main_RecrDev_2004
+#DisplayOnly -0.104437 # Main_RecrDev_2005
+#DisplayOnly 0.247819 # Main_RecrDev_2006
+#DisplayOnly -0.143305 # Main_RecrDev_2007
+#DisplayOnly -0.18586 # Main_RecrDev_2008
+#DisplayOnly -0.231614 # Main_RecrDev_2009
+#DisplayOnly 0.207754 # Main_RecrDev_2010
+#DisplayOnly 0.365445 # Main_RecrDev_2011
+#DisplayOnly 0.12564 # Main_RecrDev_2012
+#DisplayOnly 0.12465 # Main_RecrDev_2013
+#DisplayOnly 0.236662 # Main_RecrDev_2014
+#DisplayOnly 0.0935736 # Main_RecrDev_2015
+#DisplayOnly 0.0457929 # Main_RecrDev_2016
+#DisplayOnly -0.0637829 # Main_RecrDev_2017
+#DisplayOnly -0.00355476 # Main_RecrDev_2018
 #DisplayOnly 0 # ForeRecr_2019
 #DisplayOnly 0 # ForeRecr_2020
 #DisplayOnly 0 # ForeRecr_2021
@@ -184,10 +184,10 @@
 #DisplayOnly 0 # ForeRecr_2072
 #DisplayOnly 0 # ForeRecr_2073
 #DisplayOnly 0 # ForeRecr_2074
-#DisplayOnly 0 # Impl_err_2015
-#DisplayOnly 0 # Impl_err_2016
-#DisplayOnly 0 # Impl_err_2017
-#DisplayOnly 0 # Impl_err_2018
+#DisplayOnly 0 # ForeRecr_2075
+#DisplayOnly 0 # ForeRecr_2076
+#DisplayOnly 0 # ForeRecr_2077
+#DisplayOnly 0 # ForeRecr_2078
 #DisplayOnly 0 # Impl_err_2019
 #DisplayOnly 0 # Impl_err_2020
 #DisplayOnly 0 # Impl_err_2021
@@ -244,6 +244,10 @@
 #DisplayOnly 0 # Impl_err_2072
 #DisplayOnly 0 # Impl_err_2073
 #DisplayOnly 0 # Impl_err_2074
+#DisplayOnly 0 # Impl_err_2075
+#DisplayOnly 0 # Impl_err_2076
+#DisplayOnly 0 # Impl_err_2077
+#DisplayOnly 0 # Impl_err_2078
 #
 #Fishing Mortality info 
 0.5 # F ballpark for annual F (=Z-M) for specified year
@@ -270,331 +274,351 @@
  0 1 0 0.01 0 99 -1 # InitF_5COMP
 
 # F rates for Fmethod=2
-# 2.73093e-005 F_fleet_1_YR_1950_s_1
-# 7.37196e-005 F_fleet_1_YR_1951_s_1
-# 0.000149929 F_fleet_1_YR_1952_s_1
-# 0.000267075 F_fleet_1_YR_1953_s_1
-# 0.00042964 F_fleet_1_YR_1954_s_1
-# 0.000633159 F_fleet_1_YR_1955_s_1
-# 0.000866342 F_fleet_1_YR_1956_s_1
-# 0.0011179 F_fleet_1_YR_1957_s_1
-# 0.00137593 F_fleet_1_YR_1958_s_1
-# 0.00162725 F_fleet_1_YR_1959_s_1
-# 0.00186375 F_fleet_1_YR_1960_s_1
-# 0.00206642 F_fleet_1_YR_1961_s_1
-# 0.00221971 F_fleet_1_YR_1962_s_1
-# 0.00231398 F_fleet_1_YR_1963_s_1
-# 0.00241804 F_fleet_1_YR_1964_s_1
-# 0.00227506 F_fleet_1_YR_1965_s_1
-# 0.00111548 F_fleet_1_YR_1966_s_1
-# 0.00211485 F_fleet_1_YR_1967_s_1
-# 0.003924 F_fleet_1_YR_1968_s_1
-# 0.00465694 F_fleet_1_YR_1969_s_1
-# 0.00403764 F_fleet_1_YR_1970_s_1
-# 0.00409264 F_fleet_1_YR_1971_s_1
-# 0.00334598 F_fleet_1_YR_1972_s_1
-# 0.00523437 F_fleet_1_YR_1973_s_1
-# 0.00461667 F_fleet_1_YR_1974_s_1
-# 0.0093944 F_fleet_1_YR_1975_s_1
-# 0.00775851 F_fleet_1_YR_1976_s_1
-# 0.00994011 F_fleet_1_YR_1977_s_1
-# 0.00812233 F_fleet_1_YR_1978_s_1
-# 0.00590441 F_fleet_1_YR_1979_s_1
-# 0.00412862 F_fleet_1_YR_1980_s_1
-# 0.00575752 F_fleet_1_YR_1981_s_1
-# 0.00578068 F_fleet_1_YR_1982_s_1
-# 0.00887177 F_fleet_1_YR_1983_s_1
-# 0.0122185 F_fleet_1_YR_1984_s_1
-# 0.0152887 F_fleet_1_YR_1985_s_1
-# 0.0157511 F_fleet_1_YR_1986_s_1
-# 0.0123531 F_fleet_1_YR_1987_s_1
-# 0.011497 F_fleet_1_YR_1988_s_1
-# 0.0112358 F_fleet_1_YR_1989_s_1
-# 0.026884 F_fleet_1_YR_1990_s_1
-# 0.0221547 F_fleet_1_YR_1991_s_1
-# 0.0289944 F_fleet_1_YR_1992_s_1
-# 0.0416741 F_fleet_1_YR_1993_s_1
-# 0.0418855 F_fleet_1_YR_1994_s_1
-# 0.0418045 F_fleet_1_YR_1995_s_1
-# 0.0333648 F_fleet_1_YR_1996_s_1
-# 0.0312844 F_fleet_1_YR_1997_s_1
-# 0.0290607 F_fleet_1_YR_1998_s_1
-# 0.0412659 F_fleet_1_YR_1999_s_1
-# 0.0321457 F_fleet_1_YR_2000_s_1
-# 0.036728 F_fleet_1_YR_2001_s_1
-# 0.0414038 F_fleet_1_YR_2002_s_1
-# 0.0457812 F_fleet_1_YR_2003_s_1
-# 0.0363086 F_fleet_1_YR_2004_s_1
-# 0.0377734 F_fleet_1_YR_2005_s_1
-# 0.0428582 F_fleet_1_YR_2006_s_1
-# 0.0468467 F_fleet_1_YR_2007_s_1
-# 0.0711837 F_fleet_1_YR_2008_s_1
-# 0.105676 F_fleet_1_YR_2009_s_1
-# 0.0514897 F_fleet_1_YR_2010_s_1
-# 0.100746 F_fleet_1_YR_2011_s_1
-# 0.0711851 F_fleet_1_YR_2012_s_1
-# 0.0386874 F_fleet_1_YR_2013_s_1
-# 0.0296873 F_fleet_1_YR_2014_s_1
-# 2.24425e-005 F_fleet_2_YR_1950_s_1
-# 6.08226e-005 F_fleet_2_YR_1951_s_1
-# 0.000123216 F_fleet_2_YR_1952_s_1
-# 0.000220726 F_fleet_2_YR_1953_s_1
-# 0.000363718 F_fleet_2_YR_1954_s_1
-# 0.000551686 F_fleet_2_YR_1955_s_1
-# 0.000775123 F_fleet_2_YR_1956_s_1
-# 0.00102004 F_fleet_2_YR_1957_s_1
-# 0.00127212 F_fleet_2_YR_1958_s_1
-# 0.00151965 F_fleet_2_YR_1959_s_1
-# 0.00175078 F_fleet_2_YR_1960_s_1
-# 0.00195445 F_fleet_2_YR_1961_s_1
-# 0.0021147 F_fleet_2_YR_1962_s_1
-# 0.00221872 F_fleet_2_YR_1963_s_1
-# 0.0022114 F_fleet_2_YR_1964_s_1
-# 0.00184238 F_fleet_2_YR_1965_s_1
-# 0.000552749 F_fleet_2_YR_1966_s_1
-# 0.00121779 F_fleet_2_YR_1967_s_1
-# 0.00360985 F_fleet_2_YR_1968_s_1
-# 0.00180164 F_fleet_2_YR_1969_s_1
-# 0.00272665 F_fleet_2_YR_1970_s_1
-# 0.00272144 F_fleet_2_YR_1971_s_1
-# 0.00242925 F_fleet_2_YR_1972_s_1
-# 0.00264722 F_fleet_2_YR_1973_s_1
-# 0.00297334 F_fleet_2_YR_1974_s_1
-# 0.00451992 F_fleet_2_YR_1975_s_1
-# 0.00233795 F_fleet_2_YR_1976_s_1
-# 0.00708694 F_fleet_2_YR_1977_s_1
-# 0.00560219 F_fleet_2_YR_1978_s_1
-# 0.00716786 F_fleet_2_YR_1979_s_1
-# 0.00459266 F_fleet_2_YR_1980_s_1
-# 0.00342334 F_fleet_2_YR_1981_s_1
-# 0.00419737 F_fleet_2_YR_1982_s_1
-# 0.00450438 F_fleet_2_YR_1983_s_1
-# 0.0230854 F_fleet_2_YR_1984_s_1
-# 0.0198593 F_fleet_2_YR_1985_s_1
-# 0.0253542 F_fleet_2_YR_1986_s_1
-# 0.0274625 F_fleet_2_YR_1987_s_1
-# 0.0275179 F_fleet_2_YR_1988_s_1
-# 0.0280631 F_fleet_2_YR_1989_s_1
-# 0.0270845 F_fleet_2_YR_1990_s_1
-# 0.023067 F_fleet_2_YR_1991_s_1
-# 0.0306921 F_fleet_2_YR_1992_s_1
-# 0.0309972 F_fleet_2_YR_1993_s_1
-# 0.0330183 F_fleet_2_YR_1994_s_1
-# 0.0216741 F_fleet_2_YR_1995_s_1
-# 0.02232 F_fleet_2_YR_1996_s_1
-# 0.0380822 F_fleet_2_YR_1997_s_1
-# 0.0385536 F_fleet_2_YR_1998_s_1
-# 0.058989 F_fleet_2_YR_1999_s_1
-# 0.042506 F_fleet_2_YR_2000_s_1
-# 0.0516073 F_fleet_2_YR_2001_s_1
-# 0.0557089 F_fleet_2_YR_2002_s_1
-# 0.0647866 F_fleet_2_YR_2003_s_1
-# 0.0603496 F_fleet_2_YR_2004_s_1
-# 0.0430351 F_fleet_2_YR_2005_s_1
-# 0.0302518 F_fleet_2_YR_2006_s_1
-# 0.0647943 F_fleet_2_YR_2007_s_1
-# 0.0565344 F_fleet_2_YR_2008_s_1
-# 0.0565929 F_fleet_2_YR_2009_s_1
-# 0.0442466 F_fleet_2_YR_2010_s_1
-# 0.0418055 F_fleet_2_YR_2011_s_1
-# 0.0514407 F_fleet_2_YR_2012_s_1
-# 0.0323066 F_fleet_2_YR_2013_s_1
-# 0.0367673 F_fleet_2_YR_2014_s_1
-# 0.000129912 F_fleet_3_YR_1950_s_1
-# 0.000353145 F_fleet_3_YR_1951_s_1
-# 0.000718433 F_fleet_3_YR_1952_s_1
-# 0.00127953 F_fleet_3_YR_1953_s_1
-# 0.00201561 F_fleet_3_YR_1954_s_1
-# 0.00283499 F_fleet_3_YR_1955_s_1
-# 0.00367259 F_fleet_3_YR_1956_s_1
-# 0.00448996 F_fleet_3_YR_1957_s_1
-# 0.00528193 F_fleet_3_YR_1958_s_1
-# 0.00604216 F_fleet_3_YR_1959_s_1
-# 0.00675007 F_fleet_3_YR_1960_s_1
-# 0.00736087 F_fleet_3_YR_1961_s_1
-# 0.00780092 F_fleet_3_YR_1962_s_1
-# 0.00804896 F_fleet_3_YR_1963_s_1
-# 0.00818021 F_fleet_3_YR_1964_s_1
-# 0.00824601 F_fleet_3_YR_1965_s_1
-# 0.00824298 F_fleet_3_YR_1966_s_1
-# 0.00818628 F_fleet_3_YR_1967_s_1
-# 0.00810257 F_fleet_3_YR_1968_s_1
-# 0.00798727 F_fleet_3_YR_1969_s_1
-# 0.00784594 F_fleet_3_YR_1970_s_1
-# 0.00768428 F_fleet_3_YR_1971_s_1
-# 0.00749823 F_fleet_3_YR_1972_s_1
-# 0.00731068 F_fleet_3_YR_1973_s_1
-# 0.00713454 F_fleet_3_YR_1974_s_1
-# 0.00699955 F_fleet_3_YR_1975_s_1
-# 0.006896 F_fleet_3_YR_1976_s_1
-# 0.00682553 F_fleet_3_YR_1977_s_1
-# 0.00678982 F_fleet_3_YR_1978_s_1
-# 0.00677279 F_fleet_3_YR_1979_s_1
-# 0.00677385 F_fleet_3_YR_1980_s_1
-# 0.00684956 F_fleet_3_YR_1981_s_1
-# 0.0204604 F_fleet_3_YR_1982_s_1
-# 0.0058056 F_fleet_3_YR_1983_s_1
-# 0.00803025 F_fleet_3_YR_1984_s_1
-# 0.0137274 F_fleet_3_YR_1985_s_1
-# 0.0328642 F_fleet_3_YR_1986_s_1
-# 0.0350231 F_fleet_3_YR_1987_s_1
-# 0.0475227 F_fleet_3_YR_1988_s_1
-# 0.0298401 F_fleet_3_YR_1989_s_1
-# 0.0399368 F_fleet_3_YR_1990_s_1
-# 0.0403813 F_fleet_3_YR_1991_s_1
-# 0.0503377 F_fleet_3_YR_1992_s_1
-# 0.046103 F_fleet_3_YR_1993_s_1
-# 0.0397719 F_fleet_3_YR_1994_s_1
-# 0.0539201 F_fleet_3_YR_1995_s_1
-# 0.0253605 F_fleet_3_YR_1996_s_1
-# 0.0277867 F_fleet_3_YR_1997_s_1
-# 0.0163921 F_fleet_3_YR_1998_s_1
-# 0.0271633 F_fleet_3_YR_1999_s_1
-# 0.0216646 F_fleet_3_YR_2000_s_1
-# 0.0395681 F_fleet_3_YR_2001_s_1
-# 0.028735 F_fleet_3_YR_2002_s_1
-# 0.0304092 F_fleet_3_YR_2003_s_1
-# 0.0405712 F_fleet_3_YR_2004_s_1
-# 0.0309082 F_fleet_3_YR_2005_s_1
-# 0.0273519 F_fleet_3_YR_2006_s_1
-# 0.0260187 F_fleet_3_YR_2007_s_1
-# 0.0267329 F_fleet_3_YR_2008_s_1
-# 0.033353 F_fleet_3_YR_2009_s_1
-# 0.0203349 F_fleet_3_YR_2010_s_1
-# 0.0572867 F_fleet_3_YR_2011_s_1
-# 0.036049 F_fleet_3_YR_2012_s_1
-# 0.0593345 F_fleet_3_YR_2013_s_1
-# 0.0528104 F_fleet_3_YR_2014_s_1
-# 0.0279246 F_fleet_4_YR_1950_s_1
-# 0.0380846 F_fleet_4_YR_1951_s_1
-# 0.044987 F_fleet_4_YR_1952_s_1
-# 0.0472831 F_fleet_4_YR_1953_s_1
-# 0.0613033 F_fleet_4_YR_1954_s_1
-# 0.0639007 F_fleet_4_YR_1955_s_1
-# 0.0816951 F_fleet_4_YR_1956_s_1
-# 0.0935198 F_fleet_4_YR_1957_s_1
-# 0.114529 F_fleet_4_YR_1958_s_1
-# 0.123455 F_fleet_4_YR_1959_s_1
-# 0.123426 F_fleet_4_YR_1960_s_1
-# 0.0934914 F_fleet_4_YR_1961_s_1
-# 0.0900187 F_fleet_4_YR_1962_s_1
-# 0.102619 F_fleet_4_YR_1963_s_1
-# 0.108388 F_fleet_4_YR_1964_s_1
-# 0.120299 F_fleet_4_YR_1965_s_1
-# 0.118391 F_fleet_4_YR_1966_s_1
-# 0.128953 F_fleet_4_YR_1967_s_1
-# 0.131034 F_fleet_4_YR_1968_s_1
-# 0.148902 F_fleet_4_YR_1969_s_1
-# 0.140293 F_fleet_4_YR_1970_s_1
-# 0.133783 F_fleet_4_YR_1971_s_1
-# 0.13311 F_fleet_4_YR_1972_s_1
-# 0.134066 F_fleet_4_YR_1973_s_1
-# 0.133424 F_fleet_4_YR_1974_s_1
-# 0.134211 F_fleet_4_YR_1975_s_1
-# 0.13915 F_fleet_4_YR_1976_s_1
-# 0.152161 F_fleet_4_YR_1977_s_1
-# 0.160276 F_fleet_4_YR_1978_s_1
-# 0.166929 F_fleet_4_YR_1979_s_1
-# 0.169576 F_fleet_4_YR_1980_s_1
-# 0.160089 F_fleet_4_YR_1981_s_1
-# 0.145596 F_fleet_4_YR_1982_s_1
-# 0.14805 F_fleet_4_YR_1983_s_1
-# 0.165753 F_fleet_4_YR_1984_s_1
-# 0.160988 F_fleet_4_YR_1985_s_1
-# 0.183968 F_fleet_4_YR_1986_s_1
-# 0.161137 F_fleet_4_YR_1987_s_1
-# 0.145034 F_fleet_4_YR_1988_s_1
-# 0.149609 F_fleet_4_YR_1989_s_1
-# 0.14546 F_fleet_4_YR_1990_s_1
-# 0.158379 F_fleet_4_YR_1991_s_1
-# 0.203314 F_fleet_4_YR_1992_s_1
-# 0.219343 F_fleet_4_YR_1993_s_1
-# 0.246003 F_fleet_4_YR_1994_s_1
-# 0.22449 F_fleet_4_YR_1995_s_1
-# 0.227179 F_fleet_4_YR_1996_s_1
-# 0.208682 F_fleet_4_YR_1997_s_1
-# 0.281605 F_fleet_4_YR_1998_s_1
-# 0.176193 F_fleet_4_YR_1999_s_1
-# 0.134464 F_fleet_4_YR_2000_s_1
-# 0.15666 F_fleet_4_YR_2001_s_1
-# 0.185182 F_fleet_4_YR_2002_s_1
-# 0.161683 F_fleet_4_YR_2003_s_1
-# 0.168392 F_fleet_4_YR_2004_s_1
-# 0.132955 F_fleet_4_YR_2005_s_1
-# 0.0775811 F_fleet_4_YR_2006_s_1
-# 0.0489651 F_fleet_4_YR_2007_s_1
-# 0.0387358 F_fleet_4_YR_2008_s_1
-# 0.0662764 F_fleet_4_YR_2009_s_1
-# 0.0525166 F_fleet_4_YR_2010_s_1
-# 0.0534847 F_fleet_4_YR_2011_s_1
-# 0.0455042 F_fleet_4_YR_2012_s_1
-# 0.0493215 F_fleet_4_YR_2013_s_1
-# 0.0382319 F_fleet_4_YR_2014_s_1
-# 0.305153 F_fleet_5_YR_1950_s_1
-# 0.300385 F_fleet_5_YR_1951_s_1
-# 0.29432 F_fleet_5_YR_1952_s_1
-# 0.28697 F_fleet_5_YR_1953_s_1
-# 0.279212 F_fleet_5_YR_1954_s_1
-# 0.270852 F_fleet_5_YR_1955_s_1
-# 0.261666 F_fleet_5_YR_1956_s_1
-# 0.251172 F_fleet_5_YR_1957_s_1
-# 0.240478 F_fleet_5_YR_1958_s_1
-# 0.227114 F_fleet_5_YR_1959_s_1
-# 0.213521 F_fleet_5_YR_1960_s_1
-# 0.199157 F_fleet_5_YR_1961_s_1
-# 0.184561 F_fleet_5_YR_1962_s_1
-# 0.170147 F_fleet_5_YR_1963_s_1
-# 0.156942 F_fleet_5_YR_1964_s_1
-# 0.143878 F_fleet_5_YR_1965_s_1
-# 0.131139 F_fleet_5_YR_1966_s_1
-# 0.119848 F_fleet_5_YR_1967_s_1
-# 0.108162 F_fleet_5_YR_1968_s_1
-# 0.0963177 F_fleet_5_YR_1969_s_1
-# 0.0855961 F_fleet_5_YR_1970_s_1
-# 0.0751765 F_fleet_5_YR_1971_s_1
-# 0.0705471 F_fleet_5_YR_1972_s_1
-# 0.0618123 F_fleet_5_YR_1973_s_1
-# 0.0550122 F_fleet_5_YR_1974_s_1
-# 0.0508513 F_fleet_5_YR_1975_s_1
-# 0.0470773 F_fleet_5_YR_1976_s_1
-# 0.0422187 F_fleet_5_YR_1977_s_1
-# 0.0374278 F_fleet_5_YR_1978_s_1
-# 0.0336901 F_fleet_5_YR_1979_s_1
-# 0.0325029 F_fleet_5_YR_1980_s_1
-# 0.032582 F_fleet_5_YR_1981_s_1
-# 0.0305686 F_fleet_5_YR_1982_s_1
-# 0.0285952 F_fleet_5_YR_1983_s_1
-# 0.025257 F_fleet_5_YR_1984_s_1
-# 0.0251993 F_fleet_5_YR_1985_s_1
-# 0.0247273 F_fleet_5_YR_1986_s_1
-# 0.0229619 F_fleet_5_YR_1987_s_1
-# 0.0222699 F_fleet_5_YR_1988_s_1
-# 0.0225933 F_fleet_5_YR_1989_s_1
-# 0.022981 F_fleet_5_YR_1990_s_1
-# 0.0265217 F_fleet_5_YR_1991_s_1
-# 0.0289987 F_fleet_5_YR_1992_s_1
-# 0.0309302 F_fleet_5_YR_1993_s_1
-# 0.0311416 F_fleet_5_YR_1994_s_1
-# 0.0333177 F_fleet_5_YR_1995_s_1
-# 0.0348221 F_fleet_5_YR_1996_s_1
-# 0.0366569 F_fleet_5_YR_1997_s_1
-# 0.367179 F_fleet_5_YR_1998_s_1
-# 0.0380569 F_fleet_5_YR_1999_s_1
-# 0.0398464 F_fleet_5_YR_2000_s_1
-# 0.0403658 F_fleet_5_YR_2001_s_1
-# 0.0408109 F_fleet_5_YR_2002_s_1
-# 0.040598 F_fleet_5_YR_2003_s_1
-# 0.0422435 F_fleet_5_YR_2004_s_1
-# 0.0428443 F_fleet_5_YR_2005_s_1
-# 0.0467298 F_fleet_5_YR_2006_s_1
-# 0.0509044 F_fleet_5_YR_2007_s_1
-# 0.0555347 F_fleet_5_YR_2008_s_1
-# 0.0653971 F_fleet_5_YR_2009_s_1
-# 0.0761288 F_fleet_5_YR_2010_s_1
-# 0.090213 F_fleet_5_YR_2011_s_1
-# 0.0979165 F_fleet_5_YR_2012_s_1
-# 0.10642 F_fleet_5_YR_2013_s_1
-# 0.113458 F_fleet_5_YR_2014_s_1
+# 3.1532e-005 F_fleet_1_YR_1950_s_1
+# 6.80214e-005 F_fleet_1_YR_1951_s_1
+# 0.000111147 F_fleet_1_YR_1952_s_1
+# 0.000160888 F_fleet_1_YR_1953_s_1
+# 0.000217419 F_fleet_1_YR_1954_s_1
+# 0.000279544 F_fleet_1_YR_1955_s_1
+# 0.000346125 F_fleet_1_YR_1956_s_1
+# 0.000417268 F_fleet_1_YR_1957_s_1
+# 0.000492405 F_fleet_1_YR_1958_s_1
+# 0.000570574 F_fleet_1_YR_1959_s_1
+# 0.000652404 F_fleet_1_YR_1960_s_1
+# 0.000734408 F_fleet_1_YR_1961_s_1
+# 0.00081321 F_fleet_1_YR_1962_s_1
+# 0.000883944 F_fleet_1_YR_1963_s_1
+# 0.0009692 F_fleet_1_YR_1964_s_1
+# 0.00096205 F_fleet_1_YR_1965_s_1
+# 0.000500468 F_fleet_1_YR_1966_s_1
+# 0.00101036 F_fleet_1_YR_1967_s_1
+# 0.00199899 F_fleet_1_YR_1968_s_1
+# 0.00253395 F_fleet_1_YR_1969_s_1
+# 0.00235114 F_fleet_1_YR_1970_s_1
+# 0.00255316 F_fleet_1_YR_1971_s_1
+# 0.00223421 F_fleet_1_YR_1972_s_1
+# 0.0037274 F_fleet_1_YR_1973_s_1
+# 0.00349556 F_fleet_1_YR_1974_s_1
+# 0.00753139 F_fleet_1_YR_1975_s_1
+# 0.0065576 F_fleet_1_YR_1976_s_1
+# 0.00882438 F_fleet_1_YR_1977_s_1
+# 0.0075529 F_fleet_1_YR_1978_s_1
+# 0.00573976 F_fleet_1_YR_1979_s_1
+# 0.00418405 F_fleet_1_YR_1980_s_1
+# 0.006057 F_fleet_1_YR_1981_s_1
+# 0.00629135 F_fleet_1_YR_1982_s_1
+# 0.00996062 F_fleet_1_YR_1983_s_1
+# 0.0141225 F_fleet_1_YR_1984_s_1
+# 0.0181997 F_fleet_1_YR_1985_s_1
+# 0.0193296 F_fleet_1_YR_1986_s_1
+# 0.0156498 F_fleet_1_YR_1987_s_1
+# 0.0150399 F_fleet_1_YR_1988_s_1
+# 0.0151114 F_fleet_1_YR_1989_s_1
+# 0.0370986 F_fleet_1_YR_1990_s_1
+# 0.0313232 F_fleet_1_YR_1991_s_1
+# 0.0419832 F_fleet_1_YR_1992_s_1
+# 0.062077 F_fleet_1_YR_1993_s_1
+# 0.0646438 F_fleet_1_YR_1994_s_1
+# 0.0677651 F_fleet_1_YR_1995_s_1
+# 0.0564852 F_fleet_1_YR_1996_s_1
+# 0.0551469 F_fleet_1_YR_1997_s_1
+# 0.0458345 F_fleet_1_YR_1998_s_1
+# 0.0559175 F_fleet_1_YR_1999_s_1
+# 0.0444537 F_fleet_1_YR_2000_s_1
+# 0.0518873 F_fleet_1_YR_2001_s_1
+# 0.0598104 F_fleet_1_YR_2002_s_1
+# 0.0666551 F_fleet_1_YR_2003_s_1
+# 0.0538912 F_fleet_1_YR_2004_s_1
+# 0.0568672 F_fleet_1_YR_2005_s_1
+# 0.0647555 F_fleet_1_YR_2006_s_1
+# 0.0704972 F_fleet_1_YR_2007_s_1
+# 0.107987 F_fleet_1_YR_2008_s_1
+# 0.160741 F_fleet_1_YR_2009_s_1
+# 0.078108 F_fleet_1_YR_2010_s_1
+# 0.152329 F_fleet_1_YR_2011_s_1
+# 0.108061 F_fleet_1_YR_2012_s_1
+# 0.0568479 F_fleet_1_YR_2013_s_1
+# 0.0409379 F_fleet_1_YR_2014_s_1
+# 0.0685376 F_fleet_1_YR_2015_s_1
+# 0.0730012 F_fleet_1_YR_2016_s_1
+# 0.0760723 F_fleet_1_YR_2017_s_1
+# 0.0818993 F_fleet_1_YR_2018_s_1
+# 2.40884e-005 F_fleet_2_YR_1950_s_1
+# 5.21878e-005 F_fleet_2_YR_1951_s_1
+# 8.50163e-005 F_fleet_2_YR_1952_s_1
+# 0.000123277 F_fleet_2_YR_1953_s_1
+# 0.000166782 F_fleet_2_YR_1954_s_1
+# 0.000214745 F_fleet_2_YR_1955_s_1
+# 0.000266565 F_fleet_2_YR_1956_s_1
+# 0.00032162 F_fleet_2_YR_1957_s_1
+# 0.000379591 F_fleet_2_YR_1958_s_1
+# 0.000440315 F_fleet_2_YR_1959_s_1
+# 0.000503389 F_fleet_2_YR_1960_s_1
+# 0.000567541 F_fleet_2_YR_1961_s_1
+# 0.000629606 F_fleet_2_YR_1962_s_1
+# 0.000685933 F_fleet_2_YR_1963_s_1
+# 0.000718049 F_fleet_2_YR_1964_s_1
+# 0.000633413 F_fleet_2_YR_1965_s_1
+# 0.000202475 F_fleet_2_YR_1966_s_1
+# 0.00047731 F_fleet_2_YR_1967_s_1
+# 0.00151561 F_fleet_2_YR_1968_s_1
+# 0.000812271 F_fleet_2_YR_1969_s_1
+# 0.00132318 F_fleet_2_YR_1970_s_1
+# 0.00142348 F_fleet_2_YR_1971_s_1
+# 0.00136664 F_fleet_2_YR_1972_s_1
+# 0.00159703 F_fleet_2_YR_1973_s_1
+# 0.00191917 F_fleet_2_YR_1974_s_1
+# 0.00310782 F_fleet_2_YR_1975_s_1
+# 0.00170393 F_fleet_2_YR_1976_s_1
+# 0.0054549 F_fleet_2_YR_1977_s_1
+# 0.00454134 F_fleet_2_YR_1978_s_1
+# 0.00610797 F_fleet_2_YR_1979_s_1
+# 0.00409983 F_fleet_2_YR_1980_s_1
+# 0.00318666 F_fleet_2_YR_1981_s_1
+# 0.00405667 F_fleet_2_YR_1982_s_1
+# 0.00449939 F_fleet_2_YR_1983_s_1
+# 0.0237864 F_fleet_2_YR_1984_s_1
+# 0.0210997 F_fleet_2_YR_1985_s_1
+# 0.0278183 F_fleet_2_YR_1986_s_1
+# 0.0311152 F_fleet_2_YR_1987_s_1
+# 0.0322113 F_fleet_2_YR_1988_s_1
+# 0.0337301 F_fleet_2_YR_1989_s_1
+# 0.0333681 F_fleet_2_YR_1990_s_1
+# 0.0291282 F_fleet_2_YR_1991_s_1
+# 0.0397096 F_fleet_2_YR_1992_s_1
+# 0.041277 F_fleet_2_YR_1993_s_1
+# 0.0455625 F_fleet_2_YR_1994_s_1
+# 0.031303 F_fleet_2_YR_1995_s_1
+# 0.0337374 F_fleet_2_YR_1996_s_1
+# 0.0606574 F_fleet_2_YR_1997_s_1
+# 0.0544286 F_fleet_2_YR_1998_s_1
+# 0.0713352 F_fleet_2_YR_1999_s_1
+# 0.0520026 F_fleet_2_YR_2000_s_1
+# 0.0638196 F_fleet_2_YR_2001_s_1
+# 0.0673279 F_fleet_2_YR_2002_s_1
+# 0.080136 F_fleet_2_YR_2003_s_1
+# 0.0772226 F_fleet_2_YR_2004_s_1
+# 0.0562777 F_fleet_2_YR_2005_s_1
+# 0.0401337 F_fleet_2_YR_2006_s_1
+# 0.0986398 F_fleet_2_YR_2007_s_1
+# 0.0872262 F_fleet_2_YR_2008_s_1
+# 0.0890371 F_fleet_2_YR_2009_s_1
+# 0.0693308 F_fleet_2_YR_2010_s_1
+# 0.0644183 F_fleet_2_YR_2011_s_1
+# 0.0789775 F_fleet_2_YR_2012_s_1
+# 0.048146 F_fleet_2_YR_2013_s_1
+# 0.0519191 F_fleet_2_YR_2014_s_1
+# 0.077182 F_fleet_2_YR_2015_s_1
+# 0.0810812 F_fleet_2_YR_2016_s_1
+# 0.0880216 F_fleet_2_YR_2017_s_1
+# 0.0915964 F_fleet_2_YR_2018_s_1
+# 0.000143548 F_fleet_3_YR_1950_s_1
+# 0.000312061 F_fleet_3_YR_1951_s_1
+# 0.000511158 F_fleet_3_YR_1952_s_1
+# 0.000744685 F_fleet_3_YR_1953_s_1
+# 0.00100564 F_fleet_3_YR_1954_s_1
+# 0.00128407 F_fleet_3_YR_1955_s_1
+# 0.00157605 F_fleet_3_YR_1956_s_1
+# 0.00187789 F_fleet_3_YR_1957_s_1
+# 0.00219056 F_fleet_3_YR_1958_s_1
+# 0.00251565 F_fleet_3_YR_1959_s_1
+# 0.00285201 F_fleet_3_YR_1960_s_1
+# 0.00318803 F_fleet_3_YR_1961_s_1
+# 0.00349355 F_fleet_3_YR_1962_s_1
+# 0.00374949 F_fleet_3_YR_1963_s_1
+# 0.00398043 F_fleet_3_YR_1964_s_1
+# 0.00421364 F_fleet_3_YR_1965_s_1
+# 0.00444904 F_fleet_3_YR_1966_s_1
+# 0.004684 F_fleet_3_YR_1967_s_1
+# 0.0049216 F_fleet_3_YR_1968_s_1
+# 0.0051608 F_fleet_3_YR_1969_s_1
+# 0.00540459 F_fleet_3_YR_1970_s_1
+# 0.00564827 F_fleet_3_YR_1971_s_1
+# 0.00586736 F_fleet_3_YR_1972_s_1
+# 0.00605899 F_fleet_3_YR_1973_s_1
+# 0.0062389 F_fleet_3_YR_1974_s_1
+# 0.00642739 F_fleet_3_YR_1975_s_1
+# 0.00661856 F_fleet_3_YR_1976_s_1
+# 0.00682142 F_fleet_3_YR_1977_s_1
+# 0.00705075 F_fleet_3_YR_1978_s_1
+# 0.00729887 F_fleet_3_YR_1979_s_1
+# 0.00755856 F_fleet_3_YR_1980_s_1
+# 0.0078804 F_fleet_3_YR_1981_s_1
+# 0.0242618 F_fleet_3_YR_1982_s_1
+# 0.00701901 F_fleet_3_YR_1983_s_1
+# 0.00990925 F_fleet_3_YR_1984_s_1
+# 0.0173403 F_fleet_3_YR_1985_s_1
+# 0.0427907 F_fleet_3_YR_1986_s_1
+# 0.0466614 F_fleet_3_YR_1987_s_1
+# 0.06498 F_fleet_3_YR_1988_s_1
+# 0.0412726 F_fleet_3_YR_1989_s_1
+# 0.0558985 F_fleet_3_YR_1990_s_1
+# 0.0575049 F_fleet_3_YR_1991_s_1
+# 0.0730058 F_fleet_3_YR_1992_s_1
+# 0.0679759 F_fleet_3_YR_1993_s_1
+# 0.0608109 F_fleet_3_YR_1994_s_1
+# 0.0892076 F_fleet_3_YR_1995_s_1
+# 0.0434227 F_fleet_3_YR_1996_s_1
+# 0.0503885 F_fleet_3_YR_1997_s_1
+# 0.0257916 F_fleet_3_YR_1998_s_1
+# 0.0366729 F_fleet_3_YR_1999_s_1
+# 0.0294839 F_fleet_3_YR_2000_s_1
+# 0.0540274 F_fleet_3_YR_2001_s_1
+# 0.0394602 F_fleet_3_YR_2002_s_1
+# 0.0419255 F_fleet_3_YR_2003_s_1
+# 0.0563383 F_fleet_3_YR_2004_s_1
+# 0.0440403 F_fleet_3_YR_2005_s_1
+# 0.0394037 F_fleet_3_YR_2006_s_1
+# 0.0373839 F_fleet_3_YR_2007_s_1
+# 0.0381557 F_fleet_3_YR_2008_s_1
+# 0.047232 F_fleet_3_YR_2009_s_1
+# 0.029016 F_fleet_3_YR_2010_s_1
+# 0.0822007 F_fleet_3_YR_2011_s_1
+# 0.0526737 F_fleet_3_YR_2012_s_1
+# 0.0836101 F_fleet_3_YR_2013_s_1
+# 0.0694322 F_fleet_3_YR_2014_s_1
+# 0.0425394 F_fleet_3_YR_2015_s_1
+# 0.0436853 F_fleet_3_YR_2016_s_1
+# 0.0504072 F_fleet_3_YR_2017_s_1
+# 0.0476414 F_fleet_3_YR_2018_s_1
+# 0.0428171 F_fleet_4_YR_1950_s_1
+# 0.058398 F_fleet_4_YR_1951_s_1
+# 0.0689857 F_fleet_4_YR_1952_s_1
+# 0.0725099 F_fleet_4_YR_1953_s_1
+# 0.0940215 F_fleet_4_YR_1954_s_1
+# 0.0980128 F_fleet_4_YR_1955_s_1
+# 0.125331 F_fleet_4_YR_1956_s_1
+# 0.1435 F_fleet_4_YR_1957_s_1
+# 0.175793 F_fleet_4_YR_1958_s_1
+# 0.189544 F_fleet_4_YR_1959_s_1
+# 0.189544 F_fleet_4_YR_1960_s_1
+# 0.143551 F_fleet_4_YR_1961_s_1
+# 0.138243 F_fleet_4_YR_1962_s_1
+# 0.157668 F_fleet_4_YR_1963_s_1
+# 0.166601 F_fleet_4_YR_1964_s_1
+# 0.185027 F_fleet_4_YR_1965_s_1
+# 0.182161 F_fleet_4_YR_1966_s_1
+# 0.198572 F_fleet_4_YR_1967_s_1
+# 0.201902 F_fleet_4_YR_1968_s_1
+# 0.229734 F_fleet_4_YR_1969_s_1
+# 0.216554 F_fleet_4_YR_1970_s_1
+# 0.206685 F_fleet_4_YR_1971_s_1
+# 0.203764 F_fleet_4_YR_1972_s_1
+# 0.206471 F_fleet_4_YR_1973_s_1
+# 0.205678 F_fleet_4_YR_1974_s_1
+# 0.207083 F_fleet_4_YR_1975_s_1
+# 0.2149 F_fleet_4_YR_1976_s_1
+# 0.235258 F_fleet_4_YR_1977_s_1
+# 0.247959 F_fleet_4_YR_1978_s_1
+# 0.258379 F_fleet_4_YR_1979_s_1
+# 0.262548 F_fleet_4_YR_1980_s_1
+# 0.247764 F_fleet_4_YR_1981_s_1
+# 0.225085 F_fleet_4_YR_1982_s_1
+# 0.228616 F_fleet_4_YR_1983_s_1
+# 0.256469 F_fleet_4_YR_1984_s_1
+# 0.249608 F_fleet_4_YR_1985_s_1
+# 0.281248 F_fleet_4_YR_1986_s_1
+# 0.238524 F_fleet_4_YR_1987_s_1
+# 0.216022 F_fleet_4_YR_1988_s_1
+# 0.220247 F_fleet_4_YR_1989_s_1
+# 0.215728 F_fleet_4_YR_1990_s_1
+# 0.234892 F_fleet_4_YR_1991_s_1
+# 0.295744 F_fleet_4_YR_1992_s_1
+# 0.371075 F_fleet_4_YR_1993_s_1
+# 0.441821 F_fleet_4_YR_1994_s_1
+# 0.369495 F_fleet_4_YR_1995_s_1
+# 0.35717 F_fleet_4_YR_1996_s_1
+# 0.32355 F_fleet_4_YR_1997_s_1
+# 0.469618 F_fleet_4_YR_1998_s_1
+# 0.279123 F_fleet_4_YR_1999_s_1
+# 0.199951 F_fleet_4_YR_2000_s_1
+# 0.228785 F_fleet_4_YR_2001_s_1
+# 0.265704 F_fleet_4_YR_2002_s_1
+# 0.233373 F_fleet_4_YR_2003_s_1
+# 0.243139 F_fleet_4_YR_2004_s_1
+# 0.194655 F_fleet_4_YR_2005_s_1
+# 0.115461 F_fleet_4_YR_2006_s_1
+# 0.0724725 F_fleet_4_YR_2007_s_1
+# 0.0578568 F_fleet_4_YR_2008_s_1
+# 0.101055 F_fleet_4_YR_2009_s_1
+# 0.0822094 F_fleet_4_YR_2010_s_1
+# 0.0841327 F_fleet_4_YR_2011_s_1
+# 0.0713612 F_fleet_4_YR_2012_s_1
+# 0.0752549 F_fleet_4_YR_2013_s_1
+# 0.0576582 F_fleet_4_YR_2014_s_1
+# 0.069116 F_fleet_4_YR_2015_s_1
+# 0.0701211 F_fleet_4_YR_2016_s_1
+# 0.0763314 F_fleet_4_YR_2017_s_1
+# 0.077355 F_fleet_4_YR_2018_s_1
+# 0.0787411 F_fleet_5_YR_1950_s_1
+# 0.0775108 F_fleet_5_YR_1951_s_1
+# 0.0759459 F_fleet_5_YR_1952_s_1
+# 0.0740493 F_fleet_5_YR_1953_s_1
+# 0.0720475 F_fleet_5_YR_1954_s_1
+# 0.0698903 F_fleet_5_YR_1955_s_1
+# 0.06752 F_fleet_5_YR_1956_s_1
+# 0.0648121 F_fleet_5_YR_1957_s_1
+# 0.0620527 F_fleet_5_YR_1958_s_1
+# 0.0586042 F_fleet_5_YR_1959_s_1
+# 0.0550966 F_fleet_5_YR_1960_s_1
+# 0.0513902 F_fleet_5_YR_1961_s_1
+# 0.0476238 F_fleet_5_YR_1962_s_1
+# 0.0439044 F_fleet_5_YR_1963_s_1
+# 0.040497 F_fleet_5_YR_1964_s_1
+# 0.037126 F_fleet_5_YR_1965_s_1
+# 0.0338386 F_fleet_5_YR_1966_s_1
+# 0.0309252 F_fleet_5_YR_1967_s_1
+# 0.0279096 F_fleet_5_YR_1968_s_1
+# 0.0248533 F_fleet_5_YR_1969_s_1
+# 0.0220867 F_fleet_5_YR_1970_s_1
+# 0.019398 F_fleet_5_YR_1971_s_1
+# 0.0182034 F_fleet_5_YR_1972_s_1
+# 0.0159495 F_fleet_5_YR_1973_s_1
+# 0.0141948 F_fleet_5_YR_1974_s_1
+# 0.0131211 F_fleet_5_YR_1975_s_1
+# 0.0121472 F_fleet_5_YR_1976_s_1
+# 0.0108935 F_fleet_5_YR_1977_s_1
+# 0.0096573 F_fleet_5_YR_1978_s_1
+# 0.00869284 F_fleet_5_YR_1979_s_1
+# 0.00838657 F_fleet_5_YR_1980_s_1
+# 0.00840715 F_fleet_5_YR_1981_s_1
+# 0.00788774 F_fleet_5_YR_1982_s_1
+# 0.00737863 F_fleet_5_YR_1983_s_1
+# 0.00651717 F_fleet_5_YR_1984_s_1
+# 0.00650238 F_fleet_5_YR_1985_s_1
+# 0.00638057 F_fleet_5_YR_1986_s_1
+# 0.00592479 F_fleet_5_YR_1987_s_1
+# 0.00574614 F_fleet_5_YR_1988_s_1
+# 0.00582945 F_fleet_5_YR_1989_s_1
+# 0.00592932 F_fleet_5_YR_1990_s_1
+# 0.00684241 F_fleet_5_YR_1991_s_1
+# 0.00748032 F_fleet_5_YR_1992_s_1
+# 0.00797793 F_fleet_5_YR_1993_s_1
+# 0.00803221 F_fleet_5_YR_1994_s_1
+# 0.0085934 F_fleet_5_YR_1995_s_1
+# 0.0089824 F_fleet_5_YR_1996_s_1
+# 0.00945732 F_fleet_5_YR_1997_s_1
+# 0.00923378 F_fleet_5_YR_1998_s_1
+# 0.00982033 F_fleet_5_YR_1999_s_1
+# 0.0102821 F_fleet_5_YR_2000_s_1
+# 0.0104162 F_fleet_5_YR_2001_s_1
+# 0.0105311 F_fleet_5_YR_2002_s_1
+# 0.010476 F_fleet_5_YR_2003_s_1
+# 0.0109004 F_fleet_5_YR_2004_s_1
+# 0.0110547 F_fleet_5_YR_2005_s_1
+# 0.0120572 F_fleet_5_YR_2006_s_1
+# 0.0131364 F_fleet_5_YR_2007_s_1
+# 0.0143347 F_fleet_5_YR_2008_s_1
+# 0.0168811 F_fleet_5_YR_2009_s_1
+# 0.0196507 F_fleet_5_YR_2010_s_1
+# 0.0232778 F_fleet_5_YR_2011_s_1
+# 0.0252554 F_fleet_5_YR_2012_s_1
+# 0.0274521 F_fleet_5_YR_2013_s_1
+# 0.0292729 F_fleet_5_YR_2014_s_1
+# 0.0318315 F_fleet_5_YR_2015_s_1
+# 0.033745 F_fleet_5_YR_2016_s_1
+# 0.037419 F_fleet_5_YR_2017_s_1
+# 0.0381702 F_fleet_5_YR_2018_s_1
 #
 #_Q_setup
  # Q_type options:  <0=mirror, 0=float_nobiasadj, 1=float_biasadj, 2=parm_nobiasadj, 3=parm_w_random_dev, 4=parm_w_randwalk, 5=mean_unbiased_float_assign_to_parm
@@ -616,8 +640,8 @@
 #_Cond 0 #_If q has random component, then 0=read one parm for each fleet with random q; 1=read a parm for each year of index
 #_Q_parms(if_any);Qunits_are_ln(q)
 # LO HI INIT PRIOR PR_type SD PHASE
- -10 20 1.9414 1 -1 1 1 # LnQ_base_4_SMP_BYC
- -10 20 1.01154 1 -1 1 2 # LnQ_base_5_COMP
+ -10 20 1.51408 1 -1 1 1 # LnQ_base_4_SMP_BYC
+ -10 20 2.36618 1 -1 1 2 # LnQ_base_5_COMP
 #
 #_size_selex_types
 #discard_options:_0=none;_1=define_retention;_2=retention&mortality;_3=all_discarded_dead
@@ -650,28 +674,28 @@
  11 0 0 0 # 11 VIDEO
  11 0 0 0 # 12 SEAMAP
 #_LO HI INIT PRIOR PR_type SD PHASE env-var use_dev dev_minyr dev_maxyr dev_stddev Block Block_Fxn
- 7.5 52.5 13.3056 42.7 -1 0.05 2 0 0 0 0 0.5 0 0 # SizeSel_11P_1_VIDEO
- -10 3 -5.08575 -0.4 -1 0.05 3 0 0 0 0 0.5 0 0 # SizeSel_11P_2_VIDEO
- -6 12 0.20801 5.5 -1 0.05 3 0 0 0 0 0.5 0 0 # SizeSel_11P_3_VIDEO
- -4 6 3.58658 5.1 -1 0.05 3 0 0 0 0 0.5 0 0 # SizeSel_11P_4_VIDEO
- -15 5 -0.510071 -4.2 -1 0.05 2 0 0 0 0 0.5 0 0 # SizeSel_11P_5_VIDEO
- -8 5 -5.8158 0.4 -1 0.05 2 0 0 0 0 0.5 0 0 # SizeSel_11P_6_VIDEO
- 7.5 52.5 34.6029 13 -1 0.05 2 0 0 0 0 0.5 0 0 # SizeSel_12P_1_SEAMAP
- -10 3 -3.94748 -1.1 -1 0.05 3 0 0 0 0 0.5 0 0 # SizeSel_12P_2_SEAMAP
- -6 12 -0.136915 3.1 -1 0.05 3 0 0 0 0 0.5 0 0 # SizeSel_12P_3_SEAMAP
- -4 6 -0.0168142 5 -1 0.05 3 0 0 0 0 0.5 0 0 # SizeSel_12P_4_SEAMAP
- -15 5 4.03658 -4.5 -1 0.05 2 0 0 0 0 0.5 0 0 # SizeSel_12P_5_SEAMAP
- -8 5 -4.24647 0.1 -1 0.05 2 0 0 0 0 0.5 0 0 # SizeSel_12P_6_SEAMAP
- 0.5 14 2.34817 2.66 -1 0 3 0 0 0 0 0 1 2 # AgeSel_1P_1_CM_E
- 0.5 14 0.763781 7.2774 -1 0 1 0 0 0 0 0 1 2 # AgeSel_1P_2_CM_E
- 0.5 14 3.3103 2.66 -1 0 3 0 0 0 0 0 1 2 # AgeSel_2P_1_CM_W
- 0.5 14 1.27306 7.2774 -1 0 1 0 0 0 0 0 1 2 # AgeSel_2P_2_CM_W
- 1 10 3.87374 4.3 -1 0.05 2 0 0 0 0 0.5 0 0 # AgeSel_3P_1_REC
- -10 3 -2.45977 -4.6 -1 0.05 3 0 0 0 0 0.5 0 0 # AgeSel_3P_2_REC
- -6 12 0.460304 0.7 -1 0.05 3 0 0 0 0 0.5 0 0 # AgeSel_3P_3_REC
- -4 6 3.18637 2.7 -1 0.05 3 0 0 0 0 0.5 0 0 # AgeSel_3P_4_REC
- -15 5 -14.1974 -11.2 -1 0.05 2 0 0 0 0 0.5 0 0 # AgeSel_3P_5_REC
- -8 5 -3.27536 -3.3 -1 0.05 2 0 0 0 0 0.5 0 0 # AgeSel_3P_6_REC
+ 7.5 52.5 13.251 42.7 -1 0.05 2 0 0 0 0 0.5 0 0 # SizeSel_11P_1_VIDEO
+ -10 3 -5.12569 -0.4 -1 0.05 3 0 0 0 0 0.5 0 0 # SizeSel_11P_2_VIDEO
+ -6 12 0.122587 5.5 -1 0.05 3 0 0 0 0 0.5 0 0 # SizeSel_11P_3_VIDEO
+ -4 6 3.60419 5.1 -1 0.05 3 0 0 0 0 0.5 0 0 # SizeSel_11P_4_VIDEO
+ -15 5 -0.471208 -4.2 -1 0.05 2 0 0 0 0 0.5 0 0 # SizeSel_11P_5_VIDEO
+ -8 5 -5.72037 0.4 -1 0.05 2 0 0 0 0 0.5 0 0 # SizeSel_11P_6_VIDEO
+ 7.5 52.5 14.8645 13 -1 0.05 2 0 0 0 0 0.5 0 0 # SizeSel_12P_1_SEAMAP
+ -10 3 -4.57538 -1.1 -1 0.05 3 0 0 0 0 0.5 0 0 # SizeSel_12P_2_SEAMAP
+ -6 12 1.53961 3.1 -1 0.05 3 0 0 0 0 0.5 0 0 # SizeSel_12P_3_SEAMAP
+ -4 6 -0.726269 5 -1 0.05 3 0 0 0 0 0.5 0 0 # SizeSel_12P_4_SEAMAP
+ -15 5 -6.86053 -4.5 -1 0.05 2 0 0 0 0 0.5 0 0 # SizeSel_12P_5_SEAMAP
+ -8 5 -7.28748 0.1 -1 0.05 2 0 0 0 0 0.5 0 0 # SizeSel_12P_6_SEAMAP
+ 0.5 14 2.50707 2.66 -1 0 3 0 0 0 0 0 1 2 # AgeSel_1P_1_CM_E
+ 0.5 14 0.927105 7.2774 -1 0 1 0 0 0 0 0 1 2 # AgeSel_1P_2_CM_E
+ 0.5 14 2.8822 2.66 -1 0 3 0 0 0 0 0 1 2 # AgeSel_2P_1_CM_W
+ 0.5 14 1.09512 7.2774 -1 0 1 0 0 0 0 0 1 2 # AgeSel_2P_2_CM_W
+ 1 10 3.89401 4.3 -1 0.05 2 0 0 0 0 0.5 0 0 # AgeSel_3P_1_REC
+ -10 3 -2.00651 -4.6 -1 0.05 3 0 0 0 0 0.5 0 0 # AgeSel_3P_2_REC
+ -6 12 0.478527 0.7 -1 0.05 3 0 0 0 0 0.5 0 0 # AgeSel_3P_3_REC
+ -4 6 3.27124 2.7 -1 0.05 3 0 0 0 0 0.5 0 0 # AgeSel_3P_4_REC
+ -15 5 -14.1865 -11.2 -1 0.05 2 0 0 0 0 0.5 0 0 # AgeSel_3P_5_REC
+ -8 5 -2.94608 -3.3 -1 0.05 2 0 0 0 0 0.5 0 0 # AgeSel_3P_6_REC
  1e-007 2 0.5 0.5 -1 0 -4 0 0 0 0 0 0 0 # AgeSel_4P_1_SMP_BYC
  0.5 1e+007 100 100 -1 0 -4 0 0 0 0 0 0 0 # AgeSel_4P_2_SMP_BYC
  0.3 3 1.5 1.5 -1 0 -4 0 0 0 0 0 0 0 # AgeSel_4P_3_SMP_BYC
@@ -687,10 +711,10 @@
 #_Cond 0 #_custom_sel-env_setup (0/1) 
 #_Cond -2 2 0 0 -1 99 -2 #_placeholder when no enviro fxns
 1 #_custom_sel-blk_setup (0/1) 
- 0.5 14 2.4421 2.66 -1 0 3 # AgeSel_1P_1_CM_E_BLK1repl_2007
- 0.5 14 0.805439 7.2774 -1 0 1 # AgeSel_1P_2_CM_E_BLK1repl_2007
- 0.5 14 3.75701 2.66 -1 0 3 # AgeSel_2P_1_CM_W_BLK1repl_2007
- 0.5 14 1.38823 7.2774 -1 0 1 # AgeSel_2P_2_CM_W_BLK1repl_2007
+ 0.5 14 2.54563 2.66 -1 0 3 # AgeSel_1P_1_CM_E_BLK1repl_2007
+ 0.5 14 0.908396 7.2774 -1 0 1 # AgeSel_1P_2_CM_E_BLK1repl_2007
+ 0.5 14 3.84902 2.66 -1 0 3 # AgeSel_2P_1_CM_W_BLK1repl_2007
+ 0.5 14 1.44785 7.2774 -1 0 1 # AgeSel_2P_2_CM_W_BLK1repl_2007
 #_Cond No selex parm trends 
 #_Cond -4 # placeholder for selparm_Dev_Phase
 3 #_env/block/dev_adjust_method (1=standard; 2=logistic trans to keep in base parm bounds; 3=standard w/ no bound check)

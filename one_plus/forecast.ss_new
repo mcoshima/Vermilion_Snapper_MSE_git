@@ -3,11 +3,11 @@
 # for all year entries except rebuilder; enter either: actual year, -999 for styr, 0 for endyr, neg number for rel. endyr
 1 # Benchmarks: 0=skip; 1=calc F_spr,F_btgt,F_msy 
 2 # MSY: 1= set to F(SPR); 2=calc F(MSY); 3=set to F(Btgt); 4=set to F(endyr) 
-0.34 # SPR target (e.g. 0.40)
+0.35 # SPR target (e.g. 0.40)
 0.3 # Biomass target (e.g. 0.40)
 #_Bmark_years: beg_bio, end_bio, beg_selex, end_selex, beg_relF, end_relF (enter actual year, or values of 0 or -integer to be rel. endyr)
  -1 -1 -1 -1 2012 2014
-#  2013 2013 2013 2013 2012 2014 # after processing 
+#  2017 2017 2017 2017 2012 2014 # after processing 
 1 #Bmark_relF_Basis: 1 = use year range; 2 = set relF same as forecast below
 #
 1 # Forecast: 0=none; 1=F(SPR); 2=F(MSY) 3=F(Btgt); 4=Ave F (uses first-last relF yrs); 5=input annual F scalar
@@ -15,7 +15,7 @@
 0.2 # F scalar (only used for Do_Forecast==5)
 #_Fcast_years:  beg_selex, end_selex, beg_relF, end_relF  (enter actual year, or values of 0 or -integer to be rel. endyr)
  -1 -1 2012 2014
-#  2013 2013 2012 2014 # after processing 
+#  2017 2017 2012 2014 # after processing 
 2 # Control rule method (1=catch=f(SSB) west coast; 2=F=f(SSB) ) 
 0.01 # Control rule Biomass level for constant F (as frac of Bzero, e.g. 0.40); (Must be > the no F level below) 
 0.001 # Control rule Biomass level for no F (as frac of Bzero, e.g. 0.10) 
@@ -36,7 +36,7 @@
 # Conditional input if relative F choice = 2
 # Fleet relative F:  rows are seasons, columns are fleets
 #_Fleet:  CM_E CM_W REC SMP_BYC COMP
-#  0.162445 0.140277 0.172495 0.154877 0.369906
+#  0.234755 0.204186 0.234605 0.232961 0.0934931
 # max totalcatch by fleet (-1 to have no max) must enter value for each fleet
  -1 -1 -1 -1 -1
 # max totalcatch by area (-1 to have no max); must enter value for each fleet 
