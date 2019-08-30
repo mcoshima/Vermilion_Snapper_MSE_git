@@ -219,7 +219,7 @@ simAgecomp <-  function(catch.by.fleet, year, dat.list){
     Yr = rep(floor(year.seq[year]),3),
     Seas = rep(1,3),
     FltSvy = seq(1,3),
-    Gender = rep(0,3),
+    # Gender = rep(0,3),
     Part = rep(2,3),
     Ageerr = rep(1,3),
     Lbin_lo = rep(-1,3),

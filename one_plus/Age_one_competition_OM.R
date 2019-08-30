@@ -69,16 +69,16 @@ rec.dev <- rsig*rnorm(1000,0,1) - (rsig^2/2)
 f.by.fleet <- c()
 hist.F <- report.$timeseries %>% filter(Yr > 1994 & Yr < 2015) %>% select("Yr", "F:_1", "F:_2", "F:_3", "F:_4","F:_5")
 
-F_1 <- hist.F %>% filter(Yr > 2009) %>% select("F:_1") %>% pull() 
+F_1 <- hist.F %>% filter(Yr > 2000) %>% select("F:_1") %>% pull() 
 F_1_mu <- mean(log(F_1))
 F_1_sd <- sd(log(F_1))
-F_2 <- hist.F %>% filter(Yr > 2006) %>% select("F:_2") %>% pull() 
+F_2 <- hist.F %>% filter(Yr > 2000) %>% select("F:_2") %>% pull() 
 F_2_mu <- mean(log(F_2))
 F_2_sd <- sd(log(F_2))
-F_3 <- hist.F %>% select("F:_3") %>% pull() 
+F_3 <- hist.F %>% filter(Yr > 2000) %>% select("F:_3") %>% pull() 
 F_3_mu <- mean(log(F_3))
 F_3_sd <- sd(log(F_3))
-F_4 <- report.$catch %>% filter(Yr > 2009 & Yr < 2015) %>% filter(Fleet == 4) %>% select(F)
+F_4 <- report.$catch %>% filter(Yr > 2011 & Yr < 2015) %>% filter(Fleet == 4) %>% select(F)
 F_4_mu <- mean(log(F_4[,1]))
 F_4_sd <- .1
 # e.samp <- rlnorm(200, E_4_mu, E_4_sd)
@@ -218,6 +218,7 @@ ref.points <- list()
 
 ## Initial F
 F.scenario = 2
+reduce_catch = F
 
 if(F.scenario == 1) {
   f.by.fleet[1:3] <- 0
@@ -225,19 +226,27 @@ if(F.scenario == 1) {
 }
 
 if(F.scenario == 2){
-  f.by.fleet[1] <- rlnorm(1, F_1_mu, 0.01)
-  f.by.fleet[2] <- rlnorm(1, F_2_mu, 0.01)
-  f.by.fleet[3] <- rlnorm(1, F_3_mu, 0.01)
-  f.by.fleet[4] <- rlnorm(1, F_4_mu, 0.01)
+  f.by.fleet[1] <- rlnorm(1, F_1_mu, 0.1)
+  f.by.fleet[2] <- rlnorm(1, F_2_mu, 0.1)
+  f.by.fleet[3] <- rlnorm(1, F_3_mu, 0.1)
+  f.by.fleet[4] <- rlnorm(1, F_4_mu, 0.1)
 }
 
-system.time(for(year in Year.vec[1:4]){
+system.time(for(year in Year.vec[6:9]){
   
-  if(F.scenario == 2){
-    f.by.fleet[1] <- rlnorm(1, F_1_mu, 0.01)
-    f.by.fleet[2] <- rlnorm(1, F_2_mu, 0.01)
-    f.by.fleet[3] <- rlnorm(1, F_3_mu, 0.01)
-    f.by.fleet[4] <- rlnorm(1, F_4_mu, 0.01)
+  if(reduce_catch == F){
+    f.by.fleet[1] <- rlnorm(1, F_1_mu, 0.1)
+    f.by.fleet[2] <- rlnorm(1, F_2_mu, 0.1)
+    f.by.fleet[3] <- rlnorm(1, F_3_mu, 0.1)
+    f.by.fleet[4] <- rlnorm(1, F_4_mu, 0.1)
+  }
+  
+  
+  if(reduce_catch == T){
+    f.by.fleet[1] <- f.reduced[1]
+    f.by.fleet[2] <- f.reduced[2]
+    f.by.fleet[3] <- f.reduced[3]
+    f.by.fleet[4] <- f.reduced[4]
   }
   
   ##SSB caluclated at beginning of each year
@@ -320,7 +329,7 @@ system.time(for(year in Year.vec[1:4]){
     
      shell(paste("cd/d", dir., "&& ss3", sep = " "))
     
-     rep.file <- SS_output(dir.)
+     rep.file <- SS_output(dir = dir., verbose = F, printstats = F)
      
      SSB0 <- rep.file$timeseries %>% 
        slice(1) %>% 
@@ -343,7 +352,20 @@ system.time(for(year in Year.vec[1:4]){
     print(opt)
     
      if(opt == "A"){
-       #TAC()
+       
+       ref.points[[year]] <- getRP(rep.file, dat.list, year)
+       
+       f_status <- ref.points[[year]]$F_ratio
+       
+       bio_status <- ref.points[[year]]$status_cur
+       
+       if(bio_status < 1){
+         reduce_catch = T
+         
+       }else{
+         reduce_catch = F
+       }
+       
      }else{
        
        find_spr(dir.)
@@ -357,13 +379,11 @@ system.time(for(year in Year.vec[1:4]){
        
        bio_status <- ref.points[[year]]$status_cur
        
-       OFL <- rep.file$derived_quants %>% 
-         filter(str_detect(Label, "OFLCatch_")) %>% 
-         slice(tail(row_number(), 10)) %>%
-         summarise(mean(Value)) %>% 
-         pull()
-       
-       OY <- OFL*.75
+       if(bio_status < 1){
+         reduce_catch = T
+       }else{
+         reduce_catch = F
+       }
        
        
      } 
@@ -375,4 +395,12 @@ system.time(for(year in Year.vec[1:4]){
 } 
 )
 
+
+OFL <- rep.file$derived_quants %>% 
+  filter(str_detect(Label, "OFLCatch_")) %>% 
+  slice(tail(row_number(), 10)) %>%
+  summarise(mean(Value)) %>% 
+  pull()
+
+OY <- OFL*.75
 
