@@ -1,6 +1,9 @@
 SS-V3.24AC-safe;_04/13/2017;_Stock_Synthesis_by_Richard_Methot_(NOAA)_using_ADMB_11.2x64
-Thu Aug 29 16:07:12 2019
+Wed Sep 04 11:00:43 2019
 
 Input catches in 2074 can be overridden by caps or allocations
  Set MSY option =2 because Forecast option =2
  Lognormal error selected for effort deviations for fleet 4; normal error recommended
+ N warnings: 3
+time-vary selparms not bound checked
+Number_of_active_parameters_on_or_near_bounds: 0

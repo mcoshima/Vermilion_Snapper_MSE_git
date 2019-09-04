@@ -9,7 +9,8 @@ library(here)
 library(ggplot2)
 library(stringr)
 library(RPushbullet)
-library(psych) #for geometric mean
+library(psych)
+library(tidyr)#for geometric mean
 # library(purrr)
 # library(reshape2)
 # library(gtools)
@@ -328,6 +329,8 @@ system.time(for(year in Year.vec[6:9]){
      dat.update(year, dat.list, dat., agecomp.list, I, .datcatch, proj.index, dir., write = T)
     
      shell(paste("cd/d", dir., "&& ss3", sep = " "))
+     
+     
     
      rep.file <- SS_output(dir = dir., verbose = F, printstats = F)
      
@@ -357,13 +360,15 @@ system.time(for(year in Year.vec[6:9]){
        
        f_status <- ref.points[[year]]$F_ratio
        
-       bio_status <- ref.points[[year]]$status_cur
+       MSST_rel <- ref.points[[year]]$status_cur
        
-       if(bio_status < 1){
-         reduce_catch = T
+       bratio <- ref.points[[year]]$bratio
+       
+       if(MSST_rel < 1){
+         rebuild = T
          
        }else{
-         reduce_catch = F
+         rebuild = F
        }
        
      }else{
@@ -377,12 +382,14 @@ system.time(for(year in Year.vec[6:9]){
        #check stock status compared to ref points.
        f_status <- ref.points[[year]]$F_ratio
        
-       bio_status <- ref.points[[year]]$status_cur
+       MSST_rel <- ref.points[[year]]$status_cur
        
-       if(bio_status < 1){
-         reduce_catch = T
+       bratio <- ref.points[[year]]$bratio
+       
+       if(MSST_rel < 1){
+         rebuild = T
        }else{
-         reduce_catch = F
+         rebuild = F
        }
        
        

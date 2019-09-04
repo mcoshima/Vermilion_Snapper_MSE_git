@@ -101,7 +101,8 @@ rebuild_f <- function(forefile, nfishfleet, nareas, dir., dat.list, t_targ){
   }
   
   temp.rep <- SS_output(dir = dir., verbose = F, printstats = F)
-  nw_catch <- temp.rep$derived_quants %>% 
+ 
+  ofl_catch <- temp.rep$derived_quants %>% 
     filter(str_detect(Label, "ForeCatch_")) %>% 
     separate(Label, into = c("Label", "Year"), sep = "_") %>% 
     mutate(Year = as.numeric(Year)) %>% 
@@ -117,9 +118,16 @@ rebuild_f <- function(forefile, nfishfleet, nareas, dir., dat.list, t_targ){
     select(Value) %>% 
     pull()
   
-  rebuild.ls <- list(catch = nw_catch, f = nw_f)
+  rebuild.ls <- list(catch = ofl_catch, f = nw_f)
   
   return(rebuild.ls)
   
   
 }
+
+
+flt_prop <- c(0.2383179, 0.1396048, 0.4560077, 0.1660696 )
+
+#Check model convergence:
+
+rep.file$maximum_gradient_component > .0001 #if yes then likely didn't converge, if no then converged
