@@ -9,8 +9,8 @@ library(here)
 library(ggplot2)
 library(stringr)
 library(RPushbullet)
-library(psych)
-library(tidyr)#for geometric mean
+library(psych) #for geometric mean
+library(tidyr)
 # library(purrr)
 # library(reshape2)
 # library(gtools)
@@ -70,13 +70,13 @@ rec.dev <- rsig*rnorm(1000,0,1) - (rsig^2/2)
 f.by.fleet <- c()
 hist.F <- report.$timeseries %>% filter(Yr > 1994 & Yr < 2015) %>% select("Yr", "F:_1", "F:_2", "F:_3", "F:_4","F:_5")
 
-F_1 <- hist.F %>% filter(Yr > 2000) %>% select("F:_1") %>% pull() 
+F_1 <- hist.F %>% filter(Yr > 2007) %>% select("F:_1") %>% pull()         #2007 bc post IFQ
 F_1_mu <- mean(log(F_1))
 F_1_sd <- sd(log(F_1))
-F_2 <- hist.F %>% filter(Yr > 2000) %>% select("F:_2") %>% pull() 
+F_2 <- hist.F %>% filter(Yr > 2007) %>% select("F:_2") %>% pull() 
 F_2_mu <- mean(log(F_2))
 F_2_sd <- sd(log(F_2))
-F_3 <- hist.F %>% filter(Yr > 2000) %>% select("F:_3") %>% pull() 
+F_3 <- hist.F %>% filter(Yr > 2011) %>% select("F:_3") %>% pull()         #noticed discrepencies in years prior to 2011
 F_3_mu <- mean(log(F_3))
 F_3_sd <- sd(log(F_3))
 F_4 <- report.$catch %>% filter(Yr > 2011 & Yr < 2015) %>% filter(Fleet == 4) %>% select(F)
@@ -204,7 +204,8 @@ dat.list <- list(Nages = Nages,
                  N_survey = 2,
                  ageerror = ageerror,
                  q = q,
-                 year_seq = seq(2014, 2064, by = 0.5))
+                 year_seq = seq(2014, 2064, by = 0.5), 
+                 N_areas = 1)
 
 dir. <- here("one_plus")
 
@@ -325,13 +326,8 @@ system.time(for(year in Year.vec[6:9]){
    if(year %% 10 == 0){
 
      dat. <- SS_readdat(paste0(dir.,"/VS.dat"))
-   
      dat.update(year, dat.list, dat., agecomp.list, I, .datcatch, proj.index, dir., write = T)
-    
      shell(paste("cd/d", dir., "&& ss3", sep = " "))
-     
-     
-    
      rep.file <- SS_output(dir = dir., verbose = F, printstats = F)
      
      SSB0 <- rep.file$timeseries %>% 
@@ -354,48 +350,45 @@ system.time(for(year in Year.vec[6:9]){
      }
     print(opt)
     
-     if(opt == "A"){
-       
-       ref.points[[year]] <- getRP(rep.file, dat.list, year)
-       
-       f_status <- ref.points[[year]]$F_ratio
-       
-       MSST_rel <- ref.points[[year]]$status_cur
-       
-       bratio <- ref.points[[year]]$bratio
-       
-       if(MSST_rel < 1){
-         rebuild = T
-         
-       }else{
-         rebuild = F
-       }
-       
-     }else{
+    if(opt == "B"){
        
        find_spr(dir.)
-       
        rep.file <- SS_output(dir = dir., verbose = F, printstats = F)
-       
-       ref.points[[year]] <- getRP(rep.file, dat.list, year)
-       
-       #check stock status compared to ref points.
-       f_status <- ref.points[[year]]$F_ratio
-       
-       MSST_rel <- ref.points[[year]]$status_cur
-       
-       bratio <- ref.points[[year]]$bratio
-       
-       if(MSST_rel < 1){
-         rebuild = T
-       }else{
-         rebuild = F
-       }
-       
-       
-     } 
-      
+
+    } 
+    ref.points[[year]] <- getRP(rep.file, dat.list, year)
     
+    #check stock status compared to ref points.
+    #f_status <- ref.points[[year]]$F_ratio
+    #bratio <- ref.points[[year]]$bratio
+    MSST_rel <- ref.points[[year]]$status_cur
+
+    if(MSST_rel < 1){
+      rebuild = T
+    }else{
+      rebuild = F
+    }
+     
+    if(rebuild == T){
+      T.target <- rebuild_ttarg(paste0(dir., "/forecast.ss"), dir., dat.list)
+      OFL[[year]] <- rebuild_f(paste0(dir., "/forecast.ss"), dir., dat.list, T.target)
+      P.star <- p_star()
+      ABC <- OFL*P.star
+    }
+    
+    if(rebuild == F){
+      OFL[[year]] <- rep.file$derived_quants %>% 
+        filter(str_detect(Label, "ForeCatch_")) %>% 
+        tail(10) %>% 
+        select(Value) %>% 
+        colMeans()
+      
+      ABC <- OFL[[year]]*.75
+    }
+    
+    
+     
+    copy_files(year, dat.list, dir.)
  } 
   
   #end of OM loop 

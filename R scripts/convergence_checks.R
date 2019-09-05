@@ -70,3 +70,19 @@ jit_for_converg <- function(convCheck, dir.){
   
 }
 
+##Function to copy files over to new folder after assessment
+copy_files <- function(year, dat.list, dir.){
+  assess.yr <- dat.list$year_seq[year]
+  current.dir <- dir.
+  new.path <- paste0(dir., "/assessments", "/Year_", assess.yr)
+  dir.create(new.path)
+  assess.files <- list("forecast.ss", 
+                       "starter.ss", 
+                       "VS.dat", 
+                       "VS.ctl", 
+                       "Report.sso", 
+                       "Forecast-report.sso", 
+                       "ss3.PAR")
+  file.copy(file.path(current.dir, assess.files), new.path)
+  
+}
