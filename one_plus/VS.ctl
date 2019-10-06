@@ -80,7 +80,7 @@
 0 #_SR_env_target_0=none;1=devs;_2=R0;_3=steepness
 1 #do_recdev:  0=none; 1=devvector; 2=simple deviations
 1994 # first year of main recr_devs; early devs can preceed this era
-2023 # last year of main recr_devs; forecast devs start in following year
+2018 # last year of main recr_devs; forecast devs start in following year
 3 #_recdev phase 
 1 # (0/1) to read 13 advanced options
  0 #_recdev_early_start (0=none; neg value makes relative to recdev_start)
@@ -615,7 +615,7 @@
  0.5 1e+007 2.4096 2.4096 -1 0 -4 0 0 0 0 0 0 0 # AgeSel_4P_4_SMP_BYC
  -1 1 0 0 -1 0 -4 0 0 0 0 0 0 0 # AgeSel_4P_5_SMP_BYC
  -1 1 0 0 -1 0 -4 0 0 0 0 0 0 0 # AgeSel_4P_6_SMP_BYC
- 1 14 0.1 0.1 0 99 -1 0 0 0 0 0 0 0  #  minage@sel=1_5_COMP
+ 0.1 14 0.1 0.1 0 99 -1 0 0 0 0 0 0 0  #  minage@sel=1_5_COMP
 14 14 14 14 0 99 -1 0 0 0 0 0 0 0  #  maxage@sel=1_5_COMP
 
  0 15 0.1 2.66 -1 0 -1 0 0 0 0 0 0 0 # AgeSel_11P_1_VIDEO

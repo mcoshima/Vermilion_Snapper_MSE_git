@@ -22,7 +22,7 @@
 0 #_Forecast loop control #4 (reserved for future bells&whistles)     # leave alone 
 0 #_Forecast loop control #5 (reserved for future bells&whistles)    # leave alone 
 #get final 2012 landings info from data:  commecial get from IFQ page, recreation may not be final and may have to do some hole filling - get with Vivian on this.
-2014 #FirstYear for caps and allocations (should be after years with fixed inputs)  # thsi is the year when to start the projections - remember triggefish, when we added the landings from the last year sicne they wanted manamagement advice from current year
+2074 #FirstYear for caps and allocations (should be after years with fixed inputs)  # thsi is the year when to start the projections - remember triggefish, when we added the landings from the last year sicne they wanted manamagement advice from current year
 0 # stddev of log(realized catch/target catch) in forecast (set value>0.0 to cause active impl_error)
 0 # Do West Coast gfish rebuilder output (0/1)
 2011 # Rebuilder: first year catch could have been set to zero (Ydecl)(-1 to set to 1999)
@@ -48,5 +48,5 @@
 0 # Number of forecast catch levels to input (else calc catch from forecast F)
 -1 # basis for input Fcast catch: 2=dead catch; 3=retained catch; 99=input Hrate(F) (units are from fleetunits; note new codes in SSV3.20)
 #Year	Seas	Fleet	Catch(or_F)	
-999# verify end of input			
+999 # verify end of input			
 

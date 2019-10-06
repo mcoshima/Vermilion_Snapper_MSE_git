@@ -1,0 +1,94 @@
+FUNCTION dvariable solve_for_fishing_mortality(dvariable catch_level, int naa_yr)
+    RETURN_ARRAYS_INCREMENT();
+    // given a catch amount for the following year, calculate the associate fishing mortality
+    int aa, ii = 0;
+    dvariable upperFy, lowerFy, testFy;
+    dvariable Ftmp, function_value, exp_value, wt_a;
+    // default value
+    Ftmp = 1.0e-3;
+    // initial values for Fy search
+    upperFy = 2.0;
+    lowerFy = 0.0;
+    // find Fy here by BISECTION method
+    // function_val should be 0 at Fy (see eqn B3, Punt 1995)
+    testFy = (upperFy + lowerFy) / 2.0;
+    function_value = 0.0;
+    for (aa = st_age; aa <= end_age; aa++)
+    {
+        if (aa < rcrage || aa > trmage)
+        {
+            if (aa > trmage && (complex_flag == 0 || complex_flag == 1 || complex_flag == 2))
+            {
+                wt_a = wt_fsh_proj(trmage);
+            }
+            else
+            {
+                wt_a = waa_fsh(aa);
+            }
+        }
+        else
+        {
+            wt_a = wt_fsh_proj(aa);
+        }
+        if (naa_yr == endyr)
+        {
+            exp_value = M(aa) + (Sage_fsh_avg(aa) * testFy);
+            function_value += (wt_a * Sage_fsh_avg(aa) * testFy * N(naa_yr,aa) * (1.0 - exp(-exp_value)) / exp_value);
+        }
+        else
+        {
+            exp_value = M_proj(naa_yr,aa) + (Sage_fsh_avg(aa) * testFy);
+            function_value += (wt_a * Sage_fsh_avg(aa) * testFy * N_proj(naa_yr,aa) * (1.0 - exp(-exp_value)) / exp_value);
+        }
+    }
+    function_value /= 1000.0;       // conversion to metric tonnes
+    function_value -= catch_level;
+    while (fabs(function_value) > BISECT_TOL && ii < MAX_BISECT_ITER)
+    {
+        // cout << "iteration " << ii << " function value " << function_value << " Fy " << testFy << endl;
+        if (function_value > 0.0)
+        {
+            upperFy = testFy;
+        }
+        else
+        {
+            lowerFy = testFy;
+        }
+        testFy = (upperFy + lowerFy) / 2.0;
+        function_value = 0.0;
+        for (aa = st_age; aa <= end_age; aa++)
+        {
+            if (aa < rcrage || aa > trmage)
+            {
+                if (aa > trmage && (complex_flag == 0 || complex_flag == 1 || complex_flag == 2))
+                {
+                    wt_a = wt_fsh_proj(trmage);
+                }
+                else
+                {
+                    wt_a = waa_fsh(aa);
+                }
+            }
+            else
+            {
+                wt_a = wt_fsh_proj(aa);
+            }
+            if (naa_yr == endyr)
+            {
+                exp_value = M(aa) + (Sage_fsh_avg(aa) * testFy);
+                function_value += (wt_a * Sage_fsh_avg(aa) * testFy * N(naa_yr,aa) * (1.0 - exp(-exp_value)) / exp_value);
+            }
+            else
+            {
+                exp_value = M_proj(naa_yr,aa) + (Sage_fsh_avg(aa) * testFy);
+                function_value += (wt_a * Sage_fsh_avg(aa) * testFy * N_proj(naa_yr,aa) * (1.0 - exp(-exp_value)) / exp_value);
+            }
+        }
+        function_value /= 1000.0;       // conversion to metric tonnes
+        function_value -= catch_level;
+        ii++;
+    }
+    Ftmp = testFy;
+    if (debug_flag) cout << "end of solve_for_fishing_mortality" << endl;
+    RETURN_ARRAYS_DECREMENT();
+    return(Ftmp);

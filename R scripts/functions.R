@@ -75,8 +75,9 @@ zatage <- function(dat.list,year,f.by.fleet){
   M <- dat.list$M
   asel <- dat.list$age_selectivity
   Nages <- dat.list$Nages
-  f <- matrix(NA, nrow = length(f.by.fleet), ncol = Nages)
-    for(fleet in 1:4){
+  Nfishfleet <- dat.list$N_fishfleet
+  f <- matrix(NA, nrow = Nfishfleet, ncol = Nages)
+    for(fleet in 1:Nfishfleet){
   
       f[fleet,] <- as.numeric(asel[fleet,])*as.numeric(f.by.fleet[fleet])
     }
@@ -103,18 +104,21 @@ catch.in.biomass <- function(dat.list,N,year,z,f.by.fleet){
 catch.in.number <- function(dat.list,N,year,z,f.by.fleet){
   
   sel <- dat.list$age_selectivity
+  bycatch.sel <- sel[4,]
+  bycatch.sel[,2] <- .75
   se <- dat.list$catch_se
   catch <- matrix(data = NA, nrow = 4, ncol = 15)
-  for(fleet in 1:4){
-      for(age in 1:15){
-     
-        catch[fleet, age] <- ((f.by.fleet[fleet]) / z[age]) * (1 - exp(- z[age])) * sel[fleet, age] * N[year-1, age+1] *exp(rnorm(1,0,se[fleet]))
-        
-        
-      }
-    } 
-  catch
+  for(fleet in 1:3){
+    for(age in 1:15){
+      
+      catch[fleet, age] <- ((f.by.fleet[fleet]) / z[age]) * (1 - exp(- z[age])) * sel[fleet, age] * N[year-1, age+1] *exp(rnorm(1,0,se[fleet]))
+      
+    }
   }
+  
+  catch[4, ] <- unlist(f.by.fleet[4] * bycatch.sel)
+  catch
+}
  
 num_to_bio <- function(df, dat.list, Natage = T, age0 = F){
   #converts numbers-at-age to biomass-at-age or vice versa.
@@ -274,6 +278,44 @@ num.fun <- function(year, dat.list){
   
   return(ans.)
 
+  
+}
+
+# Function to solve for F by fleet based on catch for that year
+# function was adapted from ZTA code calculate_F_proj written in ADMB
+solve_for_f <- function(proj_catch, fleet, dat.list, year, N){
+  
+  F_upper <- 2
+  F_lower <- 0
+  test_f <- (F_upper + F_lower)/2
+  est_catch <- c()
+  Nages <- dat.list$Nages
+  M <- dat.list$M
+  S <- dat.list$age_selectivity
+  ii <- 1
+  
+  estz <- M[year,-1] + S[fleet,] * test_f
+  est_catch <- sum(S[fleet,] * test_f * N[year,-1] * (1-exp(-estz))/estz)
+  catch_diff <- est_catch - proj_catch
+  
+  while(abs(catch_diff) > 1e-6  & ii < 200){
+    
+    if(catch_diff > 0){
+      F_upper <- test_f
+    }else{
+      F_lower <- test_f
+    }
+    test_f <- (F_upper + F_lower)/2
+    est_catch <- 0
+    estz <- M[year,] + S[fleet,] * test_f
+    est_catch <- sum( S[fleet,] * test_f * N[year,-1] * (1-exp(-estz))/estz)
+    catch_diff <- est_catch - proj_catch
+    ii <- ii + 1
+    
+  }
+  
+  Fproj <- test_f
+  return(Fproj)
   
 }
 
