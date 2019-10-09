@@ -271,7 +271,7 @@ iteration <- 1
 recommend_catch = F
 
 
-system.time(for (year in Year.vec[1:20]) {
+system.time(for (year in Year.vec[21:50]) {
   
   if (recommend_catch == F) {
     .datcatch[year,1] <- runif(1, c_1[1], c_1[2])

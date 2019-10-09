@@ -1,11 +1,11 @@
 #C forecast file written by R function SS_writeforecast
 #C rerun model to get more complete formatting in forecast.ss_new
 #C should work with SS version: SSv3.21_or_later
-#C file write time: 2019-10-08 20:44:23
+#C file write time: 2019-10-09 06:44:49
 #
 1 #_benchmarks
 1 #_MSY
-0.32 #_SPRtarget
+0.62 #_SPRtarget
 0.3 #_Btarget
 #_Bmark_years: beg_bio end_bio beg_selex end_selex beg_alloc end_alloc
 -1 -1 -1 -1 2012 2014
