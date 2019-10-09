@@ -257,15 +257,21 @@ ref.points <- list()
 rebuild.mat <-
   matrix(data = NA, nrow = 10, ncol = 10) #need to add more cols eventually for full number of iterations
 
+c_1 <- dat.$catch %>% filter(year > 2006) %>% select(c(1)) %>% range()
+c_2 <- dat.$catch %>% filter(year > 2006) %>% select(c(2)) %>% range() 
+c_3 <- dat.$catch %>% filter(year > 2010) %>% select(c(3)) %>% range() 
+c_4 <- dat.$discard_data %>% tail(n = 3) %>% select(Discard) %>% range()
+
+
 
 #### Start the loop ###############################################
 
 iteration <- 1
 
-reduce_catch = F
+recommend_catch = F
 
 
-system.time(for (year in Year.vec[6:10]) {
+system.time(for (year in Year.vec[1:20]) {
   
   if (recommend_catch == F) {
     .datcatch[year,1] <- runif(1, c_1[1], c_1[2])
@@ -371,7 +377,7 @@ system.time(for (year in Year.vec[6:10]) {
                                                                                 1]) #plus age group
     }
   }
-})
+
 
   #### Add data into .dat file and run assessment ####
   if (year %% 10 == 0) {

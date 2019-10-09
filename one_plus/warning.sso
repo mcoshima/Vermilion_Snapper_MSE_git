@@ -1,25 +1,10 @@
-<<<<<<< HEAD
 SS-V3.24AC-safe;_04/13/2017;_Stock_Synthesis_by_Richard_Methot_(NOAA)_using_ADMB_11.2x64
-Tue Oct 08 16:03:13 2019
+Tue Oct 08 20:44:24 2019
 
  Lognormal error selected for effort deviations for fleet 4; normal error recommended
  Lognormal error selected for effort deviations for fleet 5; normal error recommended
  WARNING:  no discard amount data for fleet 5  but retention parms have been defined 
-Final gradient: 0.000548226 is larger than final_conv: 0.0001
+Final gradient: 0.0203251 is larger than final_conv: 0.0001
  N warnings: 4
 time-vary selparms not bound checked
-Number_of_active_parameters_on_or_near_bounds: 0
-=======
-SS-V3.24AC-safe;_04/13/2017;_Stock_Synthesis_by_Richard_Methot_(NOAA)_using_ADMB_11.2x64
-Sun Oct 06 15:36:57 2019
-
- Lognormal error selected for effort deviations for fleet 4; normal error recommended
- Lognormal error selected for effort deviations for fleet 5; normal error recommended
- WARNING:  no discard amount data for fleet 5  but retention parms have been defined 
- warning: poor convergence in Fspr search 1.98 1
- Fmsy is >3x of Fspr are you sure?  check for convergence 
-Final gradient: 0.000511936 is larger than final_conv: 0.0001
- N warnings: 6
-time-vary selparms not bound checked
 Number_of_active_parameters_on_or_near_bounds: 1
->>>>>>> master
