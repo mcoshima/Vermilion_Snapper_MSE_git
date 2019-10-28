@@ -85,9 +85,9 @@ ets.fore <- arima.fore <- list()
 for(i in 1:length(data.list)){
   
   ets[[i]] <- ets(data.list[[i]])
-  ets.fore[[i]] <- forecast(ets[[i]],50)
+  ets.fore[[i]] <- forecast(ets[[i]],60)
   arima.[[i]] <- auto.arima(data.list[[i]])
-  arima.fore[[i]] <- forecast(arima.[[i]],50)
+  arima.fore[[i]] <- forecast(arima.[[i]],60)
 }
 
 plot(ets.fore[[1]])
@@ -102,10 +102,10 @@ plot(arima.fore[[3]])
 plot(arima.fore[[4]])
 
 
-ets_fore.50 <- forecast(ets_fit.50,50)
-ets_fore.65 <- forecast(ets_fit.65,50)
-ets_fore.full <- forecast(ets_fit.full,32)
-ets_fore.65.32 <- forecast(ets_fit.65.32,32)
+ets_fore.50 <- forecast(ets_fit.50,60)
+ets_fore.65 <- forecast(ets_fit.65,60)
+ets_fore.full <- forecast(ets_fit.full,42)
+ets_fore.65.32 <- forecast(ets_fit.65.32,42)
 accuracy(ets_fore.50)
 accuracy(ets_fore.65)
 accuracy(ets_fore.full)
@@ -137,10 +137,10 @@ points(seq(2015, 2064, by =1), y = arima.forecast$start.65, pch = 8, col = nord_
 points(seq(2033, 2064, by =1), y = arima.forecast$start.65.32[c(1:32)], pch = 8, col = nord_cols[5])
 legend("top", legend = c(colnames(ets.forecast), "ets", "arima"), pch = c(rep(16, 4), 1, 8), col = c(nord_cols[c(2:5)], nord_cols[1],nord_cols[1]))
 
-new_projections <- data.frame(Year = seq(2033, 2064, by = 1), 
-                              All_years_model = arima.forecast$Full[c(1:32)], 
+new_projections <- data.frame(Year = seq(2033, 2074, by = 1), 
+                              All_years_model = arima.forecast$Full[c(1:42)], 
                               Start_50_model = arima.forecast$start.50[-c(1:18)],
-                              Start_65_model = ets.forecast$start.65.32[c(1:32)])
+                              Start_65_model = ets.forecast$start.65.32[c(1:42)])
 head(new_projections)
 
 write.csv(new_projections, file = "./one_plus/TidyData/time_series_RS_index.csv")

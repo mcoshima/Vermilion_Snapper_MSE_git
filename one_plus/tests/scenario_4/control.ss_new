@@ -1,0 +1,804 @@
+#V3.24AC
+#_data_and_control_files: VS.dat // VS.ctl
+#_SS-V3.24AC-safe;_04/13/2017;_Stock_Synthesis_by_Richard_Methot_(NOAA)_using_ADMB_11.2x64
+1  #_N_Growth_Patterns
+1 #_N_Morphs_Within_GrowthPattern 
+#_Cond 1 #_Morph_between/within_stdev_ratio (no read if N_morphs=1)
+#_Cond  1 #vector_Morphdist_(-1_in_first_val_gives_normal_approx)
+#
+#_Cond 0  #  N recruitment designs goes here if N_GP*nseas*area>1
+#_Cond 0  #  placeholder for recruitment interaction request
+#_Cond 1 1 1  # example recruitment design element for GP=1, seas=1, area=1
+#
+#_Cond 0 # N_movement_definitions goes here if N_areas > 1
+#_Cond 1.0 # first age that moves (real age at begin of season, not integer) also cond on do_migration>0
+#_Cond 1 1 1 2 4 10 # example move definition for seas=1, morph=1, source=1 dest=2, age1=4, age2=10
+#
+1 #_Nblock_Patterns
+ 1 #_blocks_per_pattern 
+# begin and end years of blocks
+ 2007 2014
+#
+0.5 #_fracfemale 
+3 #_natM_type:_0=1Parm; 1=N_breakpoints;_2=Lorenzen;_3=agespecific;_4=agespec_withseasinterpolate
+ #_Age_natmort_by gender x growthpattern
+ 0.234 0.342 0.287 0.257 0.239 0.228 0.22 0.215 0.212 0.209 0.207 0.206 0.205 0.204 0.204
+1 # GrowthModel: 1=vonBert with L1&L2; 2=Richards with L1&L2; 3=age_speciific_K; 4=not implemented
+0.5 #_Growth_Age_for_L1
+999 #_Growth_Age_for_L2 (999 to use as Linf)
+0 #_SD_add_to_LAA (set to 0.1 for SS2 V1.x compatibility)
+1 #_CV_Growth_Pattern:  0 CV=f(LAA); 1 CV=F(A); 2 SD=F(LAA); 3 SD=F(A); 4 logSD=F(A)
+1 #_maturity_option:  1=length logistic; 2=age logistic; 3=read age-maturity by GP; 4=read age-fecundity by GP; 5=read fec and wt from wtatage.ss; 6=read length-maturity by GP
+#_placeholder for empirical age- or length- maturity by growth pattern (female only)
+1 #_First_Mature_Age
+2 #_fecundity option:(1)eggs=Wt*(a+b*Wt);(2)eggs=a*L^b;(3)eggs=a*Wt^b; (4)eggs=a+b*L; (5)eggs=a+b*W
+0 #_hermaphroditism option:  0=none; 1=age-specific fxn
+1 #_parameter_offset_approach (1=none, 2= M, G, CV_G as offset from female-GP1, 3=like SS2 V1.x)
+2 #_env/block/dev_adjust_method (1=standard; 2=logistic transform keeps in base parm bounds; 3=standard w/ no bound check)
+#
+#_growth_parms
+#_LO HI INIT PRIOR PR_type SD PHASE env-var use_dev dev_minyr dev_maxyr dev_stddev Block Block_Fxn
+ 0.0001 1e+006 11.83 11.83 -1 0 -1 0 0 0 0 0 0 0 # L_at_Amin_Fem_GP_1
+ 0.0001 1e+006 34.4 34.4 -1 0 -1 0 0 0 0 0 0 0 # L_at_Amax_Fem_GP_1
+ 0 1e+006 0.3254 0.3254 -1 0 -1 0 0 0 0 0 0 0 # VonBert_K_Fem_GP_1
+ 0 1e+006 0.2535 0.0001 -1 0 -1 0 0 0 0 0 0 0 # CV_young_Fem_GP_1
+ 0 1e+006 0.2535 0.0001 -1 0 -1 0 0 0 0 0 0 0 # CV_old_Fem_GP_1
+ 0 1e+006 2.19e-005 2.19e-005 -1 0 -1 0 0 0 0 0 0 0 # Wtlen_1_Fem
+ 0 1e+006 2.916 2.916 -1 0 -1 0 0 0 0 0 0 0 # Wtlen_2_Fem
+ 0 1e+006 14.087 14.087 -1 0 -1 0 0 0 0 0 0 0 # Mat50%_Fem
+ 0 1e+006 -0.574 -0.574 -1 0 -1 0 0 0 0 0 0 0 # Mat_slope_Fem
+ 0 1e+006 278.715 278.715 -1 0 -1 0 0 0 0 0 0 0 # Eggs_scalar_Fem
+ 0 1e+006 3.042 3.042 -1 0 -1 0 0 0 0 0 0 0 # Eggs_exp_len_Fem
+ -4 4 0 0 -1 99 -4 0 0 0 0 0 0 0 # RecrDist_GP_1
+ -4 4 1 1 -1 0.01 -4 0 0 0 0 0 0 0 # RecrDist_Area_1
+ -4 4 1 1 -1 0.01 -4 0 0 0 0 0 0 0 # RecrDist_Seas_1
+ 1 1 1 1 -1 0 -4 0 0 0 0 0 0 0 # CohortGrowDev
+#
+#_Cond 0  #custom_MG-env_setup (0/1)
+#_Cond -2 2 0 0 -1 99 -2 #_placeholder when no MG-environ parameters
+#
+#_Cond 0  #custom_MG-block_setup (0/1)
+#_Cond -2 2 0 0 -1 99 -2 #_placeholder when no MG-block parameters
+#_Cond No MG parm trends 
+#
+#_seasonal_effects_on_biology_parms
+ 0 0 0 0 0 0 0 0 0 0 #_femwtlen1,femwtlen2,mat1,mat2,fec1,fec2,Malewtlen1,malewtlen2,L1,K
+#_Cond -2 2 0 0 -1 99 -2 #_placeholder when no seasonal MG parameters
+#
+#_Cond -4 #_MGparm_Dev_Phase
+#
+#_Spawner-Recruitment
+3 #_SR_function: 2=Ricker; 3=std_B-H; 4=SCAA; 5=Hockey; 6=B-H_flattop; 7=survival_3Parm; 8=Shepard_3Parm
+#_LO HI INIT PRIOR PR_type SD PHASE
+ 0 13.82 10.2135 6.91 -1 0 1 # SR_LN(R0)
+ 0.22 0.96 0.547601 0.6 -3 0.74 2 # SR_BH_steep
+ 0 2 0.351193 0.2 -1 0 3 # SR_sigmaR
+ -5 5 0 0 -1 0 -3 # SR_envlink
+ -5 5 0 0 -1 0 -3 # SR_R1_offset
+ 0 0.5 0 0 -1 0 -2 # SR_autocorr
+0 #_SR_env_link
+0 #_SR_env_target_0=none;1=devs;_2=R0;_3=steepness
+1 #do_recdev:  0=none; 1=devvector; 2=simple deviations
+1994 # first year of main recr_devs; early devs can preceed this era
+2018 # last year of main recr_devs; forecast devs start in following year
+3 #_recdev phase 
+1 # (0/1) to read 13 advanced options
+ 0 #_recdev_early_start (0=none; neg value makes relative to recdev_start)
+ -4 #_recdev_early_phase
+ 5 #_forecast_recruitment phase (incl. late recr) (0 value resets to maxphase+1)
+ 1 #_lambda for Fcast_recr_like occurring before endyr+1
+ 1986.53 #_last_early_yr_nobias_adj_in_MPD
+ 1995.83 #_first_yr_fullbias_adj_in_MPD
+ 2010.72 #_last_yr_fullbias_adj_in_MPD
+ 2014.18 #_first_recent_yr_nobias_adj_in_MPD
+ 0.8538 #_max_bias_adj_in_MPD (-1 to override ramp and set biasadj=1.0 for all estimated recdevs)
+ 0 #_period of cycles in recruitment (N parms read below)
+ -5 #min rec_dev
+ 5 #max rec_dev
+ 0 #_read_recdevs
+#_end of advanced SR options
+#
+#_placeholder for full parameter lines for recruitment cycles
+# read specified recr devs
+#_Yr Input_value
+#
+# all recruitment deviations
+#DisplayOnly -0.277615 # Main_RecrDev_1994
+#DisplayOnly -0.144572 # Main_RecrDev_1995
+#DisplayOnly -0.225408 # Main_RecrDev_1996
+#DisplayOnly 0.0421858 # Main_RecrDev_1997
+#DisplayOnly -0.162395 # Main_RecrDev_1998
+#DisplayOnly 0.48986 # Main_RecrDev_1999
+#DisplayOnly 0.340473 # Main_RecrDev_2000
+#DisplayOnly 0.223716 # Main_RecrDev_2001
+#DisplayOnly 0.176462 # Main_RecrDev_2002
+#DisplayOnly 0.0936945 # Main_RecrDev_2003
+#DisplayOnly -0.239886 # Main_RecrDev_2004
+#DisplayOnly -0.0551689 # Main_RecrDev_2005
+#DisplayOnly 0.304743 # Main_RecrDev_2006
+#DisplayOnly -0.131291 # Main_RecrDev_2007
+#DisplayOnly -0.202873 # Main_RecrDev_2008
+#DisplayOnly -0.378024 # Main_RecrDev_2009
+#DisplayOnly -0.0956011 # Main_RecrDev_2010
+#DisplayOnly -0.203465 # Main_RecrDev_2011
+#DisplayOnly -0.267149 # Main_RecrDev_2012
+#DisplayOnly -0.380777 # Main_RecrDev_2013
+#DisplayOnly -0.298213 # Main_RecrDev_2014
+#DisplayOnly 0.501506 # Main_RecrDev_2015
+#DisplayOnly 0.167832 # Main_RecrDev_2016
+#DisplayOnly 0.21879 # Main_RecrDev_2017
+#DisplayOnly 0.503177 # Main_RecrDev_2018
+#DisplayOnly 0 # ForeRecr_2019
+#DisplayOnly 0 # ForeRecr_2020
+#DisplayOnly 0 # ForeRecr_2021
+#DisplayOnly 0 # ForeRecr_2022
+#DisplayOnly 0 # ForeRecr_2023
+#DisplayOnly 0 # ForeRecr_2024
+#DisplayOnly 0 # ForeRecr_2025
+#DisplayOnly 0 # ForeRecr_2026
+#DisplayOnly 0 # ForeRecr_2027
+#DisplayOnly 0 # ForeRecr_2028
+#DisplayOnly 0 # ForeRecr_2029
+#DisplayOnly 0 # ForeRecr_2030
+#DisplayOnly 0 # ForeRecr_2031
+#DisplayOnly 0 # ForeRecr_2032
+#DisplayOnly 0 # ForeRecr_2033
+#DisplayOnly 0 # ForeRecr_2034
+#DisplayOnly 0 # ForeRecr_2035
+#DisplayOnly 0 # ForeRecr_2036
+#DisplayOnly 0 # ForeRecr_2037
+#DisplayOnly 0 # ForeRecr_2038
+#DisplayOnly 0 # ForeRecr_2039
+#DisplayOnly 0 # ForeRecr_2040
+#DisplayOnly 0 # ForeRecr_2041
+#DisplayOnly 0 # ForeRecr_2042
+#DisplayOnly 0 # ForeRecr_2043
+#DisplayOnly 0 # ForeRecr_2044
+#DisplayOnly 0 # ForeRecr_2045
+#DisplayOnly 0 # ForeRecr_2046
+#DisplayOnly 0 # ForeRecr_2047
+#DisplayOnly 0 # ForeRecr_2048
+#DisplayOnly 0 # ForeRecr_2049
+#DisplayOnly 0 # ForeRecr_2050
+#DisplayOnly 0 # ForeRecr_2051
+#DisplayOnly 0 # ForeRecr_2052
+#DisplayOnly 0 # ForeRecr_2053
+#DisplayOnly 0 # ForeRecr_2054
+#DisplayOnly 0 # ForeRecr_2055
+#DisplayOnly 0 # ForeRecr_2056
+#DisplayOnly 0 # ForeRecr_2057
+#DisplayOnly 0 # ForeRecr_2058
+#DisplayOnly 0 # ForeRecr_2059
+#DisplayOnly 0 # ForeRecr_2060
+#DisplayOnly 0 # ForeRecr_2061
+#DisplayOnly 0 # ForeRecr_2062
+#DisplayOnly 0 # ForeRecr_2063
+#DisplayOnly 0 # ForeRecr_2064
+#DisplayOnly 0 # ForeRecr_2065
+#DisplayOnly 0 # ForeRecr_2066
+#DisplayOnly 0 # ForeRecr_2067
+#DisplayOnly 0 # ForeRecr_2068
+#DisplayOnly 0 # ForeRecr_2069
+#DisplayOnly 0 # ForeRecr_2070
+#DisplayOnly 0 # ForeRecr_2071
+#DisplayOnly 0 # ForeRecr_2072
+#DisplayOnly 0 # ForeRecr_2073
+#DisplayOnly 0 # ForeRecr_2074
+#DisplayOnly 0 # ForeRecr_2075
+#DisplayOnly 0 # ForeRecr_2076
+#DisplayOnly 0 # ForeRecr_2077
+#DisplayOnly 0 # ForeRecr_2078
+#DisplayOnly 0 # Impl_err_2019
+#DisplayOnly 0 # Impl_err_2020
+#DisplayOnly 0 # Impl_err_2021
+#DisplayOnly 0 # Impl_err_2022
+#DisplayOnly 0 # Impl_err_2023
+#DisplayOnly 0 # Impl_err_2024
+#DisplayOnly 0 # Impl_err_2025
+#DisplayOnly 0 # Impl_err_2026
+#DisplayOnly 0 # Impl_err_2027
+#DisplayOnly 0 # Impl_err_2028
+#DisplayOnly 0 # Impl_err_2029
+#DisplayOnly 0 # Impl_err_2030
+#DisplayOnly 0 # Impl_err_2031
+#DisplayOnly 0 # Impl_err_2032
+#DisplayOnly 0 # Impl_err_2033
+#DisplayOnly 0 # Impl_err_2034
+#DisplayOnly 0 # Impl_err_2035
+#DisplayOnly 0 # Impl_err_2036
+#DisplayOnly 0 # Impl_err_2037
+#DisplayOnly 0 # Impl_err_2038
+#DisplayOnly 0 # Impl_err_2039
+#DisplayOnly 0 # Impl_err_2040
+#DisplayOnly 0 # Impl_err_2041
+#DisplayOnly 0 # Impl_err_2042
+#DisplayOnly 0 # Impl_err_2043
+#DisplayOnly 0 # Impl_err_2044
+#DisplayOnly 0 # Impl_err_2045
+#DisplayOnly 0 # Impl_err_2046
+#DisplayOnly 0 # Impl_err_2047
+#DisplayOnly 0 # Impl_err_2048
+#DisplayOnly 0 # Impl_err_2049
+#DisplayOnly 0 # Impl_err_2050
+#DisplayOnly 0 # Impl_err_2051
+#DisplayOnly 0 # Impl_err_2052
+#DisplayOnly 0 # Impl_err_2053
+#DisplayOnly 0 # Impl_err_2054
+#DisplayOnly 0 # Impl_err_2055
+#DisplayOnly 0 # Impl_err_2056
+#DisplayOnly 0 # Impl_err_2057
+#DisplayOnly 0 # Impl_err_2058
+#DisplayOnly 0 # Impl_err_2059
+#DisplayOnly 0 # Impl_err_2060
+#DisplayOnly 0 # Impl_err_2061
+#DisplayOnly 0 # Impl_err_2062
+#DisplayOnly 0 # Impl_err_2063
+#DisplayOnly 0 # Impl_err_2064
+#DisplayOnly 0 # Impl_err_2065
+#DisplayOnly 0 # Impl_err_2066
+#DisplayOnly 0 # Impl_err_2067
+#DisplayOnly 0 # Impl_err_2068
+#DisplayOnly 0 # Impl_err_2069
+#DisplayOnly 0 # Impl_err_2070
+#DisplayOnly 0 # Impl_err_2071
+#DisplayOnly 0 # Impl_err_2072
+#DisplayOnly 0 # Impl_err_2073
+#DisplayOnly 0 # Impl_err_2074
+#DisplayOnly 0 # Impl_err_2075
+#DisplayOnly 0 # Impl_err_2076
+#DisplayOnly 0 # Impl_err_2077
+#DisplayOnly 0 # Impl_err_2078
+#
+#Fishing Mortality info 
+0.5 # F ballpark for annual F (=Z-M) for specified year
+-2001 # F ballpark year (neg value to disable)
+2 # F_Method:  1=Pope; 2=instan. F; 3=hybrid (hybrid is recommended)
+4 # max F or harvest rate, depends on F_Method
+# no additional F input needed for Fmethod 1
+# if Fmethod=2; read overall start F value; overall phase; N detailed inputs to read
+# if Fmethod=3; read N iterations for tuning for Fmethod 3
+ 0.05 1 5 # overall start F value; overall phase; N detailed inputs to read
+#Fleet Year Seas F_value se phase (for detailed setup of F_Method=2)
+ 1 1950 1 0.05 0.05 1
+ 2 1950 1 0.05 0.05 1
+ 3 1950 1 0.05 0.05 1
+ 4 1950 1 0.05 0.05 1
+ 5 1950 1 0.05 0.05 1
+#
+#_initial_F_parms
+#_LO HI INIT PRIOR PR_type SD PHASE
+ 0 1 0 0.01 0 99 -1 # InitF_1CM_E
+ 0 1 0 0.01 0 99 -1 # InitF_2CM_W
+ 0 1 0 0.01 0 99 -1 # InitF_3REC
+ 0 1 0 0.01 0 99 -1 # InitF_4SMP_BYC
+ 0 1 0 0.01 0 99 -1 # InitF_5COMP
+
+# F rates for Fmethod=2
+# 3.66027e-005 F_fleet_1_YR_1950_s_1
+# 7.76423e-005 F_fleet_1_YR_1951_s_1
+# 0.000124676 F_fleet_1_YR_1952_s_1
+# 0.000176716 F_fleet_1_YR_1953_s_1
+# 0.000233958 F_fleet_1_YR_1954_s_1
+# 0.000295424 F_fleet_1_YR_1955_s_1
+# 0.00036025 F_fleet_1_YR_1956_s_1
+# 0.000428951 F_fleet_1_YR_1957_s_1
+# 0.000501242 F_fleet_1_YR_1958_s_1
+# 0.000576579 F_fleet_1_YR_1959_s_1
+# 0.000655989 F_fleet_1_YR_1960_s_1
+# 0.000736541 F_fleet_1_YR_1961_s_1
+# 0.000815444 F_fleet_1_YR_1962_s_1
+# 0.000887961 F_fleet_1_YR_1963_s_1
+# 0.000976155 F_fleet_1_YR_1964_s_1
+# 0.000972398 F_fleet_1_YR_1965_s_1
+# 0.000508176 F_fleet_1_YR_1966_s_1
+# 0.00103153 F_fleet_1_YR_1967_s_1
+# 0.0020537 F_fleet_1_YR_1968_s_1
+# 0.0026209 F_fleet_1_YR_1969_s_1
+# 0.00244937 F_fleet_1_YR_1970_s_1
+# 0.00268016 F_fleet_1_YR_1971_s_1
+# 0.00236469 F_fleet_1_YR_1972_s_1
+# 0.00397883 F_fleet_1_YR_1973_s_1
+# 0.0037647 F_fleet_1_YR_1974_s_1
+# 0.00818237 F_fleet_1_YR_1975_s_1
+# 0.00718444 F_fleet_1_YR_1976_s_1
+# 0.00974796 F_fleet_1_YR_1977_s_1
+# 0.0084097 F_fleet_1_YR_1978_s_1
+# 0.00643908 F_fleet_1_YR_1979_s_1
+# 0.00472751 F_fleet_1_YR_1980_s_1
+# 0.0068913 F_fleet_1_YR_1981_s_1
+# 0.00721494 F_fleet_1_YR_1982_s_1
+# 0.0115171 F_fleet_1_YR_1983_s_1
+# 0.0164776 F_fleet_1_YR_1984_s_1
+# 0.0214595 F_fleet_1_YR_1985_s_1
+# 0.0230892 F_fleet_1_YR_1986_s_1
+# 0.0189711 F_fleet_1_YR_1987_s_1
+# 0.0185066 F_fleet_1_YR_1988_s_1
+# 0.01883 F_fleet_1_YR_1989_s_1
+# 0.0467326 F_fleet_1_YR_1990_s_1
+# 0.0399425 F_fleet_1_YR_1991_s_1
+# 0.0542163 F_fleet_1_YR_1992_s_1
+# 0.0812525 F_fleet_1_YR_1993_s_1
+# 0.0856684 F_fleet_1_YR_1994_s_1
+# 0.0905286 F_fleet_1_YR_1995_s_1
+# 0.0758237 F_fleet_1_YR_1996_s_1
+# 0.0747371 F_fleet_1_YR_1997_s_1
+# 0.0629119 F_fleet_1_YR_1998_s_1
+# 0.0773746 F_fleet_1_YR_1999_s_1
+# 0.0614398 F_fleet_1_YR_2000_s_1
+# 0.0708886 F_fleet_1_YR_2001_s_1
+# 0.0800497 F_fleet_1_YR_2002_s_1
+# 0.0869724 F_fleet_1_YR_2003_s_1
+# 0.0693006 F_fleet_1_YR_2004_s_1
+# 0.0722049 F_fleet_1_YR_2005_s_1
+# 0.0811095 F_fleet_1_YR_2006_s_1
+# 0.0829927 F_fleet_1_YR_2007_s_1
+# 0.125748 F_fleet_1_YR_2008_s_1
+# 0.187135 F_fleet_1_YR_2009_s_1
+# 0.0965135 F_fleet_1_YR_2010_s_1
+# 0.197085 F_fleet_1_YR_2011_s_1
+# 0.156308 F_fleet_1_YR_2012_s_1
+# 0.095298 F_fleet_1_YR_2013_s_1
+# 0.0893947 F_fleet_1_YR_2014_s_1
+# 0.152212 F_fleet_1_YR_2015_s_1
+# 0.521698 F_fleet_1_YR_2016_s_1
+# 0.644875 F_fleet_1_YR_2017_s_1
+# 0.53885 F_fleet_1_YR_2018_s_1
+# 3.17551e-005 F_fleet_2_YR_1950_s_1
+# 6.75948e-005 F_fleet_2_YR_1951_s_1
+# 0.00010799 F_fleet_2_YR_1952_s_1
+# 0.000153559 F_fleet_2_YR_1953_s_1
+# 0.000204207 F_fleet_2_YR_1954_s_1
+# 0.000259075 F_fleet_2_YR_1955_s_1
+# 0.000317439 F_fleet_2_YR_1956_s_1
+# 0.000378878 F_fleet_2_YR_1957_s_1
+# 0.000443059 F_fleet_2_YR_1958_s_1
+# 0.000509964 F_fleet_2_YR_1959_s_1
+# 0.000579645 F_fleet_2_YR_1960_s_1
+# 0.000651833 F_fleet_2_YR_1961_s_1
+# 0.000724856 F_fleet_2_YR_1962_s_1
+# 0.000795401 F_fleet_2_YR_1963_s_1
+# 0.0008382 F_fleet_2_YR_1964_s_1
+# 0.000741882 F_fleet_2_YR_1965_s_1
+# 0.000237816 F_fleet_2_YR_1966_s_1
+# 0.000562757 F_fleet_2_YR_1967_s_1
+# 0.00179663 F_fleet_2_YR_1968_s_1
+# 0.000968709 F_fleet_2_YR_1969_s_1
+# 0.00158763 F_fleet_2_YR_1970_s_1
+# 0.00171877 F_fleet_2_YR_1971_s_1
+# 0.00166391 F_fleet_2_YR_1972_s_1
+# 0.00196394 F_fleet_2_YR_1973_s_1
+# 0.00238275 F_fleet_2_YR_1974_s_1
+# 0.00389364 F_fleet_2_YR_1975_s_1
+# 0.00215361 F_fleet_2_YR_1976_s_1
+# 0.00695308 F_fleet_2_YR_1977_s_1
+# 0.00583239 F_fleet_2_YR_1978_s_1
+# 0.0078915 F_fleet_2_YR_1979_s_1
+# 0.00532518 F_fleet_2_YR_1980_s_1
+# 0.0041616 F_fleet_2_YR_1981_s_1
+# 0.00533766 F_fleet_2_YR_1982_s_1
+# 0.0059848 F_fleet_2_YR_1983_s_1
+# 0.0320955 F_fleet_2_YR_1984_s_1
+# 0.0288838 F_fleet_2_YR_1985_s_1
+# 0.0386494 F_fleet_2_YR_1986_s_1
+# 0.044088 F_fleet_2_YR_1987_s_1
+# 0.0466627 F_fleet_2_YR_1988_s_1
+# 0.0500938 F_fleet_2_YR_1989_s_1
+# 0.0506985 F_fleet_2_YR_1990_s_1
+# 0.0451575 F_fleet_2_YR_1991_s_1
+# 0.0627824 F_fleet_2_YR_1992_s_1
+# 0.0667643 F_fleet_2_YR_1993_s_1
+# 0.0751097 F_fleet_2_YR_1994_s_1
+# 0.0521524 F_fleet_2_YR_1995_s_1
+# 0.0563982 F_fleet_2_YR_1996_s_1
+# 0.100719 F_fleet_2_YR_1997_s_1
+# 0.0917531 F_fleet_2_YR_1998_s_1
+# 0.122355 F_fleet_2_YR_1999_s_1
+# 0.0911111 F_fleet_2_YR_2000_s_1
+# 0.112909 F_fleet_2_YR_2001_s_1
+# 0.126904 F_fleet_2_YR_2002_s_1
+# 0.149796 F_fleet_2_YR_2003_s_1
+# 0.136628 F_fleet_2_YR_2004_s_1
+# 0.0964921 F_fleet_2_YR_2005_s_1
+# 0.0668767 F_fleet_2_YR_2006_s_1
+# 0.11893 F_fleet_2_YR_2007_s_1
+# 0.106427 F_fleet_2_YR_2008_s_1
+# 0.110039 F_fleet_2_YR_2009_s_1
+# 0.0872796 F_fleet_2_YR_2010_s_1
+# 0.0852541 F_fleet_2_YR_2011_s_1
+# 0.114387 F_fleet_2_YR_2012_s_1
+# 0.0790174 F_fleet_2_YR_2013_s_1
+# 0.108774 F_fleet_2_YR_2014_s_1
+# 0.266304 F_fleet_2_YR_2015_s_1
+# 0.436436 F_fleet_2_YR_2016_s_1
+# 0.448034 F_fleet_2_YR_2017_s_1
+# 0.873155 F_fleet_2_YR_2018_s_1
+# 0.000160693 F_fleet_3_YR_1950_s_1
+# 0.00034352 F_fleet_3_YR_1951_s_1
+# 0.000552397 F_fleet_3_YR_1952_s_1
+# 0.000784886 F_fleet_3_YR_1953_s_1
+# 0.00103387 F_fleet_3_YR_1954_s_1
+# 0.00129588 F_fleet_3_YR_1955_s_1
+# 0.00156969 F_fleet_3_YR_1956_s_1
+# 0.0018538 F_fleet_3_YR_1957_s_1
+# 0.00215097 F_fleet_3_YR_1958_s_1
+# 0.00246382 F_fleet_3_YR_1959_s_1
+# 0.00279226 F_fleet_3_YR_1960_s_1
+# 0.00312585 F_fleet_3_YR_1961_s_1
+# 0.00343634 F_fleet_3_YR_1962_s_1
+# 0.00370475 F_fleet_3_YR_1963_s_1
+# 0.00395398 F_fleet_3_YR_1964_s_1
+# 0.00421001 F_fleet_3_YR_1965_s_1
+# 0.00447278 F_fleet_3_YR_1966_s_1
+# 0.00473921 F_fleet_3_YR_1967_s_1
+# 0.00501244 F_fleet_3_YR_1968_s_1
+# 0.00529241 F_fleet_3_YR_1969_s_1
+# 0.00558264 F_fleet_3_YR_1970_s_1
+# 0.00587857 F_fleet_3_YR_1971_s_1
+# 0.00615384 F_fleet_3_YR_1972_s_1
+# 0.00640712 F_fleet_3_YR_1973_s_1
+# 0.00665455 F_fleet_3_YR_1974_s_1
+# 0.00691155 F_fleet_3_YR_1975_s_1
+# 0.00716921 F_fleet_3_YR_1976_s_1
+# 0.00744071 F_fleet_3_YR_1977_s_1
+# 0.00774074 F_fleet_3_YR_1978_s_1
+# 0.00806269 F_fleet_3_YR_1979_s_1
+# 0.00839838 F_fleet_3_YR_1980_s_1
+# 0.00880764 F_fleet_3_YR_1981_s_1
+# 0.0273425 F_fleet_3_YR_1982_s_1
+# 0.00795126 F_fleet_3_YR_1983_s_1
+# 0.0113037 F_fleet_3_YR_1984_s_1
+# 0.0199595 F_fleet_3_YR_1985_s_1
+# 0.049958 F_fleet_3_YR_1986_s_1
+# 0.054869 F_fleet_3_YR_1987_s_1
+# 0.0770041 F_fleet_3_YR_1988_s_1
+# 0.0489878 F_fleet_3_YR_1989_s_1
+# 0.0662675 F_fleet_3_YR_1990_s_1
+# 0.0685123 F_fleet_3_YR_1991_s_1
+# 0.0869873 F_fleet_3_YR_1992_s_1
+# 0.0806672 F_fleet_3_YR_1993_s_1
+# 0.0722556 F_fleet_3_YR_1994_s_1
+# 0.103534 F_fleet_3_YR_1995_s_1
+# 0.0519937 F_fleet_3_YR_1996_s_1
+# 0.0602363 F_fleet_3_YR_1997_s_1
+# 0.031526 F_fleet_3_YR_1998_s_1
+# 0.0445153 F_fleet_3_YR_1999_s_1
+# 0.0356836 F_fleet_3_YR_2000_s_1
+# 0.0629679 F_fleet_3_YR_2001_s_1
+# 0.0458148 F_fleet_3_YR_2002_s_1
+# 0.0481779 F_fleet_3_YR_2003_s_1
+# 0.0632001 F_fleet_3_YR_2004_s_1
+# 0.0492744 F_fleet_3_YR_2005_s_1
+# 0.0437144 F_fleet_3_YR_2006_s_1
+# 0.0416576 F_fleet_3_YR_2007_s_1
+# 0.0432167 F_fleet_3_YR_2008_s_1
+# 0.0541687 F_fleet_3_YR_2009_s_1
+# 0.0353354 F_fleet_3_YR_2010_s_1
+# 0.102394 F_fleet_3_YR_2011_s_1
+# 0.0796974 F_fleet_3_YR_2012_s_1
+# 0.171177 F_fleet_3_YR_2013_s_1
+# 0.30211 F_fleet_3_YR_2014_s_1
+# 0.383704 F_fleet_3_YR_2015_s_1
+# 0.27875 F_fleet_3_YR_2016_s_1
+# 0.208693 F_fleet_3_YR_2017_s_1
+# 0.175973 F_fleet_3_YR_2018_s_1
+# 0.0439788 F_fleet_4_YR_1950_s_1
+# 0.0599832 F_fleet_4_YR_1951_s_1
+# 0.070859 F_fleet_4_YR_1952_s_1
+# 0.0744792 F_fleet_4_YR_1953_s_1
+# 0.0965766 F_fleet_4_YR_1954_s_1
+# 0.100677 F_fleet_4_YR_1955_s_1
+# 0.128741 F_fleet_4_YR_1956_s_1
+# 0.147406 F_fleet_4_YR_1957_s_1
+# 0.180583 F_fleet_4_YR_1958_s_1
+# 0.194712 F_fleet_4_YR_1959_s_1
+# 0.194715 F_fleet_4_YR_1960_s_1
+# 0.147464 F_fleet_4_YR_1961_s_1
+# 0.142012 F_fleet_4_YR_1962_s_1
+# 0.16197 F_fleet_4_YR_1963_s_1
+# 0.17115 F_fleet_4_YR_1964_s_1
+# 0.190085 F_fleet_4_YR_1965_s_1
+# 0.187144 F_fleet_4_YR_1966_s_1
+# 0.204015 F_fleet_4_YR_1967_s_1
+# 0.20745 F_fleet_4_YR_1968_s_1
+# 0.236082 F_fleet_4_YR_1969_s_1
+# 0.222558 F_fleet_4_YR_1970_s_1
+# 0.212289 F_fleet_4_YR_1971_s_1
+# 0.215278 F_fleet_4_YR_1972_s_1
+# 0.215259 F_fleet_4_YR_1973_s_1
+# 0.214507 F_fleet_4_YR_1974_s_1
+# 0.216093 F_fleet_4_YR_1975_s_1
+# 0.224508 F_fleet_4_YR_1976_s_1
+# 0.246375 F_fleet_4_YR_1977_s_1
+# 0.260373 F_fleet_4_YR_1978_s_1
+# 0.272335 F_fleet_4_YR_1979_s_1
+# 0.278108 F_fleet_4_YR_1980_s_1
+# 0.26362 F_fleet_4_YR_1981_s_1
+# 0.240221 F_fleet_4_YR_1982_s_1
+# 0.246006 F_fleet_4_YR_1983_s_1
+# 0.278645 F_fleet_4_YR_1984_s_1
+# 0.270193 F_fleet_4_YR_1985_s_1
+# 0.302137 F_fleet_4_YR_1986_s_1
+# 0.250691 F_fleet_4_YR_1987_s_1
+# 0.224418 F_fleet_4_YR_1988_s_1
+# 0.225981 F_fleet_4_YR_1989_s_1
+# 0.218451 F_fleet_4_YR_1990_s_1
+# 0.233436 F_fleet_4_YR_1991_s_1
+# 0.285516 F_fleet_4_YR_1992_s_1
+# 0.337165 F_fleet_4_YR_1993_s_1
+# 0.399629 F_fleet_4_YR_1994_s_1
+# 0.350144 F_fleet_4_YR_1995_s_1
+# 0.34805 F_fleet_4_YR_1996_s_1
+# 0.311444 F_fleet_4_YR_1997_s_1
+# 0.437987 F_fleet_4_YR_1998_s_1
+# 0.27546 F_fleet_4_YR_1999_s_1
+# 0.209852 F_fleet_4_YR_2000_s_1
+# 0.241448 F_fleet_4_YR_2001_s_1
+# 0.272323 F_fleet_4_YR_2002_s_1
+# 0.236134 F_fleet_4_YR_2003_s_1
+# 0.247583 F_fleet_4_YR_2004_s_1
+# 0.189929 F_fleet_4_YR_2005_s_1
+# 0.113348 F_fleet_4_YR_2006_s_1
+# 0.0731447 F_fleet_4_YR_2007_s_1
+# 0.0585539 F_fleet_4_YR_2008_s_1
+# 0.100372 F_fleet_4_YR_2009_s_1
+# 0.0806881 F_fleet_4_YR_2010_s_1
+# 0.0849886 F_fleet_4_YR_2011_s_1
+# 0.0770977 F_fleet_4_YR_2012_s_1
+# 0.082329 F_fleet_4_YR_2013_s_1
+# 0.0624817 F_fleet_4_YR_2014_s_1
+# 0.0693836 F_fleet_4_YR_2015_s_1
+# 0.0681341 F_fleet_4_YR_2016_s_1
+# 0.0641632 F_fleet_4_YR_2017_s_1
+# 0.0612367 F_fleet_4_YR_2018_s_1
+# 0.0619652 F_fleet_5_YR_1950_s_1
+# 0.0609969 F_fleet_5_YR_1951_s_1
+# 0.0597655 F_fleet_5_YR_1952_s_1
+# 0.0582729 F_fleet_5_YR_1953_s_1
+# 0.0566976 F_fleet_5_YR_1954_s_1
+# 0.055 F_fleet_5_YR_1955_s_1
+# 0.0531346 F_fleet_5_YR_1956_s_1
+# 0.0510036 F_fleet_5_YR_1957_s_1
+# 0.0488321 F_fleet_5_YR_1958_s_1
+# 0.0461183 F_fleet_5_YR_1959_s_1
+# 0.043358 F_fleet_5_YR_1960_s_1
+# 0.0404412 F_fleet_5_YR_1961_s_1
+# 0.0374773 F_fleet_5_YR_1962_s_1
+# 0.0345503 F_fleet_5_YR_1963_s_1
+# 0.0318689 F_fleet_5_YR_1964_s_1
+# 0.029216 F_fleet_5_YR_1965_s_1
+# 0.0266291 F_fleet_5_YR_1966_s_1
+# 0.0243363 F_fleet_5_YR_1967_s_1
+# 0.0219632 F_fleet_5_YR_1968_s_1
+# 0.0195581 F_fleet_5_YR_1969_s_1
+# 0.0173809 F_fleet_5_YR_1970_s_1
+# 0.015265 F_fleet_5_YR_1971_s_1
+# 0.0143249 F_fleet_5_YR_1972_s_1
+# 0.0125512 F_fleet_5_YR_1973_s_1
+# 0.0111703 F_fleet_5_YR_1974_s_1
+# 0.0103254 F_fleet_5_YR_1975_s_1
+# 0.00955904 F_fleet_5_YR_1976_s_1
+# 0.00857245 F_fleet_5_YR_1977_s_1
+# 0.0075996 F_fleet_5_YR_1978_s_1
+# 0.00684063 F_fleet_5_YR_1979_s_1
+# 0.00659962 F_fleet_5_YR_1980_s_1
+# 0.00661583 F_fleet_5_YR_1981_s_1
+# 0.0062071 F_fleet_5_YR_1982_s_1
+# 0.00580646 F_fleet_5_YR_1983_s_1
+# 0.00512853 F_fleet_5_YR_1984_s_1
+# 0.0051169 F_fleet_5_YR_1985_s_1
+# 0.00502105 F_fleet_5_YR_1986_s_1
+# 0.00466234 F_fleet_5_YR_1987_s_1
+# 0.00452175 F_fleet_5_YR_1988_s_1
+# 0.00458727 F_fleet_5_YR_1989_s_1
+# 0.00466584 F_fleet_5_YR_1990_s_1
+# 0.00538433 F_fleet_5_YR_1991_s_1
+# 0.00588614 F_fleet_5_YR_1992_s_1
+# 0.00627768 F_fleet_5_YR_1993_s_1
+# 0.00632041 F_fleet_5_YR_1994_s_1
+# 0.00676197 F_fleet_5_YR_1995_s_1
+# 0.0070681 F_fleet_5_YR_1996_s_1
+# 0.00744179 F_fleet_5_YR_1997_s_1
+# 0.00726594 F_fleet_5_YR_1998_s_1
+# 0.00772762 F_fleet_5_YR_1999_s_1
+# 0.0080911 F_fleet_5_YR_2000_s_1
+# 0.00819669 F_fleet_5_YR_2001_s_1
+# 0.00828719 F_fleet_5_YR_2002_s_1
+# 0.00824378 F_fleet_5_YR_2003_s_1
+# 0.00857771 F_fleet_5_YR_2004_s_1
+# 0.00869899 F_fleet_5_YR_2005_s_1
+# 0.00948776 F_fleet_5_YR_2006_s_1
+# 0.010337 F_fleet_5_YR_2007_s_1
+# 0.01128 F_fleet_5_YR_2008_s_1
+# 0.0132836 F_fleet_5_YR_2009_s_1
+# 0.015463 F_fleet_5_YR_2010_s_1
+# 0.0183168 F_fleet_5_YR_2011_s_1
+# 0.0198743 F_fleet_5_YR_2012_s_1
+# 0.0216056 F_fleet_5_YR_2013_s_1
+# 0.0230432 F_fleet_5_YR_2014_s_1
+# 0.0248188 F_fleet_5_YR_2015_s_1
+# 0.0269611 F_fleet_5_YR_2016_s_1
+# 0.0293766 F_fleet_5_YR_2017_s_1
+# 0.0299469 F_fleet_5_YR_2018_s_1
+#
+#_Q_setup
+ # Q_type options:  <0=mirror, 0=float_nobiasadj, 1=float_biasadj, 2=parm_nobiasadj, 3=parm_w_random_dev, 4=parm_w_randwalk, 5=mean_unbiased_float_assign_to_parm
+#_for_env-var:_enter_index_of_the_env-var_to_be_linked
+#_Den-dep  env-var  extra_se  Q_type
+ 0 0 0 0 # 1 CM_E
+ 0 0 0 0 # 2 CM_W
+ 0 0 0 0 # 3 REC
+ 0 0 0 2 # 4 SMP_BYC
+ 0 0 0 2 # 5 COMP
+ 0 0 0 0 # 6 HB_E
+ 0 0 0 0 # 7 HB_W
+ 0 0 0 0 # 8 CM_E_IFQ
+ 0 0 0 0 # 9 CM_W_IFQ
+ 0 0 0 0 # 10 LARVAL
+ 0 0 0 0 # 11 VIDEO
+ 0 0 0 0 # 12 SEAMAP
+#
+#_Cond 0 #_If q has random component, then 0=read one parm for each fleet with random q; 1=read a parm for each year of index
+#_Q_parms(if_any);Qunits_are_ln(q)
+# LO HI INIT PRIOR PR_type SD PHASE
+ -10 20 1.48732 1 -1 1 1 # LnQ_base_4_SMP_BYC
+ -10 20 2.60577 1 -1 1 1 # LnQ_base_5_COMP
+#
+#_size_selex_types
+#discard_options:_0=none;_1=define_retention;_2=retention&mortality;_3=all_discarded_dead
+#_Pattern Discard Male Special
+ 0 0 0 0 # 1 CM_E
+ 0 0 0 0 # 2 CM_W
+ 0 0 0 0 # 3 REC
+ 0 3 0 0 # 4 SMP_BYC
+ 0 3 0 0 # 5 COMP
+ 0 0 0 0 # 6 HB_E
+ 0 0 0 0 # 7 HB_W
+ 0 0 0 0 # 8 CM_E_IFQ
+ 0 0 0 0 # 9 CM_W_IFQ
+ 30 0 0 0 # 10 LARVAL
+ 24 0 0 0 # 11 VIDEO
+ 24 0 0 0 # 12 SEAMAP
+#
+#_age_selex_types
+#_Pattern ___ Male Special
+ 12 0 0 0 # 1 CM_E
+ 12 0 0 0 # 2 CM_W
+ 20 0 0 0 # 3 REC
+ 19 0 0 0 # 4 SMP_BYC
+ 11 0 0 0 # 5 COMP
+ 15 0 0 3 # 6 HB_E
+ 15 0 0 3 # 7 HB_W
+ 15 0 0 1 # 8 CM_E_IFQ
+ 15 0 0 2 # 9 CM_W_IFQ
+ 10 0 0 0 # 10 LARVAL
+ 11 0 0 0 # 11 VIDEO
+ 11 0 0 0 # 12 SEAMAP
+#_LO HI INIT PRIOR PR_type SD PHASE env-var use_dev dev_minyr dev_maxyr dev_stddev Block Block_Fxn
+ 7.5 52.5 13.1447 42.7 -1 0.05 2 0 0 0 0 0.5 0 0 # SizeSel_11P_1_VIDEO
+ -10 3 -5.23264 -0.4 -1 0.05 3 0 0 0 0 0.5 0 0 # SizeSel_11P_2_VIDEO
+ -6 12 -0.163812 5.5 -1 0.05 3 0 0 0 0 0.5 0 0 # SizeSel_11P_3_VIDEO
+ -4 6 3.57807 5.1 -1 0.05 3 0 0 0 0 0.5 0 0 # SizeSel_11P_4_VIDEO
+ -15 5 -0.464682 -4.2 -1 0.05 2 0 0 0 0 0.5 0 0 # SizeSel_11P_5_VIDEO
+ -8 5 -6.02022 0.4 -1 0.05 2 0 0 0 0 0.5 0 0 # SizeSel_11P_6_VIDEO
+ 7.5 52.5 10.8029 13 -1 0.05 2 0 0 0 0 0.5 0 0 # SizeSel_12P_1_SEAMAP
+ -10 3 -5.10578 -1.1 -1 0.05 3 0 0 0 0 0.5 0 0 # SizeSel_12P_2_SEAMAP
+ -6 12 0.118838 3.1 -1 0.05 3 0 0 0 0 0.5 0 0 # SizeSel_12P_3_SEAMAP
+ -4 6 -1.32168 5 -1 0.05 3 0 0 0 0 0.5 0 0 # SizeSel_12P_4_SEAMAP
+ -15 5 -7.77496 -4.5 -1 0.05 2 0 0 0 0 0.5 0 0 # SizeSel_12P_5_SEAMAP
+ -8 5 -7.86242 0.1 -1 0.05 2 0 0 0 0 0.5 0 0 # SizeSel_12P_6_SEAMAP
+ 0.5 14 2.61875 2.66 -1 0 3 0 0 0 0 0 1 2 # AgeSel_1P_1_CM_E
+ 0.5 14 0.990199 7.2774 -1 0 1 0 0 0 0 0 1 2 # AgeSel_1P_2_CM_E
+ 0.5 14 3.91742 2.66 -1 0 3 0 0 0 0 0 1 2 # AgeSel_2P_1_CM_W
+ 0.5 14 1.54859 7.2774 -1 0 1 0 0 0 0 0 1 2 # AgeSel_2P_2_CM_W
+ 1 10 3.88248 4.3 -1 0.05 2 0 0 0 0 0.5 0 0 # AgeSel_3P_1_REC
+ -10 3 -1.59445 -4.6 -1 0.05 3 0 0 0 0 0.5 0 0 # AgeSel_3P_2_REC
+ -6 12 0.461714 0.7 -1 0.05 3 0 0 0 0 0.5 0 0 # AgeSel_3P_3_REC
+ -4 6 3.21837 2.7 -1 0.05 3 0 0 0 0 0.5 0 0 # AgeSel_3P_4_REC
+ -15 5 -14.1313 -11.2 -1 0.05 2 0 0 0 0 0.5 0 0 # AgeSel_3P_5_REC
+ -8 5 -2.55575 -3.3 -1 0.05 2 0 0 0 0 0.5 0 0 # AgeSel_3P_6_REC
+ 1e-007 2 0.5 0.5 -1 0 -4 0 0 0 0 0 0 0 # AgeSel_4P_1_SMP_BYC
+ 0.5 1e+007 100 100 -1 0 -4 0 0 0 0 0 0 0 # AgeSel_4P_2_SMP_BYC
+ 0.3 3 1.5 1.5 -1 0 -4 0 0 0 0 0 0 0 # AgeSel_4P_3_SMP_BYC
+ 0.5 1e+007 2.4096 2.4096 -1 0 -4 0 0 0 0 0 0 0 # AgeSel_4P_4_SMP_BYC
+ -1 1 0 0 -1 0 -4 0 0 0 0 0 0 0 # AgeSel_4P_5_SMP_BYC
+ -1 1 0 0 -1 0 -4 0 0 0 0 0 0 0 # AgeSel_4P_6_SMP_BYC
+ 1 1 1 1 0 99 -1 0 0 0 0 0 0 0 # AgeSel_5P_1_COMP
+ 14 14 14 14 0 99 -1 0 0 0 0 0 0 0 # AgeSel_5P_2_COMP
+ 0 15 0.1 2.66 -1 0 -1 0 0 0 0 0 0 0 # AgeSel_11P_1_VIDEO
+ 0 15 14 7.2774 -1 0 -1 0 0 0 0 0 0 0 # AgeSel_11P_2_VIDEO
+ 0 15 0.1 2.66 -1 0 -1 0 0 0 0 0 0 0 # AgeSel_12P_1_SEAMAP
+ 0 15 14 7.2774 -1 0 -1 0 0 0 0 0 0 0 # AgeSel_12P_2_SEAMAP
+#_Cond 0 #_custom_sel-env_setup (0/1) 
+#_Cond -2 2 0 0 -1 99 -2 #_placeholder when no enviro fxns
+1 #_custom_sel-blk_setup (0/1) 
+ 0.5 14 2.34261 2.66 -1 0 3 # AgeSel_1P_1_CM_E_BLK1repl_2007
+ 0.5 14 0.725859 7.2774 -1 0 1 # AgeSel_1P_2_CM_E_BLK1repl_2007
+ 0.5 14 3.71649 2.66 -1 0 3 # AgeSel_2P_1_CM_W_BLK1repl_2007
+ 0.5 14 1.36709 7.2774 -1 0 1 # AgeSel_2P_2_CM_W_BLK1repl_2007
+#_Cond No selex parm trends 
+#_Cond -4 # placeholder for selparm_Dev_Phase
+3 #_env/block/dev_adjust_method (1=standard; 2=logistic trans to keep in base parm bounds; 3=standard w/ no bound check)
+#
+# Tag loss and Tag reporting parameters go next
+0  # TG_custom:  0=no read; 1=read if tags exist
+#_Cond -6 6 1 1 2 0.01 -4 0 0 0 0 0 0 0  #_placeholder if no parameters
+#
+1 #_Variance_adjustments_to_input_values
+#_fleet: 1 2 3 4 5 6 7 8 9 10 11 12 
+  0 0 0 0 0 0 0 0 0 0 0 0 #_add_to_survey_CV
+  0 0 0 0 0 0 0 0 0 0 0 0 #_add_to_discard_stddev
+  0 0 0 0 0 0 0 0 0 0 0 0 #_add_to_bodywt_CV
+  1 1 1 1 1 1 1 1 1 1 1 1 #_mult_by_lencomp_N
+  1 1 1 1 1 1 1 1 1 1 1 1 #_mult_by_agecomp_N
+  1 1 1 1 1 1 1 1 1 1 1 1 #_mult_by_size-at-age_N
+#
+4 #_maxlambdaphase
+1 #_sd_offset
+#
+0 # number of changes to make to default Lambdas (default value is 1.0)
+# Like_comp codes:  1=surv; 2=disc; 3=mnwt; 4=length; 5=age; 6=SizeFreq; 7=sizeage; 8=catch; 9=init_equ_catch; 
+# 10=recrdev; 11=parm_prior; 12=parm_dev; 13=CrashPen; 14=Morphcomp; 15=Tag-comp; 16=Tag-negbin; 17=F_ballpark
+#like_comp fleet/survey  phase  value  sizefreq_method
+#
+# lambdas (for info only; columns are phases)
+#  1 1 1 1 #_CPUE/survey:_1
+#  1 1 1 1 #_CPUE/survey:_2
+#  1 1 1 1 #_CPUE/survey:_3
+#  1 1 1 1 #_CPUE/survey:_4
+#  1 1 1 1 #_CPUE/survey:_5
+#  1 1 1 1 #_CPUE/survey:_6
+#  1 1 1 1 #_CPUE/survey:_7
+#  1 1 1 1 #_CPUE/survey:_8
+#  1 1 1 1 #_CPUE/survey:_9
+#  1 1 1 1 #_CPUE/survey:_10
+#  1 1 1 1 #_CPUE/survey:_11
+#  1 1 1 1 #_CPUE/survey:_12
+#  0 0 0 0 #_discard:_1
+#  0 0 0 0 #_discard:_2
+#  0 0 0 0 #_discard:_3
+#  1 1 1 1 #_discard:_4
+#  1 1 1 1 #_discard:_5
+#  0 0 0 0 #_discard:_6
+#  0 0 0 0 #_discard:_7
+#  0 0 0 0 #_discard:_8
+#  0 0 0 0 #_discard:_9
+#  0 0 0 0 #_discard:_10
+#  0 0 0 0 #_discard:_11
+#  0 0 0 0 #_discard:_12
+#  0 0 0 0 #_lencomp:_1
+#  0 0 0 0 #_lencomp:_2
+#  0 0 0 0 #_lencomp:_3
+#  0 0 0 0 #_lencomp:_4
+#  0 0 0 0 #_lencomp:_5
+#  0 0 0 0 #_lencomp:_6
+#  0 0 0 0 #_lencomp:_7
+#  0 0 0 0 #_lencomp:_8
+#  0 0 0 0 #_lencomp:_9
+#  1 1 1 1 #_lencomp:_10
+#  1 1 1 1 #_lencomp:_11
+#  0 0 0 0 #_lencomp:_12
+#  1 1 1 1 #_agecomp:_1
+#  1 1 1 1 #_agecomp:_2
+#  1 1 1 1 #_agecomp:_3
+#  0 0 0 0 #_agecomp:_4
+#  0 0 0 0 #_agecomp:_5
+#  0 0 0 0 #_agecomp:_6
+#  0 0 0 0 #_agecomp:_7
+#  0 0 0 0 #_agecomp:_8
+#  0 0 0 0 #_agecomp:_9
+#  0 0 0 0 #_agecomp:_10
+#  0 0 0 0 #_agecomp:_11
+#  0 0 0 0 #_agecomp:_12
+#  1 1 1 1 #_init_equ_catch
+#  1 1 1 1 #_recruitments
+#  1 1 1 1 #_parameter-priors
+#  1 1 1 1 #_parameter-dev-vectors
+#  1 1 1 1 #_crashPenLambda
+#  0 0 0 0 # F_ballpark_lambda
+0 # (0/1) read specs for more stddev reporting 
+ # 0 1 -1 5 1 5 1 -1 5 # placeholder for selex type, len/age, year, N selex bins, Growth pattern, N growth ages, NatAge_area(-1 for all), NatAge_yr, N Natages
+ # placeholder for vector of selex bins to be reported
+ # placeholder for vector of growth ages to be reported
+ # placeholder for vector of NatAges ages to be reported
+999
+

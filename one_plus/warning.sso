@@ -1,10 +1,10 @@
 SS-V3.24AC-safe;_04/13/2017;_Stock_Synthesis_by_Richard_Methot_(NOAA)_using_ADMB_11.2x64
-Wed Oct 09 06:44:49 2019
+Wed Oct 23 12:28:19 2019
 
  Lognormal error selected for effort deviations for fleet 4; normal error recommended
  Lognormal error selected for effort deviations for fleet 5; normal error recommended
  WARNING:  no discard amount data for fleet 5  but retention parms have been defined 
-Final gradient: 0.0057645 is larger than final_conv: 0.0001
+Final gradient: 0.000187912 is larger than final_conv: 0.0001
  N warnings: 4
 time-vary selparms not bound checked
 Number_of_active_parameters_on_or_near_bounds: 0

@@ -14,6 +14,7 @@ library(stringr)
 library(RPushbullet)
 library(psych) #for geometric mean
 library(tidyr)
+library(purrr)
 
 set.seed(50)
 
@@ -93,6 +94,7 @@ hist.F <-
 
 F_1 <-
   hist.F %>% filter(Yr > 2007) %>% select("F:_1") %>% pull()         #2007 bc post IFQ
+
 F_1_mu <- mean(log(F_1))
 F_1_sd <- sd(log(F_1))
 F_2 <- hist.F %>% filter(Yr > 2007) %>% select("F:_2") %>% pull()
@@ -102,9 +104,6 @@ F_3 <-
   hist.F %>% filter(Yr > 2011) %>% select("F:_3") %>% pull()         #noticed discrepencies in years prior to 2011
 F_3_mu <- mean(log(F_3))
 F_3_sd <- sd(log(F_3))
-C_4 <-
-  report.$discard %>% filter(Yr > 2011 & Yr < 2015) %>% select(Obs)
-C_4_mu <- mean(C_4[, 1])
 F_4_mu <- mean(log(F_4[, 1]))
 F_4_sd <- .1
 E_4 <-
@@ -113,8 +112,10 @@ E_4 <-
 E_4_mu <- mean(log(E_4))
 E_4_sd <- sd(log(E_4))
 
-# e.samp <- rlnorm(200, E_4_mu, E_4_sd)
-#e <- runif(100, 0.1946, 1.9399)
+c_1 <- dat.$catch %>% filter(year > 2006) %>% select(c(1)) %>% range()
+c_2 <- dat.$catch %>% filter(year > 2006) %>% select(c(2)) %>% range() 
+c_3 <- dat.$catch %>% filter(year > 2010) %>% select(c(3)) %>% range() 
+c_4 <- dat.$discard_data %>% tail(n = 3) %>% select(Discard) %>% range()
 
 # F for competition is going to be based on the RS abundance index
 
@@ -136,13 +137,19 @@ proj.index.late <-
   proj.index.late %>% select(Year, All_years_model) %>% rename(RS_relative = All_years_model)
 proj.index <- bind_rows(proj.index.early, proj.index.late)
 
+ind <- dat.$CPUE %>% filter(index == 5) %>% select(year,obs) 
+ind <- cbind(ind, report.$catch %>% filter(Fleet == 5) %>% select(kill_num, F))
+mod <- lm(ind$F ~ ind$obs)
+intercept <- as.numeric(mod$coefficients[1])
+slope <- as.numeric(mod$coefficients[2])
 
 #Competition variables
-# bio.df <- read.csv(here("one_plus", "Comp.index.csv"))
-# mod.obj <- nls(Comp.VS.Biomass ~ r*Comp.VS.Biomass*((K -Comp.VS.Biomass - beta*RS.biomass)/K), data = bio.df, start = list(r = 1.5, beta = -.1))
-# r <- mod.obj$m$getPars()[1]
-# beta <- mod.obj$m$getPars()[2]
-# bio.df$pred.bio <- mod.obj$m$predict()
+ # bio.df <- read.csv(here("one_plus", "TidyData", "Comp.index.csv"))
+ # mod.obj <- nls(Comp.VS.Biomass ~ r*Comp.VS.Biomass*((K -Comp.VS.Biomass - beta*RS.biomass)/K), data = bio.df, start = list(r = 1.5, beta = -.1))
+ # r <- mod.obj$m$getPars()[1]
+ # beta <- mod.obj$m$getPars()[2]
+ # bio.df$pred.bio <- mod.obj$m$predict()
+ # carry_K <- 210207.6
 
 ###Natural mortality
 M <- report.$M_at_age %>%
@@ -170,9 +177,10 @@ catch <- matrix(NA, nrow = 4, ncol = 15)
 ###Maybe try reintroducing this but change the shrimp bycatch value from -2
 catch.err <- report.$catch_error[1:4]
 catch.by.year <- matrix(data = NA, nrow = Nyrs, ncol = Nages)
-catch.by.fleet <- matrix(data = NA, nrow = 4, ncol = Nages)
-catch.fleet.year <- matrix(data = NA, nrow = Nyrs, ncol = 4)
+catch.by.fleet <- matrix(data = NA, nrow = 5, ncol = Nages)
+catch.fleet.year <- matrix(data = NA, nrow = Nyrs, ncol = 5)
 .datcatch <- matrix(NA, nrow = 100, ncol = 4)
+comp.discard <- matrix(NA, nrow = 100, ncol = Nages)
 
 ##Weight-at-length for midpoint lengths
 a <- 2.19E-5
@@ -195,8 +203,8 @@ cvdist <-
   rnorm(1000, 0, .2535) #create a sample of error for each length with mean = CV of growth .2535 and sd .1
 length.list <- list(vector("list", 16))
 lbins <- c(report.$lbins, 100)
-natlen <- matrix(data = NA, nrow = 12, ncol = 12)
-Nlen <- matrix(data = NA, nrow = Nyrs, ncol = 12)
+natlen <- matrix(data = NA, nrow = ncol(ALK), ncol = nrow(ALK))
+Nlen <- matrix(data = NA, nrow = Nyrs, ncol = nrow(ALK))
 
 ##Age and length comp data
 agecomp.list <- list()
@@ -208,8 +216,12 @@ b.age <- matrix(data = NA, nrow = 3, ncol = Nages)
 b.len <- matrix(data = NA, nrow = 2, ncol = 12)
 Index.list <- list()
 I <- matrix(data = NA, nrow = Nyrs, ncol = 6)
-q <-
-  as.numeric(report.$index_variance_tuning_check$Q[c(8, 9, 3, 4, 11, 12)])
+q_order <- c(8,9,3,4,11,12)
+q <- rep.file$index_variance_tuning_check %>% 
+  slice(match(q_order, Fleet))%>% 
+  select(Q) %>% 
+  pull() %>% 
+  as.numeric()
 dat.$CPUE %>% group_by(index) %>% summarise(mean = mean(se_log))
 SE <- c(0.369, 0.138, 0.200, 0.2, 0.200, 0.200)
 se_log <- matrix(data = NA, nrow = Nyrs, ncol = Nfleet)
@@ -246,7 +258,7 @@ dat.list <- list(
   q = q,
   year_seq = seq(2014, 2064, by = 0.5),
   N_areas = 1,
-  N_totalfleet = 4,
+  N_totalfleet = 5,
   catch_proportions = c(0.35, 0.17, 0.48)
 )
 
@@ -257,21 +269,15 @@ ref.points <- list()
 rebuild.mat <-
   matrix(data = NA, nrow = 10, ncol = 10) #need to add more cols eventually for full number of iterations
 
-c_1 <- dat.$catch %>% filter(year > 2006) %>% select(c(1)) %>% range()
-c_2 <- dat.$catch %>% filter(year > 2006) %>% select(c(2)) %>% range() 
-c_3 <- dat.$catch %>% filter(year > 2010) %>% select(c(3)) %>% range() 
-c_4 <- dat.$discard_data %>% tail(n = 3) %>% select(Discard) %>% range()
-
-
 
 #### Start the loop ###############################################
 
 iteration <- 1
 
 recommend_catch = F
+x <- 1
 
-
-system.time(for (year in Year.vec[21:50]) {
+system.time(for (year in Year.vec[1:5]) {
   
   if (recommend_catch == F) {
     .datcatch[year,1] <- runif(1, c_1[1], c_1[2])
@@ -280,31 +286,32 @@ system.time(for (year in Year.vec[21:50]) {
     .datcatch[year,4] <- runif(1, c_4[1], c_4[2])
     
     f.by.fleet[1] <-
-      solve_for_f(proj_catch = .datcatch[year,1], 1, dat.list, year-1, N, F)
+      H_rate(.datcatch[year,1], 1, N, year, dat.list, F)
     f.by.fleet[2] <-
-      solve_for_f(proj_catch = .datcatch[year,2], 1, dat.list, year-1, N, F)
+      H_rate(.datcatch[year,2], 2, N, year, dat.list, F)
     f.by.fleet[3] <-
-      solve_for_f(proj_catch = .datcatch[year,3], 1, dat.list, year-1, N, F)
+      H_rate(.datcatch[year,3], 3, N, year, dat.list, F)
     f.by.fleet[4] <-
-      solve_for_f(proj_catch = .datcatch[year,4], 1, dat.list, year-1, N, F)
+      H_rate(.datcatch[year,4], 4, N, year, dat.list, F)
+    f.by.fleet[5] <- comp.f[year/2]
     
   }
   
   if (recommend_catch == T) {
-    .datcatch[year,1] <- rnorm(1, c_1, 50)
-    .datcatch[year,2] <- rnorm(1, c_2, 50)
-    .datcatch[year,3] <- rnorm(1, c_3, 50)
-    .datcatch[year,4] <- rnorm(1, c_4, 50)
+    .datcatch[year,1] <- rnorm(1, c_1[x], 100)
+    .datcatch[year,2] <- rnorm(1, c_2[x], 100)
+    .datcatch[year,3] <- rnorm(1, c_3[x], 100)
+    .datcatch[year,4] <- runif(1, c_4[1], c_4[2])
     
     f.by.fleet[1] <-
-      solve_for_f(proj_catch = .datcatch[year,1], 1, dat.list, year-1, N, F)
+      H_rate(.datcatch[year,1], 1, N, year, dat.list, F)
     f.by.fleet[2] <-
-      solve_for_f(proj_catch = .datcatch[year,2], 1, dat.list, year-1, N, F)
+      H_rate(.datcatch[year,2], 2, N, year, dat.list, F)
     f.by.fleet[3] <-
-      solve_for_f(proj_catch = .datcatch[year,3], 1, dat.list, year-1, N, F)
+      H_rate(.datcatch[year,3], 3, N, year, dat.list, F)
     f.by.fleet[4] <-
-      solve_for_f(proj_catch = .datcatch[year,4], 1, dat.list, year-1, N, F)
-    
+      H_rate(.datcatch[year,4], 4, N, year, dat.list, F)
+    f.by.fleet[5] <- comp.f[year/2]
   }
   
   ##SSB caluclated at beginning of each year
@@ -312,41 +319,56 @@ system.time(for (year in Year.vec[21:50]) {
   
   f.list[[year]] <- f.by.fleet
   
-  z <- zatage(dat.list, year, f.by.fleet)
-  z.list[[year]] <- z
+  # z <- zatage(dat.list, year, f.by.fleet)
+  # z.list[[year]] <- z
   
   #Catches
-  ##Catch removed from year.0
-  catch.by.fleet[, ] <-
-    catch.in.number(dat.list, N, year, z, f.by.fleet[c(1:3)])
-  catch.by.fleet[4, ] <- as.numeric((asel[4, ] / sum(asel[4, ])) * .datcatch[4])
+  catch.by.fleet[,] <- exploit_catch(f.by.fleet, N, year, dat.list)
   
-  catch.by.year[year,] <-
-    apply(catch.by.fleet, 2, sum)  #catch from 2014.0 N
-  catch.fleet.year[year,] <- apply(catch.by.fleet, 1, sum)[-5]
+  catch.by.year[year,] <- colSums(catch.by.fleet)  #catch from 2014.0 N
+  catch.fleet.year[year,] <- rowSums(catch.by.fleet)
   
   hist.catch.list[[year]] <- catch.by.fleet
+  #harvest.rate[[year]] <- sum(N[year-1,-1]*asel[5,])*comp.f[year/2]
   
   ### simulate age comps for fleets 1 - 3
   if (sum(catch.fleet.year[year, c(1:3)]) > 0.001) {
     agecomp.list[[year]] <- simAgecomp(catch.by.fleet, year, dat.list)
   }
   
-  ## Numbers in mid-year
-  N[year,-1] <- N[year - 1, -1] * exp(-z / 2)
+  ## N-at-age for the next year
+  #Age-0 year.0
+  N[year + 1, 2] <- sample(rec.dis, 1, replace = F)
   
+  #Age 1 to 14
+  for (age in 3:ncol(N)) {
+    if (age < ncol(N)) {
+      N[year + 1, age] <- N[year-1,age-1]*exp(-M[year-1,age-2])-catch.by.year[year,age-2] 
+    } else{
+      N[year + 1, age] <- N[year-1,age-1]*exp(-M[year-1,age-2])-catch.by.year[year,age-2] + N[year-1,age]*exp(-M[year-1,age-1])-catch.by.year[year,age-1] #plus age group
+    }
+  }
+  
+  ## Numbers in mid-year
+  for(age in 3:ncol(N)){
+    N[year, age-1] <- N[year-1,age-1] - (N[year-1,age-1]-N[year+1,age])/2
+    if(age == 16){
+      N[year, age-1] <- N[year-1,age-1] - (N[year-1,age-1]*exp(-M[year-1,age-2])-catch.by.year[year,age-2])/2
+      N[year, age] <- N[year-1,age] - (N[year-1,age]*exp(-M[year-1,age-1])-catch.by.year[year,age-1])/2
+    }
+  }
+
   ## Proportion of numbers in each age and length bins
   
-  for (i in 1:nrow(ALK)) {
+  for (i in 1:ncol(ALK)) {
     natlen[i, ] <- N[year - 1, i + 1] * ALK[, i]
-    
   }
   
   Nlen[year - 1, ] <- colSums(natlen)
   
   new.num <- Nlen[year - 1, c(1, 2, 3)] * trans.prob
   Nlen[year, ] <- c(new.num, Nlen[year - 1, -c(1:3)])
-  
+
   
   #### IOA ####
   
@@ -360,25 +382,8 @@ system.time(for (year in Year.vec[21:50]) {
   b.list[[year]] <- sum(N[year, -1] * wtatage[1, ])
   I[year, ] <- simIndex(dat.list, b)
   
-  
-  # N-at-age for the next year
-  #Age-0 year.0
-  N[year + 1, 2] <- sample(rec.dis, 1, replace = F)
-  #N[year+1,2] <- rhat*exp(sample(rec.dev, 1))
-  
-  
-  #Age 1 to 14
-  for (age in 3:ncol(N)) {
-    if (age < ncol(N)) {
-      N[year + 1, age] <- N[year - 1, age - 1] * exp(-(z[age - 2])) #for year.0
-    } else{
-      N[year + 1, age] <-
-        N[year - 1, age - 1] * exp(-(z[age - 2])) + N[year - 1, age] * exp(-z[age -
-                                                                                1]) #plus age group
-    }
-  }
-
-
+  x <- x+1
+})
   #### Add data into .dat file and run assessment ####
   if (year %% 10 == 0) {
     dat. <- SS_readdat(paste0(dir., "/VS.dat"))
@@ -387,12 +392,12 @@ system.time(for (year in Year.vec[21:50]) {
                dat.,
                agecomp.list,
                I,
-               .datcatch,
+               catch.fleet.year,
                proj.index,
                dir.,
                write = T)
     shell(paste("cd/d", dir., "&& ss3", sep = " "))
-    rep.file <-
+     rep.file <-
       MO_SSoutput(dir = dir.,
                   verbose = F,
                   printstats = F)
@@ -419,9 +424,13 @@ system.time(for (year in Year.vec[21:50]) {
                             printstats = F)
     ref.points[[year]] <- getRP(rep.file, dat.list, year)
     
+    q <- rep.file$index_variance_tuning_check %>% 
+      slice(match(q_order, Fleet))%>% 
+      select(Q) %>% 
+      pull() %>% 
+      as.numeric()
+      
     #check stock status compared to ref points.
-    #f_status <- ref.points[[year]]$F_ratio
-    #bratio <- ref.points[[year]]$bratio
     MSST_rel <- ref.points[[year]]$status_cur
     
     # pbPost("note",
@@ -440,12 +449,12 @@ system.time(for (year in Year.vec[21:50]) {
       OFL[[year]] <-
         rebuild_f(paste0(dir., "/forecast.ss"), dir., dat.list, T.target)
       P.star <- p_star()
-      ABC <- sum(OFL[[year]]$catch) * P.star
+      ABC <- OFL[[year]]$catch * P.star
       rebuild.mat[year / 10, iteration] <- 1
   
-      c_1 <- ABC * dat.list$catch_proportions[1]
-      c_2 <- ABC * dat.list$catch_proportions[2]
-      c_3 <- ABC * dat.list$catch_proportions[3]
+      c_1[x:(x+t_targ-1)] <- ABC * dat.list$catch_proportions[1] 
+      c_2[x:(x+t_targ-1)] <- ABC * dat.list$catch_proportions[2]
+      c_3[x:(x+t_targ-1)] <- ABC * dat.list$catch_proportions[3]
      
       recommend_catch <- T
     }
@@ -458,10 +467,10 @@ system.time(for (year in Year.vec[21:50]) {
         select(Value) %>%
         colMeans()
       
-      ABC <- sum(OFL[[year]]) * .75
-      c_1 <- ABC * dat.list$catch_proportions[1]
-      c_2 <- ABC * dat.list$catch_proportions[2]
-      c_3 <- ABC * dat.list$catch_proportions[3]
+      ABC <- OFL[[year]] * .75
+      c_1[x:(x+t_targ-1)] <- ABC * dat.list$catch_proportions[1]
+      c_2[x:(x+t_targ-1)] <- ABC * dat.list$catch_proportions[2]
+      c_3[x:(x+t_targ-1)] <- ABC * dat.list$catch_proportions[3]
        
       recommend_catch <- T
 
@@ -471,7 +480,9 @@ system.time(for (year in Year.vec[21:50]) {
     #        title = "Notification",
     #        body = "Assessment finished")
     copy_files(year, dat.list, dir.)
+    
+    
   }
   
-  #end of OM loop
+write.csv(rebuild.mat, file = "rebuild.matrix.csv")
 })

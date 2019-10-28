@@ -1,0 +1,7 @@
+#Scenario 3
+Catch landings are 0.001 for competition fleet
+Index up through 2018 included - for 2015 to 2018 I = proj.index * 2014 Fcompetition 
+Added expected numbers killed in discards
+	Calculated by catch.in.numbers function (F as fishing mortality)
+Std_in = 0 for discards for fleet 5
+Fixed F for forecast

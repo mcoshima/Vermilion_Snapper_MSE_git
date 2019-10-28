@@ -1,0 +1,6 @@
+#Scenario 5
+Catch landings are in terms of harvest rate for competition fleet
+	(I*F2014) * sum(Na,2015*sel[5,]) = Catch-2015
+	2217.922, 2017.759, 1980.822, 1824.6
+Index up through 2018 included - for 2015 to 2018 I = proj.index 
+Fixed F for forecast F = proj.index[year]*F2014

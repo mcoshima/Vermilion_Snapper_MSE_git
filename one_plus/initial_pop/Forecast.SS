@@ -22,7 +22,7 @@
 0 #_Forecast loop control #4 (reserved for future bells&whistles)     # leave alone 
 0 #_Forecast loop control #5 (reserved for future bells&whistles)    # leave alone 
 #get final 2012 landings info from data:  commecial get from IFQ page, recreation may not be final and may have to do some hole filling - get with Vivian on this.
-2074 #FirstYear for caps and allocations (should be after years with fixed inputs)  # thsi is the year when to start the projections - remember triggefish, when we added the landings from the last year sicne they wanted manamagement advice from current year
+2075 #FirstYear for caps and allocations (should be after years with fixed inputs)  # thsi is the year when to start the projections - remember triggefish, when we added the landings from the last year sicne they wanted manamagement advice from current year
 0 # stddev of log(realized catch/target catch) in forecast (set value>0.0 to cause active impl_error)
 0 # Do West Coast gfish rebuilder output (0/1)
 2011 # Rebuilder: first year catch could have been set to zero (Ydecl)(-1 to set to 1999)
@@ -45,8 +45,68 @@
 #_Conditional on >1 allocation group
 # allocation fraction for each of: 0 allocation groups # BY YEAR VOR SS VERSION 
 # no allocation groups
-0 # Number of forecast catch levels to input (else calc catch from forecast F)
--1 # basis for input Fcast catch: 2=dead catch; 3=retained catch; 99=input Hrate(F) (units are from fleetunits; note new codes in SSV3.20)
-#Year	Seas	Fleet	Catch(or_F)	
+60 # Number of forecast catch levels to input (else calc catch from forecast F)
+99 # basis for input Fcast catch: 2=dead catch; 3=retained catch; 99=input Hrate(F) (units are from fleetunits; note new codes in SSV3.20)
+#Year	Seas	Fleet	Catch(or_F)		
+2015	1	4	0.07356127
+2016	1	4	0.07356127
+2017	1	4	0.07356127
+2018	1	4	0.07356127
+2019	1	4	0.07356127
+2020	1	4	0.07356127
+2021	1	4	0.07356127
+2022	1	4	0.07356127
+2023	1	4	0.07356127
+2024	1	4	0.07356127
+2025	1	4	0.07356127
+2026	1	4	0.07356127
+2027	1	4	0.07356127
+2028	1	4	0.07356127
+2029	1	4	0.07356127
+2030	1	4	0.07356127
+2031	1	4	0.07356127
+2032	1	4	0.07356127
+2033	1	4	0.07356127
+2034	1	4	0.07356127
+2035	1	4	0.07356127
+2036	1	4	0.07356127
+2037	1	4	0.07356127
+2038	1	4	0.07356127
+2039	1	4	0.07356127
+2040	1	4	0.07356127
+2041	1	4	0.07356127
+2042	1	4	0.07356127
+2043	1	4	0.07356127
+2044	1	4	0.07356127
+2045	1	4	0.07356127
+2046	1	4	0.07356127
+2047	1	4	0.07356127
+2048	1	4	0.07356127
+2049	1	4	0.07356127
+2050	1	4	0.07356127
+2051	1	4	0.07356127
+2052	1	4	0.07356127
+2053	1	4	0.07356127
+2054	1	4	0.07356127
+2055	1	4	0.07356127
+2056	1	4	0.07356127
+2057	1	4	0.07356127
+2058	1	4	0.07356127
+2059	1	4	0.07356127
+2060	1	4	0.07356127
+2061	1	4	0.07356127
+2062	1	4	0.07356127
+2063	1	4	0.07356127
+2064	1	4	0.07356127
+2065	1	4	0.07356127
+2066	1	4	0.07356127
+2067	1	4	0.07356127
+2068	1	4	0.07356127
+2069	1	4	0.07356127
+2070	1	4	0.07356127
+2071	1	4	0.07356127
+2072	1	4	0.07356127
+2073	1	4	0.07356127
+2074	1	4	0.07356127
 999 # verify end of input			
 

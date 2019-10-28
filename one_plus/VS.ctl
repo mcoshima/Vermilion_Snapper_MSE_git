@@ -541,7 +541,7 @@
  0 0 0 0 # 2 CM_W
  0 0 0 0 # 3 REC
  0 0 0 2 # 4 SMP_BYC
- 0 0 0 2 # 5 SMP_BYC
+ 0 0 0 2 # 5 COMP
  0 0 0 0 # 6 HB_E
  0 0 0 0 # 7 HB_W
  0 0 0 0 # 8 CM_E_IFQ
@@ -554,7 +554,7 @@
 #_Q_parms(if_any);Qunits_are_ln(q)
 # LO HI INIT PRIOR PR_type SD PHASE
  -10 20 1 1 -1 1 1 # LnQ_base_4_SMP_BYC
- -10 20 1 1 -1 1 2 # LnQ_base_5_COMP
+ -10 20 1 1 -1 1 1 # LnQ_base_5_COMP
 #
 #_size_selex_types
 #discard_options:_0=none;_1=define_retention;_2=retention&mortality;_3=all_discarded_dead
@@ -615,7 +615,7 @@
  0.5 1e+007 2.4096 2.4096 -1 0 -4 0 0 0 0 0 0 0 # AgeSel_4P_4_SMP_BYC
  -1 1 0 0 -1 0 -4 0 0 0 0 0 0 0 # AgeSel_4P_5_SMP_BYC
  -1 1 0 0 -1 0 -4 0 0 0 0 0 0 0 # AgeSel_4P_6_SMP_BYC
- 0.1 14 0.1 0.1 0 99 -1 0 0 0 0 0 0 0  #  minage@sel=1_5_COMP
+ 1 1 1 1 0 99 -1 0 0 0 0 0 0 0  #  minage@sel=1_5_COMP
 14 14 14 14 0 99 -1 0 0 0 0 0 0 0  #  maxage@sel=1_5_COMP
 
  0 15 0.1 2.66 -1 0 -1 0 0 0 0 0 0 0 # AgeSel_11P_1_VIDEO

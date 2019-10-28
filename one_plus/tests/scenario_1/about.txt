@@ -1,0 +1,7 @@
+#Scenario 1
+Catch landings are 0.001 for competition fleet
+Index up through 2018 included
+Added expected numbers killed in discards
+(824.58, 1039.487, 724.1691, and 771.5007)
+Std_in = 0 for discards for fleet 5
+F is fixed in forecast file

@@ -1,0 +1,6 @@
+#Scenario 2
+Catch landings are 0.001 for competition fleet
+Index up through 2014 included I = proj.index, no index included after 2014
+Added expected numbers killed in discards
+(824.58, 1039.487, 724.1691, and 771.5007)
+Std_in = 0 for discards for fleet 5

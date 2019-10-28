@@ -1,0 +1,4 @@
+#Scenario 6
+No catch landings or discards provided
+Index up through 2018 included - for 2015 to 2018 I = proj.index 
+Fixed F for forecast F = proj.index[year]*F2014

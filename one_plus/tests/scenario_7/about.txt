@@ -1,0 +1,7 @@
+#Scenario 7
+No catch landings provided
+Index up through 2014 included 
+Added expected numbers killed in discards
+	Calculated by F = harvest rate 
+	(2217.922, 2017.759, 1980.822, 1824.6)
+Fixed F for forecast F = proj.index[year]*F2014
