@@ -2,9 +2,9 @@
 
 # library(devtools)
 devtools::install_github("mcoshima/moMSE")
-install.packages("C:/Users/pc/Desktop/moMSE_0.1.0.tar.gz",
-                 repos = NULL,
-                 type = "source")
+# install.packages("C:/Users/pc/Desktop/moMSE_0.1.0.tar.gz",
+#                  repos = NULL,
+#                  type = "source")
 library(moMSE)
 library(r4ss)
 library(dplyr)
@@ -18,7 +18,7 @@ library(purrr)
 
 set.seed(50)
 
-report. <- MO_SSoutput(dir = here("one_plus", "initial_pop"))
+report. <- MO_SSoutput(dir = here("one_plus", "initial_pop", "initial_w_compF"))
 
 rep. <-
   SS_output(dir = here("one_plus"),
@@ -137,11 +137,9 @@ proj.index.late <-
   proj.index.late %>% select(Year, All_years_model) %>% rename(RS_relative = All_years_model)
 proj.index <- bind_rows(proj.index.early, proj.index.late)
 
-ind <- dat.$CPUE %>% filter(index == 5) %>% select(year,obs) 
-ind <- cbind(ind, report.$catch %>% filter(Fleet == 5) %>% select(kill_num, F))
-mod <- lm(ind$F ~ ind$obs)
-intercept <- as.numeric(mod$coefficients[1])
-slope <- as.numeric(mod$coefficients[2])
+post.74proj <- data.frame(Year = seq(2075, 2124, by = 1), RS_relative = rep(0.6377957, 50))
+proj.index.full <- bind_rows(proj.index, post.74proj)
+comp.f <- proj.index$RS_relative * report.$exploitation %>% filter(Yr == 2014) %>% select(COMP) %>% pull()
 
 #Competition variables
  # bio.df <- read.csv(here("one_plus", "TidyData", "Comp.index.csv"))
@@ -150,6 +148,11 @@ slope <- as.numeric(mod$coefficients[2])
  # beta <- mod.obj$m$getPars()[2]
  # bio.df$pred.bio <- mod.obj$m$predict()
  # carry_K <- 210207.6
+# ind <- dat.$CPUE %>% filter(index == 5) %>% select(year,obs) 
+# ind <- cbind(ind, report.$catch %>% filter(Fleet == 5) %>% select(kill_num, F))
+# mod <- lm(ind$F ~ ind$obs)
+# intercept <- as.numeric(mod$coefficients[1])
+# slope <- as.numeric(mod$coefficients[2])
 
 ###Natural mortality
 M <- report.$M_at_age %>%
@@ -179,7 +182,7 @@ catch.err <- report.$catch_error[1:4]
 catch.by.year <- matrix(data = NA, nrow = Nyrs, ncol = Nages)
 catch.by.fleet <- matrix(data = NA, nrow = 5, ncol = Nages)
 catch.fleet.year <- matrix(data = NA, nrow = Nyrs, ncol = 5)
-.datcatch <- matrix(NA, nrow = 100, ncol = 4)
+.datcatch <- matrix(NA, nrow = 100, ncol = 5)
 comp.discard <- matrix(NA, nrow = 100, ncol = Nages)
 
 ##Weight-at-length for midpoint lengths
@@ -222,7 +225,7 @@ q <- rep.file$index_variance_tuning_check %>%
   select(Q) %>% 
   pull() %>% 
   as.numeric()
-dat.$CPUE %>% group_by(index) %>% summarise(mean = mean(se_log))
+
 SE <- c(0.369, 0.138, 0.200, 0.2, 0.200, 0.200)
 se_log <- matrix(data = NA, nrow = Nyrs, ncol = Nfleet)
 CPUE.se <- report.$cpue %>%
@@ -259,9 +262,10 @@ dat.list <- list(
   year_seq = seq(2014, 2064, by = 0.5),
   N_areas = 1,
   N_totalfleet = 5,
-  catch_proportions = c(0.35, 0.17, 0.48)
+  catch_proportions = c(0.35, 0.17, 0.48), 
+  RS_projections = proj.index.full
 )
-
+dat.list$RS_projections$RS_relative <- dat.list$RS_projections$RS_relative * .0531768
 dir. <- here("one_plus")
 
 ## Reference points
@@ -277,7 +281,7 @@ iteration <- 1
 recommend_catch = F
 x <- 1
 
-system.time(for (year in Year.vec[1:5]) {
+system.time(for (year in Year.vec[6:10]) {
   
   if (recommend_catch == F) {
     .datcatch[year,1] <- runif(1, c_1[1], c_1[2])
@@ -329,7 +333,7 @@ system.time(for (year in Year.vec[1:5]) {
   catch.fleet.year[year,] <- rowSums(catch.by.fleet)
   
   hist.catch.list[[year]] <- catch.by.fleet
-  #harvest.rate[[year]] <- sum(N[year-1,-1]*asel[5,])*comp.f[year/2]
+  .datcatch[year,5] <- sum(catch.by.fleet[5,])
   
   ### simulate age comps for fleets 1 - 3
   if (sum(catch.fleet.year[year, c(1:3)]) > 0.001) {
@@ -408,14 +412,14 @@ system.time(for (year in Year.vec[1:5]) {
       summarise(mean(Value)) %>%
       pull() %>% round(2)
     
-    if (spr >= .299 & spr <= .31) {
+    if (spr >= .299) {
       opt = "A"
     } else{
       opt = "B"
     }
     
     if (opt == "B") {
-      find_spr(dir., notifications = F)
+      find_spr(dir., notifications = T)
       
     }
     
@@ -433,9 +437,9 @@ system.time(for (year in Year.vec[1:5]) {
     #check stock status compared to ref points.
     MSST_rel <- ref.points[[year]]$status_cur
     
-    # pbPost("note",
-    #        title = "Rebuild?",
-    #        body = MSST_rel)
+     pbPost("note",
+            title = "Rebuild?",
+            body = as.character(MSST_rel))
     
     if (MSST_rel < 1) {
       rebuild = T
@@ -445,16 +449,16 @@ system.time(for (year in Year.vec[1:5]) {
     
     if (rebuild == T) {
       T.target <-
-        rebuild_ttarg(paste0(dir., "/forecast.ss"), dir., dat.list)
+        rebuild_ttarg(dir., dat.list)
       OFL[[year]] <-
-        rebuild_f(paste0(dir., "/forecast.ss"), dir., dat.list, T.target)
+        rebuild_f(dir., dat.list, T.target)
       P.star <- p_star()
       ABC <- OFL[[year]]$catch * P.star
       rebuild.mat[year / 10, iteration] <- 1
   
-      c_1[x:(x+t_targ-1)] <- ABC * dat.list$catch_proportions[1] 
-      c_2[x:(x+t_targ-1)] <- ABC * dat.list$catch_proportions[2]
-      c_3[x:(x+t_targ-1)] <- ABC * dat.list$catch_proportions[3]
+      c_1[x:(x+T.target-1)] <- ABC * dat.list$catch_proportions[1] 
+      c_2[x:(x+T.target-1)] <- ABC * dat.list$catch_proportions[2]
+      c_3[x:(x+T.target-1)] <- ABC * dat.list$catch_proportions[3]
      
       recommend_catch <- T
     }
@@ -468,9 +472,9 @@ system.time(for (year in Year.vec[1:5]) {
         colMeans()
       
       ABC <- OFL[[year]] * .75
-      c_1[x:(x+t_targ-1)] <- ABC * dat.list$catch_proportions[1]
-      c_2[x:(x+t_targ-1)] <- ABC * dat.list$catch_proportions[2]
-      c_3[x:(x+t_targ-1)] <- ABC * dat.list$catch_proportions[3]
+      c_1 <- ABC * dat.list$catch_proportions[1]
+      c_2 <- ABC * dat.list$catch_proportions[2]
+      c_3 <- ABC * dat.list$catch_proportions[3]
        
       recommend_catch <- T
 
